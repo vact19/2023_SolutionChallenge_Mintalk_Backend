@@ -5,7 +5,7 @@ server:
 
 spring:
   profiles:
-    active:
+    active: local
 
 logging:
   level:

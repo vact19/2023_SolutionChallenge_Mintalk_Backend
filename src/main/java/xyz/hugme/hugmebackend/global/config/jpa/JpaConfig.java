@@ -1,4 +1,4 @@
-package xyz.hugme.hugmebackend.global.jpa;
+package xyz.hugme.hugmebackend.global.config.jpa;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
