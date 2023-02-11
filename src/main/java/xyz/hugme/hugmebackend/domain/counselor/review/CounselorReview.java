@@ -1,4 +1,4 @@
-package xyz.hugme.hugmebackend.domain.review;
+package xyz.hugme.hugmebackend.domain.counselor.review;
 
 import lombok.AccessLevel;
 import lombok.Getter;
