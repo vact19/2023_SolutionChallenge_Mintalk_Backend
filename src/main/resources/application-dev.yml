@@ -5,7 +5,7 @@ server:
 
 spring:
   datasource:
-#    url: jdbc:mysql://localhost:3307/hugme?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://34.64.37.20:3306/mintalk?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul
     username:
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
