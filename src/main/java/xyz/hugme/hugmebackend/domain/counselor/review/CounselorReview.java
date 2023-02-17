@@ -21,7 +21,7 @@ public class CounselorReview {
     @Column(nullable = false)
     private String content; // 본문
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST) // Counselor도 같이 Persist
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "counselor_id", nullable = false) // 상담사 없는 상담사 리뷰는 없다. not null
     private Counselor counselor;
 
