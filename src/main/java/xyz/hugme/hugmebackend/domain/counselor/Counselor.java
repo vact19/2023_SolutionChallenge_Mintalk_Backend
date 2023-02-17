@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import xyz.hugme.hugmebackend.domain.common.BaseTimeEntity;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,13 +24,18 @@ public class Counselor extends BaseTimeEntity {
     private Gender gender;
     @Column(nullable = false)
     private String shortIntroduction;
+
+    @Lob // JPA에서 알아서 clob이나 blob으로 바꿔줌
+    @Column(nullable = false)
+    private String introduction;
     @Column(nullable = false)
     private String contact;
     @Column(nullable = false)
     private String email;
     @Column(nullable = false)
     private String location;
-
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> careers;
 
     // 여러가지 field(전문분야) 를 가질 수 있음
     @ElementCollection(fetch = FetchType.EAGER)
@@ -37,13 +43,15 @@ public class Counselor extends BaseTimeEntity {
     private Set<Field> fields;
 
     @Builder
-    public Counselor(String name, Gender gender, String shortIntroduction, String contact, String email, String location, Set<Field> fields) {
+    public Counselor(String name, Gender gender, String shortIntroduction, String introduction, String contact, String email, String location, List<String> careers, Set<Field> fields) {
         this.name = name;
         this.gender = gender;
         this.shortIntroduction = shortIntroduction;
+        this.introduction = introduction;
         this.contact = contact;
         this.email = email;
         this.location = location;
+        this.careers = careers;
         this.fields = fields;
     }
 }

@@ -5,10 +5,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 
 @Getter
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
+@JsonFormat(shape = JsonFormat.Shape.OBJECT) // json 직렬화 시 한글 설명 desc로 반환됨
 public enum Field { // 상담사 전문분야
 
-    ELDER("노인"), DEPRESSION("우울"),
+    ELDER("노인"), DEPRESSION("우울감"),
     RELATIONSHIP("인간관계"), YOUTH("청소년"),
     ANXIETY("불안");
 
@@ -24,3 +24,18 @@ public enum Field { // 상담사 전문분야
         return Field.valueOf(field.toUpperCase());
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

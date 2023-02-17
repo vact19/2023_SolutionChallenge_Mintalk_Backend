@@ -1,7 +1,9 @@
 server:
-  port: 8080
-  servlet:
-    context-path: /
+  port: 8443
+  ssl:
+    key-store-type: pkcs12
+    key-alias: tomcat
+    enabled: true
 
 spring:
   datasource:
