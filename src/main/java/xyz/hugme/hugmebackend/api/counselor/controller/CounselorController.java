@@ -2,12 +2,11 @@ package xyz.hugme.hugmebackend.api.counselor.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import xyz.hugme.hugmebackend.api.common.RspsTemplate;
+import xyz.hugme.hugmebackend.api.common.SingleRspsTemplate;
 import xyz.hugme.hugmebackend.api.counselor.dto.AddCounselorDto;
+import xyz.hugme.hugmebackend.api.counselor.dto.CounselorInfoDto;
 import xyz.hugme.hugmebackend.api.counselor.dto.CounselorListDto;
 import xyz.hugme.hugmebackend.api.counselor.service.ApiCounselorService;
 import xyz.hugme.hugmebackend.domain.counselor.Counselor;
@@ -35,8 +34,20 @@ public class CounselorController {
         Counselor savedCounselor = counselorService.save(addCounselorDto.toEntity());
         return ResponseEntity.created(URI.create("/counselors/" + savedCounselor.getId())).build();
     }
+
+    @GetMapping("/counselors/{id}")
+    public SingleRspsTemplate<CounselorInfoDto> counselorInfo(@PathVariable Long id){
+        // id로 리뷰, 상담사 찾고
+        // 해당 정보들을 Dto에 넣어준다
+        SingleRspsTemplate<CounselorInfoDto> rspsTemplate = apiCounselorService.findCounselorAndReviewsById(id);
+
+        return rspsTemplate;
+    }
+
+
+
 }
-//
+
 
 
 
