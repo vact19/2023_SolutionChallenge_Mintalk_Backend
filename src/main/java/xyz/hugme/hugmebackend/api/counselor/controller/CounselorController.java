@@ -35,8 +35,17 @@ public class CounselorController {
         Counselor savedCounselor = counselorService.save(addCounselorDto.toEntity());
         return ResponseEntity.created(URI.create("/counselors/" + savedCounselor.getId())).build();
     }
+
+    @GetMapping("/counselors/{id}")
+    public ResponseEntity<RspsTemplate<Void>> myPage(){
+        //
+        return null;
+    }
+
+
+
 }
-//
+
 
 
 
