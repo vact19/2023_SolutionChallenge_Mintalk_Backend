@@ -27,6 +27,8 @@ public class CounselorInfoDto {
     private List<String> careers;
     private Set<Field> fields;
 
+    // todo 평균평점 private double rate 추가
+
     // 리뷰 관련정보
     private List<CounselorReviewListDto> reviews;
 

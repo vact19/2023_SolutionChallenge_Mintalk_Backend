@@ -65,14 +65,22 @@ public class CounselorInit {
                 .careers(careers2)
                 .build();
 
-        CounselorReview review = CounselorReview.builder()
+        CounselorReview review1 = CounselorReview.builder()
                 .rate(5)
                 .content("한길선생님 감사합니다")
                 .counselor(counselor2)
                 .build();
 
+        CounselorReview review2 = CounselorReview.builder()
+                .rate(3)
+                .content("한길선생님 너무 감사합니다")
+                .counselor(counselor2)
+                .build();
+
         counselorService.save(counselor1);
-        counselorReviewService.save(review); // Cascade persist 되는지 한번 보자
+        counselorService.save(counselor2);
+        counselorReviewService.save(review1); //  counselor2에 저장
+        counselorReviewService.save(review2); //  counselor2에 저장
     }
 }
 
