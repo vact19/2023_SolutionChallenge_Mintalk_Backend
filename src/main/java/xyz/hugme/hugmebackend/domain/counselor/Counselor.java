@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import xyz.hugme.hugmebackend.domain.common.BaseTimeEntity;
+import xyz.hugme.hugmebackend.domain.counselor.review.CounselorReview;
 
 import javax.persistence.*;
 import java.util.List;
@@ -36,11 +37,12 @@ public class Counselor extends BaseTimeEntity {
     private String location;
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> careers;
-
     // 여러가지 field(전문분야) 를 가질 수 있음
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(value = EnumType.STRING)
     private Set<Field> fields;
+    @OneToMany(mappedBy = "counselor", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    private List<CounselorReview> counselorReviews;
 
     @Builder
     public Counselor(String name, Gender gender, String shortIntroduction, String introduction, String contact, String email, String location, List<String> careers, Set<Field> fields) {

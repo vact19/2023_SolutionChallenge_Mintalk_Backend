@@ -20,4 +20,13 @@ public class CounselorService {
     public List<Counselor> findAll(){
         return counselorRepository.findAll();
     }
+
+    public Counselor findById(Long id) {
+        return counselorRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Counselor id 잘못됨"));
+    }
+
+    public Counselor findByIdFetchReviews(Long id) {
+        return counselorRepository.findByIdFetchReviews(id);
+    }
 }
