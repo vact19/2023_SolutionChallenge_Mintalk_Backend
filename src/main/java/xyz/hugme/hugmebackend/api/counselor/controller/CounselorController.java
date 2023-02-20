@@ -35,6 +35,7 @@ public class CounselorController {
         return ResponseEntity.created(URI.create("/counselors/" + savedCounselor.getId())).build();
     }
 
+    // 상담사 자기소개 페이지
     @GetMapping("/counselors/{id}")
     public SingleRspsTemplate<CounselorInfoDto> counselorInfo(@PathVariable Long id){
         // id로 리뷰, 상담사 찾고
