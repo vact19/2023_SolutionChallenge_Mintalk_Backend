@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Getter
 @NoArgsConstructor
-public class AddCounselorDto {
+public class CounselorSignUpDto {
     private String name;
     private Gender gender;
     private String shortIntroduction;
