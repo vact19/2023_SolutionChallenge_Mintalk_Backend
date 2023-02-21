@@ -10,6 +10,7 @@ import xyz.hugme.hugmebackend.api.counselor.dto.CounselorInfoDto;
 import xyz.hugme.hugmebackend.api.counselor.dto.CounselorListDto;
 import xyz.hugme.hugmebackend.domain.counselor.Counselor;
 import xyz.hugme.hugmebackend.domain.counselor.CounselorService;
+import xyz.hugme.hugmebackend.domain.counselor.review.CounselorReview;
 import xyz.hugme.hugmebackend.domain.counselor.review.CounselorReviewService;
 
 import java.util.List;
@@ -30,13 +31,11 @@ public class ApiCounselorService {
     }
 
     public SingleRspsTemplate<CounselorInfoDto> findCounselorAndReviewsById(Long id){
-        // join 사용하지 않고, 상담사와 상담사 리뷰를 각각 조회함.
-//        Counselor counselor = counselorService.findById(id);
-//        List<CounselorReview> counselorReviews = counselorReviewService.findAllByCounselorId(id);
-
-        // 그냥 fetch join 써야지
+        // 상담사와 해당 리뷰를 한꺼번에 조회하기 위해 fetch join 사용
         Counselor counselor = counselorService.findByIdFetchReviews(id);
-        CounselorInfoDto counselorInfoDto = CounselorInfoDto.of(counselor, counselor.getCounselorReviews());
+        List<CounselorReview> counselorReviews = counselor.getCounselorReviews();
+        CounselorInfoDto counselorInfoDto = CounselorInfoDto.of(counselor, counselorReviews);
+
         return new SingleRspsTemplate<>(HttpStatus.OK.value(), counselorInfoDto);
     }
 }
