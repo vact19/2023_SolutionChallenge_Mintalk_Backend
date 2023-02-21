@@ -1,11 +1,11 @@
-package xyz.hugme.hugmebackend.domain.counselor;
+package xyz.hugme.hugmebackend.domain.user.counselor;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import xyz.hugme.hugmebackend.domain.common.BaseTimeEntity;
-import xyz.hugme.hugmebackend.domain.counselor.review.CounselorReview;
+import xyz.hugme.hugmebackend.domain.user.counselor.review.CounselorReview;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,20 +19,22 @@ public class Counselor extends BaseTimeEntity {
     private Long id;
     @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
+    private String email;
+    @Column(nullable = false)
+    private String password;
     // "Male" "male" "MALE" 등으로 저장되지 않게 하기 위해 String이 아닌 Enum 사용
     // EnumType Ordinal은 DB에 1, 2, 3... 으로 저장됨
     @Enumerated(EnumType.STRING)
     private Gender gender;
     @Column(nullable = false)
     private String shortIntroduction;
-
     @Lob // JPA에서 알아서 clob이나 blob으로 바꿔줌
     @Column(nullable = false)
     private String introduction;
     @Column(nullable = false)
     private String contact;
-    @Column(nullable = false)
-    private String email;
+
     @Column(nullable = false)
     private String location;
     @ElementCollection(fetch = FetchType.EAGER)
@@ -45,13 +47,14 @@ public class Counselor extends BaseTimeEntity {
     private List<CounselorReview> counselorReviews;
 
     @Builder
-    public Counselor(String name, Gender gender, String shortIntroduction, String introduction, String contact, String email, String location, List<String> careers, Set<Field> fields) {
+    public Counselor(String name, String email, String password, Gender gender, String shortIntroduction, String introduction, String contact, String location, List<String> careers, Set<Field> fields) {
         this.name = name;
+        this.email = email;
+        this.password = password;
         this.gender = gender;
         this.shortIntroduction = shortIntroduction;
         this.introduction = introduction;
         this.contact = contact;
-        this.email = email;
         this.location = location;
         this.careers = careers;
         this.fields = fields;

@@ -1,14 +1,15 @@
 package xyz.hugme.hugmebackend.global.init;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import xyz.hugme.hugmebackend.domain.counselor.Counselor;
-import xyz.hugme.hugmebackend.domain.counselor.CounselorService;
-import xyz.hugme.hugmebackend.domain.counselor.Field;
-import xyz.hugme.hugmebackend.domain.counselor.Gender;
-import xyz.hugme.hugmebackend.domain.counselor.review.CounselorReview;
-import xyz.hugme.hugmebackend.domain.counselor.review.CounselorReviewService;
+import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
+import xyz.hugme.hugmebackend.domain.user.counselor.CounselorService;
+import xyz.hugme.hugmebackend.domain.user.counselor.Field;
+import xyz.hugme.hugmebackend.domain.user.counselor.Gender;
+import xyz.hugme.hugmebackend.domain.user.counselor.review.CounselorReview;
+import xyz.hugme.hugmebackend.domain.user.counselor.review.CounselorReviewService;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class CounselorInit {
 
     private final CounselorService counselorService;
     private final CounselorReviewService counselorReviewService;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     @PostConstruct
@@ -50,6 +52,7 @@ public class CounselorInit {
                 .fields(fieldsSet1)
                 .contact("010-현수현수-0100")
                 .email("cdsf@gmail.com")
+                .password(passwordEncoder.encode("1234"))
                 .location("어디시 어디구 어디동")
                 .careers(careers1)
                 .build();
@@ -61,6 +64,7 @@ public class CounselorInit {
                 .fields(fieldsSet2)
                 .contact("010-한길한길-0100")
                 .email("csrf@gmail.com")
+                .password(passwordEncoder.encode("1234"))
                 .location("어디시 어디구 어디동")
                 .careers(careers2)
                 .build();

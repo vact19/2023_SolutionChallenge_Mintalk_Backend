@@ -1,7 +1,7 @@
 package xyz.hugme.hugmebackend;
 
 import org.junit.jupiter.api.Test;
-import xyz.hugme.hugmebackend.domain.counselor.Field;
+import xyz.hugme.hugmebackend.domain.user.counselor.Field;
 
 import java.util.Arrays;
 import java.util.List;

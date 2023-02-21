@@ -3,10 +3,10 @@ package xyz.hugme.hugmebackend.api.counselor.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import xyz.hugme.hugmebackend.domain.counselor.Counselor;
-import xyz.hugme.hugmebackend.domain.counselor.Field;
-import xyz.hugme.hugmebackend.domain.counselor.Gender;
-import xyz.hugme.hugmebackend.domain.counselor.review.CounselorReview;
+import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
+import xyz.hugme.hugmebackend.domain.user.counselor.Field;
+import xyz.hugme.hugmebackend.domain.user.counselor.Gender;
+import xyz.hugme.hugmebackend.domain.user.counselor.review.CounselorReview;
 
 import java.util.List;
 import java.util.Set;

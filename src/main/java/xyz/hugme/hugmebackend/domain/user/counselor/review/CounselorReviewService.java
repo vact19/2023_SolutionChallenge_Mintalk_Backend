@@ -1,4 +1,4 @@
-package xyz.hugme.hugmebackend.domain.counselor.review;
+package xyz.hugme.hugmebackend.domain.user.counselor.review;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
