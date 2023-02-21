@@ -30,7 +30,7 @@ public class AuthController {
         HttpSession session = request.getSession();
         session.setAttribute("name", validatedCounselor.getName());
         session.setAttribute("email", validatedCounselor.getEmail());
-        Cookie cookie = new Cookie("cookie's email", validatedCounselor.getEmail());
+        Cookie cookie = new Cookie("cookie's-email", validatedCounselor.getEmail());
         cookie.setPath("/");
         response.addCookie(cookie);
         return "ok";
