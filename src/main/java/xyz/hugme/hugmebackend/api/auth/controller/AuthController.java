@@ -33,6 +33,9 @@ public class AuthController {
         Cookie cookie = new Cookie("cookie's-email", validatedCounselor.getEmail());
         cookie.setPath("/");
         response.addCookie(cookie);
+        Cookie cookie2 = new Cookie("cookie's-contact", validatedCounselor.getContact());
+        cookie2.setPath("/sdfsdfdsf");
+        response.addCookie(cookie2);
         return "ok";
     }
 
