@@ -1,10 +1,10 @@
-package xyz.hugme.hugmebackend.domain.counselor.review;
+package xyz.hugme.hugmebackend.domain.user.counselor.review;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import xyz.hugme.hugmebackend.domain.counselor.Counselor;
+import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 
 import javax.persistence.*;
 

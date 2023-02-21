@@ -5,12 +5,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.hugme.hugmebackend.api.common.RspsTemplate;
 import xyz.hugme.hugmebackend.api.common.SingleRspsTemplate;
-import xyz.hugme.hugmebackend.api.counselor.dto.AddCounselorDto;
+import xyz.hugme.hugmebackend.api.counselor.dto.CounselorSignUpDto;
 import xyz.hugme.hugmebackend.api.counselor.dto.CounselorInfoDto;
 import xyz.hugme.hugmebackend.api.counselor.dto.CounselorListDto;
 import xyz.hugme.hugmebackend.api.counselor.service.ApiCounselorService;
-import xyz.hugme.hugmebackend.domain.counselor.Counselor;
-import xyz.hugme.hugmebackend.domain.counselor.CounselorService;
+import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
+import xyz.hugme.hugmebackend.domain.user.counselor.CounselorService;
 
 import java.net.URI;
 
@@ -30,8 +30,8 @@ public class CounselorController {
 
     // 상담사 회원가입
     @PostMapping("/counselors")
-    public ResponseEntity<Void> signIn(@RequestBody AddCounselorDto addCounselorDto){
-        Counselor savedCounselor = counselorService.save(addCounselorDto.toEntity());
+    public ResponseEntity signIn(@RequestBody CounselorSignUpDto counselorSignUpDto){
+        Counselor savedCounselor = apiCounselorService.signUp(counselorSignUpDto);
         return ResponseEntity.created(URI.create("/counselors/" + savedCounselor.getId())).build();
     }
 

@@ -1,4 +1,4 @@
-package xyz.hugme.hugmebackend.domain.counselor;
+package xyz.hugme.hugmebackend.domain.user.counselor;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;

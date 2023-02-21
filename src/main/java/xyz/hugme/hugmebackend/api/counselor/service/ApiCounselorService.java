@@ -2,16 +2,18 @@ package xyz.hugme.hugmebackend.api.counselor.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import xyz.hugme.hugmebackend.api.auth.dto.LoginDto;
 import xyz.hugme.hugmebackend.api.common.RspsTemplate;
 import xyz.hugme.hugmebackend.api.common.SingleRspsTemplate;
 import xyz.hugme.hugmebackend.api.counselor.dto.CounselorInfoDto;
 import xyz.hugme.hugmebackend.api.counselor.dto.CounselorListDto;
-import xyz.hugme.hugmebackend.domain.counselor.Counselor;
-import xyz.hugme.hugmebackend.domain.counselor.CounselorService;
-import xyz.hugme.hugmebackend.domain.counselor.review.CounselorReview;
-import xyz.hugme.hugmebackend.domain.counselor.review.CounselorReviewService;
+import xyz.hugme.hugmebackend.api.counselor.dto.CounselorSignUpDto;
+import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
+import xyz.hugme.hugmebackend.domain.user.counselor.CounselorService;
+import xyz.hugme.hugmebackend.domain.user.counselor.review.CounselorReview;
 
 import java.util.List;
 
@@ -20,7 +22,7 @@ import java.util.List;
 @Service
 public class ApiCounselorService {
     private final CounselorService counselorService;
-    private final CounselorReviewService counselorReviewService;
+    private final PasswordEncoder passwordEncoder;
 
     public RspsTemplate<CounselorListDto> findAll(){
         List<Counselor> counselorList = counselorService.findAll();
@@ -38,4 +40,29 @@ public class ApiCounselorService {
 
         return new SingleRspsTemplate<>(HttpStatus.OK.value(), counselorInfoDto);
     }
+
+    public Counselor signIn(LoginDto.Request request) {
+        // 비밀번호 검증
+        return counselorService.validate(request.getEmail(), request.getPassword());
+    }
+
+    public Counselor signUp(CounselorSignUpDto counselorSignUpDto) {
+        // password encode 후 save()
+        String encodedPassword = passwordEncoder.encode(counselorSignUpDto.getPassword());
+        Counselor counselor = counselorSignUpDto.toEntity(encodedPassword);
+        return counselorService.save(counselor);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

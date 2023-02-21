@@ -1,7 +1,7 @@
 package xyz.hugme.hugmebackend;
 
 import org.junit.jupiter.api.Test;
-import xyz.hugme.hugmebackend.domain.counselor.Field;
+import xyz.hugme.hugmebackend.domain.user.counselor.Field;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +25,18 @@ class HugmebackendApplicationTests {
                 .average().orElse(0.0);
         System.out.println("v = " + v);
         System.out.println(Double.valueOf(String.format("%.1f", v)));
+    }
+
+    @Test
+    void favor_static_member_classes_over_non_static(){
+        // 일반 inner class
+        OuterClass.InnerClass innerClass = new OuterClass().new InnerClass();
+        OuterClass.StaticNestedClass staticNestedClass = new OuterClass.StaticNestedClass();
+
+
+        System.out.println(innerClass.getHello());
+        System.out.println(innerClass.reachOuterClass());
+        System.out.println(staticNestedClass.getHello());
     }
 }
 
