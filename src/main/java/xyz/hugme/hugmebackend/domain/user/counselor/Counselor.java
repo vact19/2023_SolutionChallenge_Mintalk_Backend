@@ -19,8 +19,8 @@ public class Counselor extends BaseTimeEntity {
     private Long id;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
-    private String email;
+    @Column(nullable = false, unique = true)
+    private String email; // 회원 조회용으로 쓰인다. unique true
     @Column(nullable = false)
     private String password;
     // "Male" "male" "MALE" 등으로 저장되지 않게 하기 위해 String이 아닌 Enum 사용
