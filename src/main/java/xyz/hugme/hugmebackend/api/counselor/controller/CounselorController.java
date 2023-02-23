@@ -26,13 +26,6 @@ public class CounselorController {
         return rspsTemplate;
     }
 
-    // 상담사 회원가입
-    @PostMapping("/counselors")
-    public ResponseEntity signIn(@RequestBody CounselorSignUpDto counselorSignUpDto){
-        Counselor savedCounselor = apiCounselorService.signUp(counselorSignUpDto);
-        return ResponseEntity.created(URI.create("/counselors/" + savedCounselor.getId())).build();
-    }
-
     // 상담사 자기소개 페이지
     @GetMapping("/counselors/{id}")
     public SingleRspsTemplate<CounselorInfoDto> counselorInfo(@PathVariable Long id){
@@ -41,6 +34,17 @@ public class CounselorController {
         SingleRspsTemplate<CounselorInfoDto> rspsTemplate = apiCounselorService.findCounselorAndReviewsById(id);
         return rspsTemplate;
     }
+
+    // 상담사 회원가입
+    @PostMapping("/counselors")
+    public ResponseEntity<?> signIn(@RequestBody CounselorSignUpDto counselorSignUpDto){
+        Counselor savedCounselor = apiCounselorService.signUp(counselorSignUpDto);
+        return ResponseEntity.created(URI.create("/counselors/" + savedCounselor.getId())).build();
+    }
+
+
+
+    // 상담사
 
 
 
