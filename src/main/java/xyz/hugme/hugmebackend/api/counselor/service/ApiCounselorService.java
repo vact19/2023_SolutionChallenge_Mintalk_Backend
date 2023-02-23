@@ -43,9 +43,9 @@ public class ApiCounselorService {
 
     public Counselor signIn(LoginDto.Request request) {
         // 비밀번호 검증
-        return counselorService.validate(request.getEmail(), request.getPassword());
+        return counselorService.validatePassword(request.getEmail(), request.getPassword());
     }
-
+    @Transactional
     public Counselor signUp(CounselorSignUpDto counselorSignUpDto) {
         // password encode 후 save()
         String encodedPassword = passwordEncoder.encode(counselorSignUpDto.getPassword());
