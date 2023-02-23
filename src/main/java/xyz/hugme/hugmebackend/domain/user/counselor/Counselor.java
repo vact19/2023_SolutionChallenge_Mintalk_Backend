@@ -60,4 +60,17 @@ public class Counselor extends BaseTimeEntity {
         this.careers = careers;
         this.fields = fields;
     }
+
+    public void editMyPage(String name, String email, String shortIntroduction, String introduction, String contact
+                        , String location, List<String> careers, Set<Field> fields){
+        this.name = name;
+        this.email = email;
+        this.shortIntroduction = shortIntroduction;
+        this.introduction = introduction;
+        this.contact = contact;
+        this.location = location;
+        this.careers = careers;
+        this.fields = fields;
+    }
+
 }
