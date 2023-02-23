@@ -1,14 +1,12 @@
 package xyz.hugme.hugmebackend.api.counselor.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.hugme.hugmebackend.api.common.RspsTemplate;
 import xyz.hugme.hugmebackend.api.common.SingleRspsTemplate;
-import xyz.hugme.hugmebackend.api.counselor.dto.CounselorInfoDto;
-import xyz.hugme.hugmebackend.api.counselor.dto.CounselorListDto;
-import xyz.hugme.hugmebackend.api.counselor.dto.CounselorMyPageEditDto;
-import xyz.hugme.hugmebackend.api.counselor.dto.CounselorSignUpDto;
+import xyz.hugme.hugmebackend.api.counselor.dto.*;
 import xyz.hugme.hugmebackend.api.counselor.service.ApiCounselorService;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 import xyz.hugme.hugmebackend.global.auth.SessionCounselor;
@@ -50,6 +48,13 @@ public class CounselorController {
                                                         CounselorMyPageEditDto counselorMyPageEditDto){
         apiCounselorService.editCounselor(counselor, counselorMyPageEditDto);
         return ResponseEntity.noContent().build();
+    }
+
+     //상담사 본인 마이페이지 진입
+    @GetMapping("/counselors/my-page")
+    public SingleRspsTemplate<CounselorMyPageViewDto> viewMyPage(@SessionCounselor Counselor counselor){
+        CounselorMyPageViewDto resultDto = CounselorMyPageViewDto.of(counselor);
+        return new SingleRspsTemplate<>(HttpStatus.OK.value(), resultDto);
     }
 
 
