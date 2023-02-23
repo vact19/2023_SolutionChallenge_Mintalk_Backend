@@ -1,13 +1,9 @@
-server:
-  port: 8080
-  servlet:
-    context-path: /
-
 spring:
   profiles:
-    active: local
-
-logging:
-  level:
-    org.hibernate.type: trace
+    active:
+server:
+  servlet:
+    session:
+      cookie:
+        same-site: none # 세션ID가 담긴 쿠키의 same-site 설정을 none 으로 한다.
 
