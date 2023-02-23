@@ -3,6 +3,7 @@ package xyz.hugme.hugmebackend;
 import org.junit.jupiter.api.Test;
 import xyz.hugme.hugmebackend.domain.user.counselor.Field;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,6 +11,18 @@ import java.util.stream.IntStream;
 
 
 class HugmebackendApplicationTests {
+
+    @Test
+    public void unboundedWildCard() throws Exception{
+        // <Object> 와 기능상으로는 같다.
+        ArrayList arrayList = new ArrayList();
+        arrayList.add(new StringBuilder());
+        StringBuilder sb = (StringBuilder) arrayList.get(0);
+        sb.append("sss");
+        System.out.println(sb.toString());
+    }
+
+
 
     @Test
     void contextLoads() {

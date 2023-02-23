@@ -10,6 +10,7 @@ import xyz.hugme.hugmebackend.api.counselor.dto.CounselorListDto;
 import xyz.hugme.hugmebackend.api.counselor.dto.CounselorSignUpDto;
 import xyz.hugme.hugmebackend.api.counselor.service.ApiCounselorService;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
+import xyz.hugme.hugmebackend.global.auth.SessionCounselor;
 
 import java.net.URI;
 
@@ -37,14 +38,22 @@ public class CounselorController {
 
     // 상담사 회원가입
     @PostMapping("/counselors")
-    public ResponseEntity<?> signIn(@RequestBody CounselorSignUpDto counselorSignUpDto){
+    public ResponseEntity<Void> signIn(@RequestBody CounselorSignUpDto counselorSignUpDto){
         Counselor savedCounselor = apiCounselorService.signUp(counselorSignUpDto);
         return ResponseEntity.created(URI.create("/counselors/" + savedCounselor.getId())).build();
+    }
+    // 상담사 마이페이지 수정
+    // 자기가 자기 페이지를 수정하는 것이므로, PathVariable 사용할 필요 없다.
+    @PatchMapping("/counselors/my-page")
+    public ResponseEntity<Void> editMyPage(@SessionCounselor Counselor counselor ){
+//        @RequestBody
+//        CounselorMyPageEditDto counselorMyPageEditDto
+        System.out.println(counselor.getId());
+        return ResponseEntity.noContent().build();
     }
 
 
 
-    // 상담사
 
 
 

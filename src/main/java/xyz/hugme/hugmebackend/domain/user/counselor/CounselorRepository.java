@@ -15,5 +15,5 @@ public interface CounselorRepository extends JpaRepository<Counselor, Long> {
 //    @Query("SELECT c.password FROM Counselor c WHERE c.email = :email")
 //    String findPasswordByEmail(@Param("email") String email);
 
-    Counselor findByEmail(String email);
+    Optional<Counselor> findByEmail(String email);
 }

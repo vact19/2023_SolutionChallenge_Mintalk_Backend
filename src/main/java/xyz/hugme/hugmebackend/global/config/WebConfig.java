@@ -1,15 +1,23 @@
 package xyz.hugme.hugmebackend.global.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.HttpMethod;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import xyz.hugme.hugmebackend.global.auth.SessionCounselorArgumentResolver;
 import xyz.hugme.hugmebackend.global.converter.FieldConverter;
 import xyz.hugme.hugmebackend.global.converter.GenderConverter;
 
+import java.util.List;
+
+@RequiredArgsConstructor
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+    private final SessionCounselorArgumentResolver sessionCounselorArgumentResolver;
 
     // Cors 모두에게 활성화
     @Override
@@ -35,5 +43,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addConverter(new GenderConverter());
     }
 
-
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(sessionCounselorArgumentResolver);
+    }
 }

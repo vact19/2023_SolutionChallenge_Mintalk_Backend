@@ -43,6 +43,7 @@ public class Counselor extends BaseTimeEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(value = EnumType.STRING)
     private Set<Field> fields;
+    // 리뷰 fetch join 용
     @OneToMany(mappedBy = "counselor", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<CounselorReview> counselorReviews;
 
