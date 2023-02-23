@@ -44,8 +44,8 @@ public class CounselorController {
     // 상담사 마이페이지 수정
     // 자기가 자기 페이지를 수정하는 것이므로, PathVariable 사용할 필요 없다.
     @PatchMapping("/counselors/my-page")
-    public ResponseEntity<Void> editMyPage(@SessionCounselor Counselor counselor, @RequestBody
-                                                        CounselorMyPageEditDto counselorMyPageEditDto){
+    public ResponseEntity<Void> editMyPage(@SessionCounselor Counselor counselor,
+                                                        @ModelAttribute CounselorMyPageEditDto counselorMyPageEditDto){
         apiCounselorService.editCounselor(counselor, counselorMyPageEditDto);
         return ResponseEntity.noContent().build();
     }

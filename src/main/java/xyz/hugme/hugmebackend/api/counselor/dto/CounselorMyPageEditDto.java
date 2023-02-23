@@ -1,7 +1,7 @@
 package xyz.hugme.hugmebackend.api.counselor.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 import xyz.hugme.hugmebackend.domain.user.counselor.Field;
 
@@ -10,7 +10,7 @@ import java.util.Set;
 
 // 상담사 마이페이지 수정 DTO
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor // ModelAttribute. Setter or 생성자로 객체 바인딩한다.
 public class CounselorMyPageEditDto {
     private String name;
     private String email;
