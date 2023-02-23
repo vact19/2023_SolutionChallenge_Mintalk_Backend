@@ -18,8 +18,7 @@ public class AuthController {
     private final ApiCounselorService apiCounselorService;
     // 상담사 로그인
     @PostMapping("/sign-in/counselor")
-    public String signIn(@RequestBody LoginDto.Request requestDto, HttpServletRequest request
-                                      ){
+    public String signIn(@RequestBody LoginDto.Request requestDto, HttpServletRequest request){
         // username, password 검사, 토큰 생성 후 반환
         Counselor validatedCounselor = apiCounselorService.signIn(requestDto);
 
@@ -30,6 +29,8 @@ public class AuthController {
 
         return "success";
     }
+
+
 
     /** 아래 주석은 실 배포환경에서 CORS 문제가 발생할 시 활용해보자.*/
 //    @GetMapping("/sign-in-test")

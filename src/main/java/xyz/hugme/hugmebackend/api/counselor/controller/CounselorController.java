@@ -5,12 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.hugme.hugmebackend.api.common.RspsTemplate;
 import xyz.hugme.hugmebackend.api.common.SingleRspsTemplate;
-import xyz.hugme.hugmebackend.api.counselor.dto.CounselorSignUpDto;
 import xyz.hugme.hugmebackend.api.counselor.dto.CounselorInfoDto;
 import xyz.hugme.hugmebackend.api.counselor.dto.CounselorListDto;
+import xyz.hugme.hugmebackend.api.counselor.dto.CounselorSignUpDto;
 import xyz.hugme.hugmebackend.api.counselor.service.ApiCounselorService;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
-import xyz.hugme.hugmebackend.domain.user.counselor.CounselorService;
 
 import java.net.URI;
 
@@ -19,13 +18,12 @@ import java.net.URI;
 public class CounselorController {
 
     private final ApiCounselorService apiCounselorService;
-    private final CounselorService counselorService;
 
     // 테스트용 메소드. 나중에 조회기능 만들때 이거 바꾸면 될 듯
     @GetMapping
-    public ResponseEntity<RspsTemplate<CounselorListDto>> getList(){
+    public RspsTemplate<CounselorListDto> getList(){
         RspsTemplate<CounselorListDto> rspsTemplate = apiCounselorService.findAll();
-        return ResponseEntity.ok(rspsTemplate);
+        return rspsTemplate;
     }
 
     // 상담사 회원가입
@@ -41,7 +39,6 @@ public class CounselorController {
         // id로 리뷰, 상담사 찾고
         // 해당 정보들을 Dto에 넣어준다
         SingleRspsTemplate<CounselorInfoDto> rspsTemplate = apiCounselorService.findCounselorAndReviewsById(id);
-
         return rspsTemplate;
     }
 
