@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+// 상담사 목록 조회 페이지용 DTO
 @Getter
 @NoArgsConstructor
 public class CounselorListDto {

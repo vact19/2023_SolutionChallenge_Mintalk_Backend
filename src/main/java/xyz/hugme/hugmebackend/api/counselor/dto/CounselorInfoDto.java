@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 // 상담사 정보 페이지용 Dto. 상담사 정보와 리뷰를 담고 있음.
+// 해당 페이지는 내담자가 상담사 정보를 보기 위해 접근한다.
 @Getter
 @NoArgsConstructor
 public class CounselorInfoDto {

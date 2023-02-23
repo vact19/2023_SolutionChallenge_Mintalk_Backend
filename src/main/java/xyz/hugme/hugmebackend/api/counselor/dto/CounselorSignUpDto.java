@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 import xyz.hugme.hugmebackend.domain.user.counselor.Gender;
 
+// 상담사 회원가입 DTO
 @Getter
 @NoArgsConstructor
 public class CounselorSignUpDto {

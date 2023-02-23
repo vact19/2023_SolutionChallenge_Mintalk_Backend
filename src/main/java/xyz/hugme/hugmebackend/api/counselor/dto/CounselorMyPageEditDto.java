@@ -8,6 +8,7 @@ import xyz.hugme.hugmebackend.domain.user.counselor.Field;
 import java.util.List;
 import java.util.Set;
 
+// 상담사 마이페이지 수정 DTO
 @Getter
 @NoArgsConstructor
 public class CounselorMyPageEditDto {
