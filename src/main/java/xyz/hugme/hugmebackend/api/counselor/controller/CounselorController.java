@@ -37,7 +37,7 @@ public class CounselorController {
 
     // 상담사 회원가입
     @PostMapping("/counselors")
-    public ResponseEntity<Void> signIn(@RequestBody CounselorSignUpDto counselorSignUpDto){
+    public ResponseEntity<Void> signIn(CounselorSignUpDto counselorSignUpDto){
         Counselor savedCounselor = apiCounselorService.signUp(counselorSignUpDto);
         return ResponseEntity.created(URI.create("/counselors/" + savedCounselor.getId())).build();
     }
