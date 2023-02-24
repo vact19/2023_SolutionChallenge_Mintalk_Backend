@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import xyz.hugme.hugmebackend.domain.common.BaseTimeEntity;
 import xyz.hugme.hugmebackend.domain.user.counselor.Gender;
-
 import javax.persistence.*;
 
 @Getter
