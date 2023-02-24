@@ -44,10 +44,11 @@ public class ApiCounselorService {
         return new SingleRspsTemplate<>(HttpStatus.OK.value(), counselorInfoDto);
     }
 
-    public Counselor signIn(LoginDto.Request request) {
+    public Counselor validateSignIn(LoginDto loginDto) {
         // 비밀번호 검증
-        return counselorService.validatePassword(request.getEmail(), request.getPassword());
+        return counselorService.validatePassword(loginDto.getEmail(), loginDto.getPassword());
     }
+
     @Transactional
     public Counselor signUp(CounselorSignUpDto counselorSignUpDto) {
         // password encode 후 save()

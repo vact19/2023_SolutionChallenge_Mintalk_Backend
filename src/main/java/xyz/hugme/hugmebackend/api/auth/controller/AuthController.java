@@ -1,11 +1,14 @@
 package xyz.hugme.hugmebackend.api.auth.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.hugme.hugmebackend.api.auth.dto.LoginDto;
+import xyz.hugme.hugmebackend.api.client.service.ApiClientService;
+import xyz.hugme.hugmebackend.api.common.SingleRspsTemplate;
 import xyz.hugme.hugmebackend.api.counselor.service.ApiCounselorService;
+import xyz.hugme.hugmebackend.domain.user.client.Client;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,18 +19,31 @@ import javax.servlet.http.HttpSession;
 public class AuthController {
 
     private final ApiCounselorService apiCounselorService;
+    private final ApiClientService apiClientService;
     // 상담사 로그인
-    @PostMapping("/sign-in/counselor")
-    public String signIn(@RequestBody LoginDto.Request requestDto, HttpServletRequest request){
-        // username, password 검사, 토큰 생성 후 반환
-        Counselor validatedCounselor = apiCounselorService.signIn(requestDto);
+    @PostMapping("/sign-in/counselors")
+    public SingleRspsTemplate<String> signInCounselor(LoginDto loginDto, HttpServletRequest request){
+        // username, password 검사
+        Counselor validatedCounselor = apiCounselorService.validateSignIn(loginDto);
 
         // JsessionId 반환
         HttpSession session = request.getSession();
         session.setAttribute("name", validatedCounselor.getName());
         session.setAttribute("email", validatedCounselor.getEmail());
+        session.setAttribute("role", Counselor.class.getSimpleName());
 
-        return "success";
+        return new SingleRspsTemplate<>(HttpStatus.OK.value(), "login success");
+    }
+
+    // 내담자 로그인
+    @PostMapping("/sign-in/clients")
+    public SingleRspsTemplate<String> signInClient(LoginDto loginDto, HttpServletRequest request){
+        // username, password 검사.
+        Client validatedClient = apiClientService.validateSignIn(loginDto);
+        HttpSession session = request.getSession();
+        session.setAttribute("name", validatedClient.getName());
+        session.setAttribute("email", validatedClient.getEmail());
+        return new SingleRspsTemplate<>(HttpStatus.OK.value(), "login success");
     }
 
 

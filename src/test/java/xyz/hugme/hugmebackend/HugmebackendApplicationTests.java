@@ -1,6 +1,7 @@
 package xyz.hugme.hugmebackend;
 
 import org.junit.jupiter.api.Test;
+import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 import xyz.hugme.hugmebackend.domain.user.counselor.Field;
 
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ class HugmebackendApplicationTests {
         StringBuilder sb = (StringBuilder) arrayList.get(0);
         sb.append("sss");
         System.out.println(sb.toString());
+
+        System.out.println(Counselor.class.getSimpleName());
     }
 
 
