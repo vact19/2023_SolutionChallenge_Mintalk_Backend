@@ -9,7 +9,6 @@ import xyz.hugme.hugmebackend.api.client.service.ApiClientService;
 import xyz.hugme.hugmebackend.api.common.SingleRspsTemplate;
 import xyz.hugme.hugmebackend.api.counselor.service.ApiCounselorService;
 import xyz.hugme.hugmebackend.domain.user.client.Client;
-import xyz.hugme.hugmebackend.domain.user.common.Role;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +31,6 @@ public class AuthController {
         HttpSession session = request.getSession();
         session.setAttribute("name", validatedCounselor.getName());
         session.setAttribute("email", validatedCounselor.getEmail());
-        session.setAttribute("role", Role.ROLE_COUNSELOR);
 
         return new SingleRspsTemplate<>(HttpStatus.OK.value(), "login success");
     }
@@ -45,7 +43,6 @@ public class AuthController {
         HttpSession session = request.getSession();
         session.setAttribute("name", validatedClient.getName());
         session.setAttribute("email", validatedClient.getEmail());
-        session.setAttribute("role", Role.ROLE_CLIENT);
 
         return new SingleRspsTemplate<>(HttpStatus.OK.value(), "login success");
     }
