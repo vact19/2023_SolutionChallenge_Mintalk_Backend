@@ -8,6 +8,7 @@ import xyz.hugme.hugmebackend.domain.user.client.Client;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,7 +19,7 @@ public class CounselorReview {
     private Long id;
 
     @Column(nullable = false)
-    private Integer rate; // 평점
+    private int rate; // 평점
     @Column(nullable = false)
     private String content; // 본문
 
@@ -29,6 +30,17 @@ public class CounselorReview {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "client_id", nullable = false) // 누가 리뷰를 작성했는지를 저장해야 한다.
     private Client client;
+
+    public void updateReview(int rate, String content){
+        this.rate = rate;
+        this.content = content;
+    }
+
+    public void validateUpdateReview(Long clientId){
+        if (!Objects.equals(client.getId(), clientId))
+            throw new RuntimeException("리뷰변경권한안아줘요");
+    }
+
     @Builder
     public CounselorReview(Integer rate, String content, Counselor counselor, Client client) {
         this.rate = rate;

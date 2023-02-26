@@ -9,7 +9,7 @@ import xyz.hugme.hugmebackend.domain.user.counselor.review.CounselorReview;
 // 리뷰 저장 Dto
 @Getter
 @AllArgsConstructor
-public class SaveReviewDto {
+public class ReviewDto {
     private int rate;
     private String content;
 

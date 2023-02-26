@@ -24,6 +24,7 @@ public class CounselorService {
         return counselorRepository.findAll();
     }
 
+
     public Counselor findById(Long id) {
         return validateOptionalCounselor(counselorRepository.findById(id));
     }

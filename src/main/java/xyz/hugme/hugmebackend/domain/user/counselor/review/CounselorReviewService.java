@@ -20,4 +20,14 @@ public class CounselorReviewService {
     public List<CounselorReview> findAllByCounselorId(Long id) {
         return counselorReviewRepository.findAllByCounselorId(id);
     }
+
+    public CounselorReview findById(Long reviewId) {
+        return counselorReviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("리뷰안아줘요"));
+    }
+
+    @Transactional
+    public void deleteById(Long reviewId) {
+        counselorReviewRepository.deleteById(reviewId);
+    }
 }

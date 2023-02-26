@@ -61,6 +61,18 @@ public class CounselorInit {
                 .careers(careers1)
                 .build();
 
+        Counselor counselor2 = Counselor.builder()
+                .name("이한길")
+                .shortIntroduction("정열맨이한길")
+                .introduction("자기소개 본문")
+                .gender(Gender.FEMALE)
+                .fields(fieldsSet2)
+                .contact("010-한길한길-0100")
+                .email("csrf@gmail.com")
+                .password(passwordEncoder.encode("1234"))
+                .location("어디시 어디구 어디동")
+                .careers(careers2)
+                .build();
 
         // 내담자 생성
         Client client1 = Client.builder()
@@ -87,7 +99,7 @@ public class CounselorInit {
         CounselorReview review2 = CounselorReview.builder()
                 .rate(3)
                 .content("한길선생님 너무 감사합니다")
-                .counselor(counselor1)
+                .counselor(counselor2)
                 .client(client2)
                 .build();
 
