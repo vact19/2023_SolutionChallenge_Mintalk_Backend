@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import xyz.hugme.hugmebackend.global.auth.SessionClientArgumentResolver;
 import xyz.hugme.hugmebackend.global.auth.SessionCounselorArgumentResolver;
 import xyz.hugme.hugmebackend.global.converter.FieldConverter;
 import xyz.hugme.hugmebackend.global.converter.GenderConverter;
@@ -18,6 +19,7 @@ import java.util.List;
 public class WebConfig implements WebMvcConfigurer {
 
     private final SessionCounselorArgumentResolver sessionCounselorArgumentResolver;
+    private final SessionClientArgumentResolver sessionClientArgumentResolver;
 
     // Cors 모두에게 활성화
     @Override
@@ -33,7 +35,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowCredentials(true)
                 .maxAge(1800)
                 // maxage 만큼 preflight 캐싱은 기본값이 1800sec(30m), 즉 Access-Control-Max-Age=1800
-
         ;
     }
 
@@ -46,5 +47,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(sessionCounselorArgumentResolver);
+        resolvers.add(sessionClientArgumentResolver);
     }
 }
