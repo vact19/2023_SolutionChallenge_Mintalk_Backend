@@ -17,17 +17,12 @@ public class CounselorReviewController {
     public ResponseEntity<Void> saveReview(@PathVariable Long id, @RequestBody SaveReviewDto saveReviewDto){
         // 로그인한 사용자, 상담사 ID
         // DTO는 본문만. 리뷰랑 별점.
-
-        // 상담사
-
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     // 리뷰 수정
     @PatchMapping("/counselors/{counselorId}/reviews/{reviewId}")
     public ResponseEntity<Void> editReview(@PathVariable Long counselorId, @PathVariable Long reviewId){
-
-
         return ResponseEntity.noContent().build();
     }
 

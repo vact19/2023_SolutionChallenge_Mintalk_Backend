@@ -32,8 +32,8 @@ public class WebConfig implements WebMvcConfigurer {
                 )
                 .allowCredentials(true)
                 .maxAge(1800)
-                // maxage 만큼 preflight 캐싱은 기본 1800sec(30m)
-                // Access-Control-Max-Age=1800
+                // maxage 만큼 preflight 캐싱은 기본값이 1800sec(30m), 즉 Access-Control-Max-Age=1800
+
         ;
     }
 

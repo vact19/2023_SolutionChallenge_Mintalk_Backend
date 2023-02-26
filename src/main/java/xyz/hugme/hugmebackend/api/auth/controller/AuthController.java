@@ -14,6 +14,7 @@ import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+// 로그인 인증 컨트롤러
 @RequiredArgsConstructor
 @RestController
 public class AuthController {

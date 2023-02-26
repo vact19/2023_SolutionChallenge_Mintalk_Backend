@@ -5,6 +5,7 @@ import lombok.Getter;
 import xyz.hugme.hugmebackend.domain.user.client.Client;
 import xyz.hugme.hugmebackend.domain.user.counselor.Gender;
 
+// 사용자 회원가입 DTO
 @Getter
 @AllArgsConstructor
 public class SaveClientDto {

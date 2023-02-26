@@ -4,7 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-
+// 응답 템플릿
+// 응답 DTO를 리스트로 보낼 때
 @Getter
 @NoArgsConstructor
 public class RspsTemplate<T> {

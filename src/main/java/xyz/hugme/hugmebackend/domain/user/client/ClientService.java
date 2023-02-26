@@ -19,6 +19,7 @@ public class ClientService {
         return clientRepository.save(client);
     }
 
+    // 로그인 비밀번호 일치 검증
     public Client validate(String email, String rawPassword) {
         Client client = validateOptionalClient(clientRepository.findByEmail(email));
         if (! passwordEncoder.matches(rawPassword, client.getPassword()))
@@ -26,6 +27,7 @@ public class ClientService {
         return client;
     }
 
+    // Optional 클라이언트 null check
     private Client validateOptionalClient(Optional<Client> optionalClient){
         return optionalClient.orElseThrow(() -> new RuntimeException("해당 id로 client를 찾을 수 없음"));
     }
