@@ -25,6 +25,7 @@ public class Counselor extends BaseTimeEntity {
     private String password;
     // "Male" "male" "MALE" 등으로 저장되지 않게 하기 위해 String이 아닌 Enum 사용
     // EnumType Ordinal은 DB에 1, 2, 3... 으로 저장됨
+    @Column(nullable = false, length = 10)
     @Enumerated(EnumType.STRING)
     private Gender gender;
     @Column(nullable = false)

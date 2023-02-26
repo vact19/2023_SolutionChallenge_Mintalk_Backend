@@ -31,6 +31,10 @@ public class ClientService {
     private Client validateOptionalClient(Optional<Client> optionalClient){
         return optionalClient.orElseThrow(() -> new RuntimeException("해당 id로 client를 찾을 수 없음"));
     }
+
+    public Client findByEmail(String email) {
+        return validateOptionalClient(clientRepository.findByEmail(email));
+    }
 }
 
 

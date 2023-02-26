@@ -1,17 +1,52 @@
 package xyz.hugme.hugmebackend;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import xyz.hugme.hugmebackend.domain.user.client.Client;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 import xyz.hugme.hugmebackend.domain.user.counselor.Field;
+import xyz.hugme.hugmebackend.domain.user.counselor.Gender;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-
+@SpringBootTest
 class HugmebackendApplicationTests {
+
+    @Autowired
+    EntityManagerFactory emf;
+
+    @Test
+    public void emTest() throws Exception{
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+        //given
+        Client client = Client.builder()
+                .gender(Gender.MALE)
+                .name("심진수")
+                .email("chj@gmailcom")
+                .password("1234")
+                .build();
+        //when
+        tx.begin();
+        em.persist(client);
+        em.detach(client);
+        em.persist(client);
+        tx.commit(); // flush
+        em.close();
+        //then
+
+
+     }
+
 
     @Test
     public void unboundedWildCard() throws Exception{
@@ -24,8 +59,6 @@ class HugmebackendApplicationTests {
 
         System.out.println(Counselor.class.getSimpleName());
     }
-
-
 
     @Test
     void contextLoads() {

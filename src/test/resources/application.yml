@@ -1,0 +1,38 @@
+server:
+  port: 8443
+  ssl:
+    key-store-type: pkcs12
+    key-alias: local
+    enabled: true
+    key-store:
+    key-store-password:
+  servlet:
+    session:
+      cookie:
+        same-site: none # 세션ID가 담긴 쿠키의 same-site 설정을 none 으로 한다.
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3307/hugme?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul
+    username:
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+    properties:
+      hibernate:
+        format_sql : true
+        default_batch_fetch_size: 1000
+
+    show-sql: true
+    open-in-view: false
+
+logging:
+  level:
+    org.hibernate.type: trace
+
+
+

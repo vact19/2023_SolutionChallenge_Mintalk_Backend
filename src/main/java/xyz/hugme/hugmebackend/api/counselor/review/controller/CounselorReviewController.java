@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.hugme.hugmebackend.api.counselor.review.dto.SaveReviewDto;
 import xyz.hugme.hugmebackend.api.counselor.review.service.ApiCounselorReviewService;
+import xyz.hugme.hugmebackend.domain.user.client.Client;
+import xyz.hugme.hugmebackend.global.auth.SessionClient;
 
 @RequiredArgsConstructor
 @RestController
@@ -14,9 +16,10 @@ public class CounselorReviewController {
 
     // 리뷰 등록
     @PostMapping("/counselors/{id}/review")
-    public ResponseEntity<Void> saveReview(@PathVariable Long id, @RequestBody SaveReviewDto saveReviewDto){
-        // 로그인한 사용자, 상담사 ID
-        // DTO는 본문만. 리뷰랑 별점.
+    public ResponseEntity<Void> saveReview(@PathVariable Long id, @SessionClient Client client, SaveReviewDto saveReviewDto){
+        // 로그인한 사용자, 상담사 ID가 필요하다.
+        apiCounselorReviewService.saveReview(id, client, saveReviewDto);
+
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
