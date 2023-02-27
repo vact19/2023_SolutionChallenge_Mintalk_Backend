@@ -1,13 +1,13 @@
 package xyz.hugme.hugmebackend.api.counselor.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 import xyz.hugme.hugmebackend.domain.user.counselor.Gender;
 
 // 상담사 회원가입 DTO
 @Getter
-@AllArgsConstructor
+@NoArgsConstructor
 public class CounselorSignUpDto {
     private String name;
     private Gender gender;

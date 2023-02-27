@@ -37,7 +37,7 @@ public class CounselorController {
 
     // 상담사 회원가입
     @PostMapping("/counselors")
-    public ResponseEntity<Void> signIn(CounselorSignUpDto counselorSignUpDto){
+    public ResponseEntity<Void> signIn(@RequestBody CounselorSignUpDto counselorSignUpDto){
         Counselor savedCounselor = apiCounselorService.signUp(counselorSignUpDto);
         return ResponseEntity.created(URI.create("/counselors/" + savedCounselor.getId())).build();
     }
@@ -45,7 +45,7 @@ public class CounselorController {
     // 자기가 자기 페이지를 수정하는 것이므로, PathVariable 사용할 필요 없다.
     @PatchMapping("/counselors/my-page")
     public ResponseEntity<Void> editMyPage(@SessionCounselor Counselor counselor,
-                                                        @ModelAttribute CounselorMyPageEditDto counselorMyPageEditDto){
+                                           @RequestBody CounselorMyPageEditDto counselorMyPageEditDto){
         apiCounselorService.editCounselor(counselor, counselorMyPageEditDto);
         return ResponseEntity.noContent().build();
     }

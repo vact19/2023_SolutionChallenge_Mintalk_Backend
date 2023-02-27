@@ -3,6 +3,7 @@ package xyz.hugme.hugmebackend.api.auth.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.hugme.hugmebackend.api.auth.dto.LoginDto;
 import xyz.hugme.hugmebackend.api.client.service.ApiClientService;
@@ -23,7 +24,7 @@ public class AuthController {
     private final ApiClientService apiClientService;
     // 상담사 로그인
     @PostMapping("/sign-in/counselors")
-    public SingleRspsTemplate<String> signInCounselor(LoginDto loginDto, HttpServletRequest request){
+    public SingleRspsTemplate<String> signInCounselor(@RequestBody LoginDto loginDto, HttpServletRequest request){
         // username, password 검사
         Counselor validatedCounselor = apiCounselorService.validateSignIn(loginDto);
 
@@ -37,7 +38,7 @@ public class AuthController {
 
     // 내담자 로그인
     @PostMapping("/sign-in/clients")
-    public SingleRspsTemplate<String> signInClient(LoginDto loginDto, HttpServletRequest request){
+    public SingleRspsTemplate<String> signInClient(@RequestBody LoginDto loginDto, HttpServletRequest request){
         // username, password 검사.
         Client validatedClient = apiClientService.validateSignIn(loginDto);
         HttpSession session = request.getSession();
