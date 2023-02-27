@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.hugme.hugmebackend.api.counselor.review.dto.ReviewDto;
 import xyz.hugme.hugmebackend.domain.user.client.Client;
+import xyz.hugme.hugmebackend.domain.user.client.ClientService;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 import xyz.hugme.hugmebackend.domain.user.counselor.CounselorService;
 import xyz.hugme.hugmebackend.domain.user.counselor.review.CounselorReview;
@@ -17,13 +18,16 @@ public class ApiCounselorReviewService {
 
     private final CounselorReviewService counselorReviewService;
     private final CounselorService counselorService;
+    private final ClientService clientService;
 
     @Transactional
     public void saveReview(Long counselorId, Client client, ReviewDto reviewDto) {
         // CounselorReview Casecade Persist => Client, Counselor
         Counselor counselor = counselorService.findById(counselorId);
+        Client persistedClient = clientService.save(client);// save detached client
 
-        CounselorReview counselorReview = reviewDto.toEntity(counselor, client);
+        CounselorReview counselorReview = reviewDto.toEntity(counselor, persistedClient);
+
         counselorReviewService.save(counselorReview);
     }
 

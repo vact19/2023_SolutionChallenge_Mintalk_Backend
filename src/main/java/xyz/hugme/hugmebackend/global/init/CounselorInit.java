@@ -3,17 +3,17 @@ package xyz.hugme.hugmebackend.global.init;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import xyz.hugme.hugmebackend.domain.user.client.Client;
-import xyz.hugme.hugmebackend.domain.user.client.ClientService;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
-import xyz.hugme.hugmebackend.domain.user.counselor.CounselorService;
 import xyz.hugme.hugmebackend.domain.user.counselor.Field;
 import xyz.hugme.hugmebackend.domain.user.counselor.Gender;
 import xyz.hugme.hugmebackend.domain.user.counselor.review.CounselorReview;
 import xyz.hugme.hugmebackend.domain.user.counselor.review.CounselorReviewService;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -24,14 +24,15 @@ import java.util.Set;
 @Component
 public class CounselorInit {
 
-    private final CounselorService counselorService;
     private final CounselorReviewService counselorReviewService;
-    private final ClientService clientService;
     private final PasswordEncoder passwordEncoder;
+    private final EntityManagerFactory emf;
 
     @PostConstruct
-    @Transactional
     public void init(){
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
         Set<Field> fieldsSet1 = new HashSet<>();
         fieldsSet1.add(Field.ANXIETY);
         fieldsSet1.add(Field.DEPRESSION);
@@ -51,7 +52,7 @@ public class CounselorInit {
         Counselor counselor1 = Counselor.builder()
                 .name("한현수")
                 .shortIntroduction("알고보면따뜻한남자")
-                .introduction("자기소개 본문")
+                .introduction("dddddddd")
                 .gender(Gender.FEMALE)
                 .fields(fieldsSet1)
                 .contact("010-현수현수-0100")
@@ -64,7 +65,7 @@ public class CounselorInit {
         Counselor counselor2 = Counselor.builder()
                 .name("이한길")
                 .shortIntroduction("정열맨이한길")
-                .introduction("자기소개 본문")
+                .introduction("dddddddd")
                 .gender(Gender.FEMALE)
                 .fields(fieldsSet2)
                 .contact("010-한길한길-0100")
@@ -96,22 +97,21 @@ public class CounselorInit {
                 .client(client1)
                 .build();
 
-        CounselorReview review2 = CounselorReview.builder()
-                .rate(3)
-                .content("한길선생님 너무 감사합니다")
-                .counselor(counselor2)
-                .client(client2)
-                .build();
-
-
         // CounselorReview의 자식 엔티티 Counselor, Client cascade persist
-        counselorReviewService.save(review1); //  counselor2에 저장
-
         // persist counselor 1
         // persist client 1
         // persist review => Auto Increment 이므로 Insert SQL
-        counselorReviewService.save(review2); //  counselor2에 저장
-        // persist counselor 1 => 에러발생 detached entity passed to persist: xyz.hugme.hugmebackend.domain.user.counselor.Counselor
+        em.persist(review1);
+
+        CounselorReview review2 = CounselorReview.builder()
+                .rate(3)
+                .content("한길선생님 너무 감사합니다")
+                .counselor(counselor1)
+                .client(client2)
+                .build();
+
+        em.persist(review2);
+        tx.commit();
     }
 }
 
