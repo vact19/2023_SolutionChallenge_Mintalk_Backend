@@ -1,16 +1,16 @@
 package xyz.hugme.hugmebackend.api.client.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import xyz.hugme.hugmebackend.domain.user.client.Client;
 import xyz.hugme.hugmebackend.domain.user.counselor.Gender;
 
 // 사용자 회원가입 DTO
 @Getter
-@AllArgsConstructor
+@NoArgsConstructor
 public class SaveClientDto {
-    private Gender gender;
     private String name;
+    private Gender gender;
     private String email;
     private String password;
 
