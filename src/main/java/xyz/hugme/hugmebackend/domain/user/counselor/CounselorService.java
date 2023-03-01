@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import xyz.hugme.hugmebackend.domain.common.FindBy;
+import xyz.hugme.hugmebackend.global.exception.BusinessException;
+import xyz.hugme.hugmebackend.global.exception.ErrorCode;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,25 +27,39 @@ public class CounselorService {
         return counselorRepository.findAll();
     }
 
-
-    public Counselor findById(Long id) {
-        return validateOptionalCounselor(counselorRepository.findById(id));
-    }
     public Counselor findByIdFetchReviews(Long id) {
-        return validateOptionalCounselor(counselorRepository.findByIdFetchReviews(id));
+        return validateOptionalCounselor(counselorRepository.findByIdFetchReviews(id), FindBy.ID);
     }
+
     public Counselor validatePassword(String email, String rawPassword) {
-        Counselor counselor = validateOptionalCounselor(counselorRepository.findByEmail(email));
+        Counselor counselor = validateOptionalCounselor(counselorRepository.findByEmail(email), FindBy.EMAIL);
         if (! passwordEncoder.matches(rawPassword, counselor.getPassword()))
-            throw new RuntimeException("비밀번호 불일치");
+            throw new BusinessException(ErrorCode.NOT_MATCHING_PASSWORD);
         return counselor;
     }
+
     public Counselor findByEmail(String email) {
-        return validateOptionalCounselor(counselorRepository.findByEmail(email));
+        return validateOptionalCounselor(counselorRepository.findByEmail(email), FindBy.EMAIL);
     }
 
-    private Counselor validateOptionalCounselor(Optional<Counselor> counselor){
-        return counselor.orElseThrow(() -> new RuntimeException("해당 id로 counselor를 찾을 수 없음"));
+    public Counselor findById(Long id) {
+        return validateOptionalCounselor(counselorRepository.findById(id), FindBy.ID);
     }
 
+    public Counselor findBySessionCounselorId(Long id) {
+        return counselorRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(ErrorCode.COUNSELOR_NOT_AUTHENTICATED));
+    }
+
+    private Counselor validateOptionalCounselor(Optional<Counselor> counselor, FindBy findBy){
+        switch (findBy){
+            case ID: return counselor.orElseThrow(() -> new BusinessException(ErrorCode.COUNSELOR_ID_NOT_FOUND));
+            case EMAIL: return counselor.orElseThrow(() -> new BusinessException(ErrorCode.COUNSELOR_EMAIL_NOT_FOUND));
+            default: throw new RuntimeException("Enum FindBy를 올바르게 명시하지 않음");
+        }
+    }
 }
+
+
+
+
