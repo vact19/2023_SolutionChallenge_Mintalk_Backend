@@ -30,7 +30,7 @@ public class AuthController {
         // JsessionId 반환
         HttpSession session = request.getSession();
         session.setAttribute("name", validatedCounselor.getName());
-        session.setAttribute("email", validatedCounselor.getEmail());
+        session.setAttribute("id", validatedCounselor.getId());
 
         return ResponseEntity.noContent().build();
     }
@@ -42,7 +42,7 @@ public class AuthController {
         Client validatedClient = apiClientService.validateSignIn(loginDto);
         HttpSession session = request.getSession();
         session.setAttribute("name", validatedClient.getName());
-        session.setAttribute("email", validatedClient.getEmail());
+        session.setAttribute("id", validatedClient.getId());
 
         return ResponseEntity.noContent().build();
     }
