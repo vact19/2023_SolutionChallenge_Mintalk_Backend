@@ -18,7 +18,7 @@ import java.net.URI;
 @RestController
 public class CounselorController {
 
-    private final ApiCounselorService apiCounselorService;
+    private final ApiCounselorService apiCounselorService; //DTO를 아는 서비스
 
     // 테스트용 메소드. 나중에 조회기능 만들때 이거 바꾸면 될 듯
     @GetMapping
