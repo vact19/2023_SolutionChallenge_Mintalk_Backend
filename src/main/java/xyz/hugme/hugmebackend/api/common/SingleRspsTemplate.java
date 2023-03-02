@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class SingleRspsTemplate<T> {
-    private int status;
+    private int statusCode;
     private T data;
 
-    public SingleRspsTemplate(int status, T data) {
-        this.status = status;
+    public SingleRspsTemplate(int statusCode, T data) {
+        this.statusCode = statusCode;
         this.data = data;
     }
 }

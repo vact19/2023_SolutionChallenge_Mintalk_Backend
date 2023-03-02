@@ -1,13 +1,17 @@
 package xyz.hugme.hugmebackend.global.exception.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-@AllArgsConstructor
 public class ErrorResponseDto {
     private int statusCode;
-    private HttpStatus httpStatus;
+    private String httpStatus;
     private String errorMessage;
+
+    public ErrorResponseDto(int statusCode, HttpStatus httpStatus, String errorMessage) {
+        this.statusCode = statusCode;
+        this.httpStatus = httpStatus.getReasonPhrase();
+        this.errorMessage = errorMessage;
+    }
 }
