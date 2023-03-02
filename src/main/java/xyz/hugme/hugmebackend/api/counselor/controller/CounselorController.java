@@ -9,6 +9,7 @@ import xyz.hugme.hugmebackend.api.common.SingleRspsTemplate;
 import xyz.hugme.hugmebackend.api.counselor.dto.*;
 import xyz.hugme.hugmebackend.api.counselor.service.ApiCounselorService;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
+import xyz.hugme.hugmebackend.domain.user.counselor.CounselorService;
 import xyz.hugme.hugmebackend.global.auth.SessionCounselor;
 
 import java.net.URI;
@@ -58,7 +59,12 @@ public class CounselorController {
     }
 
 
-
+    //상담사 목록 조회 (전체)
+    @GetMapping ("/counselors/list")
+    public RspsTemplate<CounselorListDto> getCounselorList(){
+        RspsTemplate<CounselorListDto> rspsTemplate =apiCounselorService.findAll();
+        return rspsTemplate;
+    }
 
 
 

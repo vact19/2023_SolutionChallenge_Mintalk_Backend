@@ -14,6 +14,8 @@ import xyz.hugme.hugmebackend.api.counselor.dto.CounselorMyPageEditDto;
 import xyz.hugme.hugmebackend.api.counselor.dto.CounselorSignUpDto;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 import xyz.hugme.hugmebackend.domain.user.counselor.CounselorService;
+import xyz.hugme.hugmebackend.domain.user.counselor.Field;
+import xyz.hugme.hugmebackend.domain.user.counselor.Gender;
 import xyz.hugme.hugmebackend.domain.user.counselor.review.CounselorReview;
 
 import javax.servlet.http.HttpSession;
@@ -44,6 +46,7 @@ public class ApiCounselorService {
         return new SingleRspsTemplate<>(HttpStatus.OK.value(), counselorInfoDto);
     }
 
+
     public Counselor validateSignIn(LoginDto loginDto) {
         // 비밀번호 검증
         return counselorService.validatePassword(loginDto.getEmail(), loginDto.getPassword());
@@ -63,6 +66,8 @@ public class ApiCounselorService {
         counselorService.save(counselor); // counselor는 detached 되어있다. 다시 persist
         session.setAttribute("email", counselor.getEmail()); // ArgumentResolver 에서 email로 조회한다. 세션 email 업데이트
     }
+
+
 }
 
 
