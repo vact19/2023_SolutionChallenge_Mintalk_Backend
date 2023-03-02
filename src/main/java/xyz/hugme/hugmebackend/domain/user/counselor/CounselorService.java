@@ -1,6 +1,7 @@
 package xyz.hugme.hugmebackend.domain.user.counselor;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +21,11 @@ public class CounselorService {
 
     @Transactional
     public Counselor save(Counselor counselor) {
-        return counselorRepository.save(counselor);
+        try {
+            return counselorRepository.save(counselor);
+        } catch (DataIntegrityViolationException e){
+            throw new BusinessException(ErrorCode.COUNSELOR_EMAIL_ALREADY_EXISTS);
+        }
     }
 
     public List<Counselor> findAll(){
@@ -31,10 +36,10 @@ public class CounselorService {
         return validateOptionalCounselor(counselorRepository.findByIdFetchReviews(id), FindBy.ID);
     }
 
-    public Counselor validatePassword(String email, String rawPassword) {
+    public Counselor validateSignIn(String email, String rawPassword) {
         Counselor counselor = validateOptionalCounselor(counselorRepository.findByEmail(email), FindBy.EMAIL);
         if (! passwordEncoder.matches(rawPassword, counselor.getPassword()))
-            throw new BusinessException(ErrorCode.NOT_MATCHING_PASSWORD);
+            throw new BusinessException(ErrorCode.PASSWORD_NOT_MATCHING);
         return counselor;
     }
 
@@ -47,8 +52,9 @@ public class CounselorService {
     }
 
     public Counselor findBySessionCounselorId(Long id) {
-        return counselorRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(ErrorCode.COUNSELOR_NOT_AUTHENTICATED));
+        if (id == null)
+            throw new BusinessException(ErrorCode.COUNSELOR_NOT_AUTHENTICATED);
+        return validateOptionalCounselor(counselorRepository.findById(id), FindBy.ID);
     }
 
     private Counselor validateOptionalCounselor(Optional<Counselor> counselor, FindBy findBy){

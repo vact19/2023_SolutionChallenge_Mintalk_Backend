@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import xyz.hugme.hugmebackend.api.auth.dto.LoginDto;
 import xyz.hugme.hugmebackend.api.client.dto.SaveClientDto;
 import xyz.hugme.hugmebackend.domain.user.client.Client;
 import xyz.hugme.hugmebackend.domain.user.client.ClientService;
@@ -22,10 +21,6 @@ public class ApiClientService {
         String encodedPassword = passwordEncoder.encode(saveClientDto.getPassword());
         Client client = saveClientDto.toEntity(encodedPassword);
         return clientService.save(client);
-    }
-
-    public Client validateSignIn(LoginDto loginDto) {
-        return clientService.validate(loginDto.getEmail(), loginDto.getPassword());
     }
 }
 
