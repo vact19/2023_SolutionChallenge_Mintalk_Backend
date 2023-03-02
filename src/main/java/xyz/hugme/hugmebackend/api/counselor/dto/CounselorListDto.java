@@ -22,12 +22,14 @@ public class CounselorListDto {
     private Set<Field> fields;
 
     public static CounselorListDto of(Counselor counselor){
+        Set<Field> fields = counselor.getFields();
+        fields.size(); // Lazy Loading
         return CounselorListDto.builder()
                 .id(counselor.getId())
                 .name(counselor.getName())
                 .shortIntroduction(counselor.getShortIntroduction())
                 .location(counselor.getLocation())
-                .fields(counselor.getFields())
+                .fields(fields)
                 .build();
     }
 

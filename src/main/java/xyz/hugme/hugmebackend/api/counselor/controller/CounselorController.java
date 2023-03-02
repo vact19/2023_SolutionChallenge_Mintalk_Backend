@@ -9,7 +9,6 @@ import xyz.hugme.hugmebackend.api.common.SingleRspsTemplate;
 import xyz.hugme.hugmebackend.api.counselor.dto.*;
 import xyz.hugme.hugmebackend.api.counselor.service.ApiCounselorService;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
-import xyz.hugme.hugmebackend.domain.user.counselor.CounselorService;
 import xyz.hugme.hugmebackend.global.auth.SessionCounselor;
 
 import java.net.URI;
@@ -19,7 +18,6 @@ import java.net.URI;
 public class CounselorController {
 
     private final ApiCounselorService apiCounselorService;
-    private final CounselorService counselorService;
 
     // 테스트용 메소드. 나중에 조회기능 만들때 이거 바꾸면 될 듯
     @GetMapping
