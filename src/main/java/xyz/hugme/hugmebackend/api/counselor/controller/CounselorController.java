@@ -60,12 +60,6 @@ public class CounselorController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/test")
-    public void test(){
-        counselorService.findByEmail("csrf@gmail.com");
-        System.out.println("=======================================");
-        counselorService.findById(2L);
-    }
 
 
 
