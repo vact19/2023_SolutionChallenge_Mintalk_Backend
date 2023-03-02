@@ -9,11 +9,11 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class RspsTemplate<T> {
-    private int status;
+    private int statusCode;
     private List<T> data;
 
-    public RspsTemplate(int status, List<T> data) {
-        this.status = status;
+    public RspsTemplate(int statusCode, List<T> data) {
+        this.statusCode = statusCode;
         this.data = data;
     }
 }

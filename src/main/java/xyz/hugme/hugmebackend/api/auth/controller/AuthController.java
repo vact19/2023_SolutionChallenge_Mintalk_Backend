@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.hugme.hugmebackend.api.auth.dto.LoginDto;
-import xyz.hugme.hugmebackend.api.client.service.ApiClientService;
-import xyz.hugme.hugmebackend.api.counselor.service.ApiCounselorService;
 import xyz.hugme.hugmebackend.domain.user.client.Client;
+import xyz.hugme.hugmebackend.domain.user.client.ClientService;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
+import xyz.hugme.hugmebackend.domain.user.counselor.CounselorService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -18,19 +18,18 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 @RestController
 public class AuthController {
-
-    private final ApiCounselorService apiCounselorService;
-    private final ApiClientService apiClientService;
+    private final ClientService clientService;
+    private final CounselorService counselorService;
     // 상담사 로그인
     @PostMapping("/sign-in/counselors")
     public ResponseEntity<Void> signInCounselor(@RequestBody LoginDto loginDto, HttpServletRequest request){
         // username, password 검사
-        Counselor validatedCounselor = apiCounselorService.validateSignIn(loginDto);
+        Counselor validatedCounselor = counselorService.validateSignIn(loginDto.getEmail(), loginDto.getPassword());
 
         // JsessionId 반환
         HttpSession session = request.getSession();
         session.setAttribute("name", validatedCounselor.getName());
-        session.setAttribute("email", validatedCounselor.getEmail());
+        session.setAttribute("id", validatedCounselor.getId());
 
         return ResponseEntity.noContent().build();
     }
@@ -39,10 +38,10 @@ public class AuthController {
     @PostMapping("/sign-in/clients")
     public ResponseEntity<Void> signInClient(@RequestBody LoginDto loginDto, HttpServletRequest request){
         // username, password 검사.
-        Client validatedClient = apiClientService.validateSignIn(loginDto);
+        Client validatedClient = clientService.validateSignIn(loginDto.getEmail(), loginDto.getPassword());
         HttpSession session = request.getSession();
         session.setAttribute("name", validatedClient.getName());
-        session.setAttribute("email", validatedClient.getEmail());
+        session.setAttribute("id", validatedClient.getId());
 
         return ResponseEntity.noContent().build();
     }

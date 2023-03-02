@@ -26,7 +26,7 @@ public class SessionCounselorArgumentResolver implements HandlerMethodArgumentRe
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        String email = (String) session.getAttribute("email");
-        return counselorService.findByEmail(email);
+        Long sessionCounselorId = (Long) session.getAttribute("id");
+        return counselorService.findBySessionCounselorId(sessionCounselorId);
     }
 }

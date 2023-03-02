@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import xyz.hugme.hugmebackend.api.auth.dto.LoginDto;
 import xyz.hugme.hugmebackend.api.common.RspsTemplate;
 import xyz.hugme.hugmebackend.api.common.SingleRspsTemplate;
 import xyz.hugme.hugmebackend.api.counselor.dto.CounselorInfoDto;
@@ -14,11 +13,8 @@ import xyz.hugme.hugmebackend.api.counselor.dto.CounselorMyPageEditDto;
 import xyz.hugme.hugmebackend.api.counselor.dto.CounselorSignUpDto;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 import xyz.hugme.hugmebackend.domain.user.counselor.CounselorService;
-import xyz.hugme.hugmebackend.domain.user.counselor.Field;
-import xyz.hugme.hugmebackend.domain.user.counselor.Gender;
 import xyz.hugme.hugmebackend.domain.user.counselor.review.CounselorReview;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -27,7 +23,6 @@ import java.util.List;
 public class ApiCounselorService {
     private final CounselorService counselorService;
     private final PasswordEncoder passwordEncoder;
-    private final HttpSession session;
 
     public RspsTemplate<CounselorListDto> findAll(){
         List<Counselor> counselorList = counselorService.findAll();
@@ -46,12 +41,6 @@ public class ApiCounselorService {
         return new SingleRspsTemplate<>(HttpStatus.OK.value(), counselorInfoDto);
     }
 
-
-    public Counselor validateSignIn(LoginDto loginDto) {
-        // 비밀번호 검증
-        return counselorService.validatePassword(loginDto.getEmail(), loginDto.getPassword());
-    }
-
     @Transactional
     public Counselor signUp(CounselorSignUpDto counselorSignUpDto) {
         // password encode 후 save()
@@ -62,12 +51,10 @@ public class ApiCounselorService {
 
     @Transactional
     public void editCounselor(Counselor counselor, CounselorMyPageEditDto counselorMyPageEditDto) {
+        // DTO 내용으로 counselor의 필드들 바꾼다.
         counselorMyPageEditDto.editCounselor(counselor);
         counselorService.save(counselor); // counselor는 detached 되어있다. 다시 persist
-        session.setAttribute("email", counselor.getEmail()); // ArgumentResolver 에서 email로 조회한다. 세션 email 업데이트
     }
-
-
 }
 
 

@@ -18,7 +18,8 @@ import java.net.URI;
 @RestController
 public class CounselorController {
 
-    private final ApiCounselorService apiCounselorService; //DTO를 아는 서비스
+    private final ApiCounselorService apiCounselorService;
+    private final CounselorService counselorService;
 
     // 테스트용 메소드. 나중에 조회기능 만들때 이거 바꾸면 될 듯
     @GetMapping
@@ -27,7 +28,7 @@ public class CounselorController {
         return rspsTemplate;
     }
 
-    // 상담사 자기소개 페이지
+    // 외부 공개용 상담사 마이페이지 조회
     @GetMapping("/counselors/{id}")
     public SingleRspsTemplate<CounselorInfoDto> counselorInfo(@PathVariable Long id){
         // id로 리뷰, 상담사 찾고
@@ -36,12 +37,20 @@ public class CounselorController {
         return rspsTemplate;
     }
 
+    //상담사 계정으로 본인 마이페이지 진입
+    @GetMapping("/counselors/my-page")
+    public SingleRspsTemplate<CounselorMyPageViewDto> viewMyPage(@SessionCounselor Counselor counselor){
+        CounselorMyPageViewDto resultDto = CounselorMyPageViewDto.of(counselor);
+        return new SingleRspsTemplate<>(HttpStatus.OK.value(), resultDto);
+    }
+
     // 상담사 회원가입
     @PostMapping("/counselors")
     public ResponseEntity<Void> signIn(@RequestBody CounselorSignUpDto counselorSignUpDto){
         Counselor savedCounselor = apiCounselorService.signUp(counselorSignUpDto);
         return ResponseEntity.created(URI.create("/counselors/" + savedCounselor.getId())).build();
     }
+
     // 상담사 마이페이지 수정
     // 자기가 자기 페이지를 수정하는 것이므로, PathVariable 사용할 필요 없다.
     @PatchMapping("/counselors/my-page")
@@ -51,20 +60,17 @@ public class CounselorController {
         return ResponseEntity.noContent().build();
     }
 
-     //상담사 본인 마이페이지 진입
-    @GetMapping("/counselors/my-page")
-    public SingleRspsTemplate<CounselorMyPageViewDto> viewMyPage(@SessionCounselor Counselor counselor){
-        CounselorMyPageViewDto resultDto = CounselorMyPageViewDto.of(counselor);
-        return new SingleRspsTemplate<>(HttpStatus.OK.value(), resultDto);
+    @GetMapping("/test")
+    public void test(){
+        counselorService.findByEmail("csrf@gmail.com");
+        System.out.println("=======================================");
+        counselorService.findById(2L);
     }
 
 
-    //상담사 목록 조회 (전체)
-    @GetMapping ("/counselors/list")
-    public RspsTemplate<CounselorListDto> getCounselorList(){
-        RspsTemplate<CounselorListDto> rspsTemplate =apiCounselorService.findAll();
-        return rspsTemplate;
-    }
+
+
+
 
 
 

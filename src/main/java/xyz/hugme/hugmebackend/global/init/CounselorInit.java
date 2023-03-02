@@ -40,7 +40,8 @@ public class CounselorInit {
         fieldsSet2.add(Field.ELDER);
         fieldsSet2.add(Field.DEPRESSION);
         fieldsSet2.add(Field.RELATIONSHIP);
-
+        fieldsSet2.add(Field.ANXIETY);
+        fieldsSet2.add(Field.YOUTH);
         List<String> careers1 = new ArrayList<>();
         careers1.add("성공회대졸업");
         careers1.add("뭐시기 자격증 2급");
@@ -111,7 +112,17 @@ public class CounselorInit {
                 .build();
 
         em.persist(review2);
+
+        CounselorReview review3 = CounselorReview.builder()
+                .rate(3)
+                .content("한길선생님 저는 기어다닐거에요")
+                .counselor(counselor2)
+                .client(client2)
+                .build();
+        em.persist(review3);
+
         tx.commit();
+        em.close();
     }
 }
 

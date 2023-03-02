@@ -38,10 +38,10 @@ public class Counselor extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String location;
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection
     private List<String> careers;
     // 여러가지 field(전문분야) 를 가질 수 있음
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection
     @Enumerated(value = EnumType.STRING)
     private Set<Field> fields;
 

@@ -16,7 +16,6 @@ public class Client extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(nullable = false, length = 10)
     @Enumerated(EnumType.STRING)
     private Gender gender;
