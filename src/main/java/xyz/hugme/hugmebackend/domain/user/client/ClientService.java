@@ -41,9 +41,9 @@ public class ClientService {
 
     public Client findBySessionClientId(Long id){
         if (id == null)
-            throw new BusinessException(ErrorCode.COUNSELOR_NOT_AUTHENTICATED);
+            throw new BusinessException(ErrorCode.CLIENT_NOT_AUTHENTICATED);
         return clientRepository.findById(id).
-                orElseThrow(() -> new BusinessException(ErrorCode.CLIENT_NOT_AUTHENTICATED));
+                orElseThrow(() -> new BusinessException(ErrorCode.CLIENT_ID_NOT_FOUND));
     }
 
     public Client findById(Long id) {
