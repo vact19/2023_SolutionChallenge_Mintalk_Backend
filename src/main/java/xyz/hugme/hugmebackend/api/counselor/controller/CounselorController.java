@@ -39,7 +39,7 @@ public class CounselorController {
     //상담사 계정으로 본인 마이페이지 진입
     @GetMapping("/counselors/my-page")
     public SingleRspsTemplate<CounselorMyPageViewDto> viewMyPage(@SessionCounselor Counselor counselor){
-        CounselorMyPageViewDto resultDto = CounselorMyPageViewDto.of(counselor);
+        CounselorMyPageViewDto resultDto = apiCounselorService.viewMyPage(counselor);
         return new SingleRspsTemplate<>(HttpStatus.OK.value(), resultDto);
     }
 

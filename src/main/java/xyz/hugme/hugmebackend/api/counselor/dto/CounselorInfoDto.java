@@ -40,7 +40,6 @@ public class CounselorInfoDto {
                 .average().orElse(0);
         averageRate = Double.parseDouble(String.format("%.1f", averageRate));
 
-
         return CounselorInfoDto.builder()
                 .id(counselor.getId())
                 .name(counselor.getName())
