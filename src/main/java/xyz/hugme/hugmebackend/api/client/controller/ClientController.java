@@ -9,6 +9,7 @@ import xyz.hugme.hugmebackend.api.client.dto.SaveClientDto;
 import xyz.hugme.hugmebackend.api.client.service.ApiClientService;
 import xyz.hugme.hugmebackend.domain.user.client.Client;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 @RequiredArgsConstructor
@@ -19,7 +20,7 @@ public class ClientController {
 
     // 내담자 회원가입
     @PostMapping("/clients")
-    public ResponseEntity<Void> signUpClient(@RequestBody SaveClientDto saveClientDto){
+    public ResponseEntity<Void> signUpClient(@RequestBody @Valid SaveClientDto saveClientDto){
         Client savedClient = apiClientService.signUpClient(saveClientDto);
         return ResponseEntity.created(URI.create("/clients/my-page/" + savedClient.getId())).build();
     }

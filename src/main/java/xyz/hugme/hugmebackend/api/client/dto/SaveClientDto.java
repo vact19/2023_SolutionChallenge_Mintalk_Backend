@@ -11,6 +11,7 @@ import xyz.hugme.hugmebackend.domain.user.counselor.Gender;
 public class SaveClientDto {
     private String name;
     private Gender gender;
+
     private String email;
     private String password;
 

@@ -11,6 +11,7 @@ import xyz.hugme.hugmebackend.api.counselor.service.ApiCounselorService;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 import xyz.hugme.hugmebackend.global.auth.SessionCounselor;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 @RequiredArgsConstructor
@@ -44,7 +45,7 @@ public class CounselorController {
 
     // 상담사 회원가입
     @PostMapping("/counselors")
-    public ResponseEntity<Void> signIn(@RequestBody CounselorSignUpDto counselorSignUpDto){
+    public ResponseEntity<Void> signIn(@RequestBody @Valid CounselorSignUpDto counselorSignUpDto){
         Counselor savedCounselor = apiCounselorService.signUp(counselorSignUpDto);
         return ResponseEntity.created(URI.create("/counselors/" + savedCounselor.getId())).build();
     }
