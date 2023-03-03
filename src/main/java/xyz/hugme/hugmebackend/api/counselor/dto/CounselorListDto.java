@@ -3,6 +3,7 @@ package xyz.hugme.hugmebackend.api.counselor.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.Hibernate;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 import xyz.hugme.hugmebackend.domain.user.counselor.Field;
 
@@ -22,14 +23,13 @@ public class CounselorListDto {
     private Set<Field> fields;
 
     public static CounselorListDto of(Counselor counselor){
-        Set<Field> fields = counselor.getFields();
-        fields.size(); // Lazy Loading
+        Hibernate.initialize(counselor.getFields());
         return CounselorListDto.builder()
                 .id(counselor.getId())
                 .name(counselor.getName())
                 .shortIntroduction(counselor.getShortIntroduction())
                 .location(counselor.getLocation())
-                .fields(fields)
+                .fields(counselor.getFields())
                 .build();
     }
 
