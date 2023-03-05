@@ -1,9 +1,13 @@
 package xyz.hugme.hugmebackend.api.counselor.controller;
 
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Bucket;
+import com.google.cloud.storage.Storage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import xyz.hugme.hugmebackend.api.common.RspsTemplate;
 import xyz.hugme.hugmebackend.api.common.SingleRspsTemplate;
 import xyz.hugme.hugmebackend.api.counselor.dto.*;
@@ -12,7 +16,9 @@ import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 import xyz.hugme.hugmebackend.global.auth.SessionCounselor;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -50,10 +56,56 @@ public class CounselorController {
     // 자기가 자기 페이지를 수정하는 것이므로, PathVariable 사용할 필요 없다.
     @PatchMapping("/counselors/my-page")
     public ResponseEntity<Void> editMyPage(@SessionCounselor Counselor counselor,
-                                           @RequestBody CounselorMyPageEditDto counselorMyPageEditDto){
+                                            CounselorMyPageEditDto counselorMyPageEditDto){
         apiCounselorService.editCounselor(counselor, counselorMyPageEditDto);
         return ResponseEntity.noContent().build();
     }
+
+    private final Storage storage;
+
+
+    private final String COUNSELOR_IMAGE_PREFIX = "counselors/";
+    @PostMapping("/upload")
+    public String testGCSUpload(@RequestParam("img")MultipartFile multipartFile) throws IOException {
+        // 인증 설정
+        Bucket bucket = storage.get("mintalk-image-storage");
+        // 파일 이름 설정. 중복을 피해 UUID 사용할 것.
+        // OriginalFilename 은 쓰지 않는다. 파일이름에 포함된 특수문자나 공백 등이 urlEncoded 되어, 생성될 조회 URL 예측이 어려워짐
+        String fileName = COUNSELOR_IMAGE_PREFIX + UUID.randomUUID();
+
+        // 버킷에 파일 업로드. create new Blob in this bucket. bucket.delete()는 버킷 삭제임.
+        Blob blob = bucket.create(fileName, multipartFile.getBytes());
+        return blob.toString();
+        // 아래는 현재 필요없음
+//        blob.createAcl("allUsers", Acl.Role.READER); // 해당 파일을 모든 유저에게 읽기권한만 주고 싶을 경우 사용. 버킷의 모든 오브젝트가 public 하게 공개되어 있으므로 지금은 필요없다.
+//        Path filePath = Paths.get(fileName);
+//        Files.write(filePath, multipartFile.getBytes()); // 로컬 저장용. 이렇게 하면 default FilePath 인 프로젝트의 루트 디렉토리에 해당 파일이 저장된다.
+//        // 업로드 완료 후 파일 삭제
+//        Files.deleteIfExists(filePath);
+    }
+
+    @GetMapping("/delete")
+    public boolean testGCSDelete(@RequestParam String blobName) throws IOException {
+        boolean deleted = storage.delete("mintalk-image-storage", blobName);
+        return deleted;
+        // 아래는 현재 필요없음
+//        blob.createAcl("allUsers", Acl.Role.READER); // 해당 파일을 모든 유저에게 읽기권한만 주고 싶을 경우 사용. 버킷의 모든 오브젝트가 public 하게 공개되어 있으므로 지금은 필요없다.
+//        Path filePath = Paths.get(fileName);
+//        Files.write(filePath, multipartFile.getBytes()); // 로컬 저장용. 이렇게 하면 default FilePath 인 프로젝트의 루트 디렉토리에 해당 파일이 저장된다.
+//        // 업로드 완료 후 파일 삭제
+//        Files.deleteIfExists(filePath);
+    }
+
+
+//    @GetMapping("/test")
+//    public String testGCS() throws IOException {
+//        // 버킷과 오브젝트 이름을 넣어 Blob객체 반환
+//        Blob blob = storage.get(BlobId.of("mintalk-image-storage", "counselors/anajouryo.png"));
+//        blob.downloadTo(Paths.get("C://Users//woo//txt/newfile.png"));
+//
+//        return blob.toString();
+//    }
+
 
 
 
