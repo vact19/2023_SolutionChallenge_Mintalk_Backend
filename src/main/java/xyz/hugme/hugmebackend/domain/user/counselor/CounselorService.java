@@ -1,5 +1,6 @@
 package xyz.hugme.hugmebackend.domain.user.counselor;
 
+import com.google.cloud.storage.Storage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +19,8 @@ import java.util.Optional;
 public class CounselorService {
     private final CounselorRepository counselorRepository;
     private final PasswordEncoder passwordEncoder;
+    private final Storage storage;
+    private final String COUNSELOR_IMAGE_PREFIX = "counselors/";
 
     @Transactional
     public Counselor save(Counselor counselor) {

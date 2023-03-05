@@ -20,6 +20,7 @@ public class CounselorListDto {
     private String name;
     private String shortIntroduction;
     private String location;
+    private String profileImageUrl;
     private Set<Field> fields;
 
     public static CounselorListDto of(Counselor counselor){
@@ -28,6 +29,7 @@ public class CounselorListDto {
                 .id(counselor.getId())
                 .name(counselor.getName())
                 .shortIntroduction(counselor.getShortIntroduction())
+                .profileImageUrl(counselor.getProfileImageUrl())
                 .location(counselor.getLocation())
                 .fields(counselor.getFields())
                 .build();
@@ -40,11 +42,12 @@ public class CounselorListDto {
     }
 
     @Builder
-    public CounselorListDto(Long id, String name, String shortIntroduction, String location, Set<Field> fields) {
+    public CounselorListDto(Long id, String name, String shortIntroduction, String location, String profileImageUrl, Set<Field> fields) {
         this.id = id;
         this.name = name;
         this.shortIntroduction = shortIntroduction;
         this.location = location;
         this.fields = fields;
+        this.profileImageUrl = profileImageUrl;
     }
 }

@@ -1,9 +1,6 @@
 package xyz.hugme.hugmebackend.domain.user.counselor;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import xyz.hugme.hugmebackend.domain.common.BaseTimeEntity;
 import xyz.hugme.hugmebackend.domain.user.counselor.review.CounselorReview;
 
@@ -38,9 +35,17 @@ public class Counselor extends BaseTimeEntity {
     @Column(nullable = false)
     private String location = "근무지를 입력해 주세요.";
 
-    // image url 은 빌더에 없음
+    // image url 은 빌더에 없음. 아래의 속성값은 기본 프로필사진
     @Column(nullable = false)
-    private String profileImageUrl = "https://storage.googleapis.com/mintalk-image-storage/counselors/Untitled%20(1).png";
+    private String profileImageUrl = "https://storage.googleapis.com/mintalk-image-storage/counselors/show-me-pocky.jpg";
+    // blobName 은 빌더에 없음. 아래의 속성값은 기본 프로필사진
+    // blobName 이란, GCS 버킷에 저장된 Object 가 가진 이름이다. 이 이름은 하나의 버킷 안에서는 유일하다.
+    @Column(nullable = false)
+    private String blobName = "counselors/show-me-pocky.jpg";
+
+    @Column(nullable = false, length = 1)
+    @Setter
+    private boolean defaultProfile = true;
 
     @ElementCollection
     private List<String> careers;
@@ -53,6 +58,7 @@ public class Counselor extends BaseTimeEntity {
     @OneToMany(mappedBy = "counselor", fetch = FetchType.LAZY)
     private List<CounselorReview> counselorReviews;
 
+    // 더미데이터 삽입용 생성자
     @Builder
     public Counselor(String name, String email, String password, Gender gender, String shortIntroduction, String introduction, String contact, String location, List<String> careers, Set<Field> fields) {
         this.name = name;
@@ -67,14 +73,25 @@ public class Counselor extends BaseTimeEntity {
         this.fields = fields;
     }
 
+    // 회원가입용 생성자.
+    @Builder(builderMethodName = "signInBuilder", builderClassName = "signInBuilder")
+    public Counselor(String name, String email, String password, Gender gender) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.gender = gender;
+    }
+
     public void editMyPage(String name, String email, String shortIntroduction, String introduction, String contact
-                        , String location, List<String> careers, Set<Field> fields){
+                        , String location, String profileImageUrl, String blobName,List<String> careers, Set<Field> fields){
         this.name = name;
         this.email = email;
         this.shortIntroduction = shortIntroduction;
         this.introduction = introduction;
         this.contact = contact;
         this.location = location;
+        this.profileImageUrl = profileImageUrl;
+        this.blobName = blobName;
         this.careers = careers;
         this.fields = fields;
     }
