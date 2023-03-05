@@ -16,7 +16,7 @@ spring:
     gcp:
       storage:
         credentials:
-          location: classpath:my-first-project-59358-372911-3bd428ca7898.json
+          location:
 
   datasource:
     url: jdbc:mysql://localhost:3307/hugme?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul
