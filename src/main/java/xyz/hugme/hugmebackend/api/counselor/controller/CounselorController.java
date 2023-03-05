@@ -26,7 +26,12 @@ public class CounselorController {
         RspsTemplate<CounselorListDto> rspsTemplate = apiCounselorService.findAll();
         return rspsTemplate;
     }
-
+    // 상담사 회원가입
+    @PostMapping("/counselors")
+    public ResponseEntity<Void> signIn(@RequestBody @Valid CounselorSignUpDto counselorSignUpDto){
+        Counselor savedCounselor = apiCounselorService.signUp(counselorSignUpDto);
+        return ResponseEntity.created(URI.create("/counselors/" + savedCounselor.getId())).build();
+    }
     // 외부 공개용 상담사 마이페이지 조회
     @GetMapping("/counselors/{id}")
     public SingleRspsTemplate<CounselorInfoDto> counselorInfo(@PathVariable Long id){
@@ -35,21 +40,12 @@ public class CounselorController {
         SingleRspsTemplate<CounselorInfoDto> rspsTemplate = apiCounselorService.findCounselorAndReviewsById(id);
         return rspsTemplate;
     }
-
     //상담사 계정으로 본인 마이페이지 진입
     @GetMapping("/counselors/my-page")
     public SingleRspsTemplate<CounselorMyPageViewDto> viewMyPage(@SessionCounselor Counselor counselor){
         CounselorMyPageViewDto resultDto = apiCounselorService.viewMyPage(counselor);
         return new SingleRspsTemplate<>(HttpStatus.OK.value(), resultDto);
     }
-
-    // 상담사 회원가입
-    @PostMapping("/counselors")
-    public ResponseEntity<Void> signIn(@RequestBody @Valid CounselorSignUpDto counselorSignUpDto){
-        Counselor savedCounselor = apiCounselorService.signUp(counselorSignUpDto);
-        return ResponseEntity.created(URI.create("/counselors/" + savedCounselor.getId())).build();
-    }
-
     // 상담사 마이페이지 수정
     // 자기가 자기 페이지를 수정하는 것이므로, PathVariable 사용할 필요 없다.
     @PatchMapping("/counselors/my-page")
