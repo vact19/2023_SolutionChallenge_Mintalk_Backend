@@ -19,6 +19,7 @@ public class CounselorMyPageViewDto {
     private String introduction;
     private String contact;
     private String location;
+    private String profileImageUrl;
     private List<String> careers;
     private Set<Field> fields;
 
@@ -30,18 +31,20 @@ public class CounselorMyPageViewDto {
                 .introduction(counselor.getIntroduction())
                 .contact(counselor.getContact())
                 .location(counselor.getLocation())
+                .profileImageUrl(counselor.getProfileImageUrl())
                 .careers(counselor.getCareers())
                 .fields(counselor.getFields())
                 .build();
     }
     @Builder
-    public CounselorMyPageViewDto(String name, String email, String shortIntroduction, String introduction, String contact, String location, List<String> careers, Set<Field> fields) {
+    public CounselorMyPageViewDto(String name, String email, String shortIntroduction, String introduction, String contact, String location, String profileImageUrl,List<String> careers, Set<Field> fields) {
         this.name = name;
         this.email = email;
         this.shortIntroduction = shortIntroduction;
         this.introduction = introduction;
         this.contact = contact;
         this.location = location;
+        this.profileImageUrl = profileImageUrl;
         this.careers = careers;
         this.fields = fields;
     }

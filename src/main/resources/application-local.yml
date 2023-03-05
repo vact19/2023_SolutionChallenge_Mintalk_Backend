@@ -8,6 +8,16 @@ server:
     key-store-password:
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  cloud:
+    gcp:
+      storage:
+        credentials:
+          location:
+
   datasource:
     url: jdbc:mysql://localhost:3307/hugme?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul
     username:
@@ -25,6 +35,7 @@ spring:
 
     show-sql: true
     open-in-view: false
+
 
 logging:
   level:
