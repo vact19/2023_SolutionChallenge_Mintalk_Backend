@@ -29,15 +29,19 @@ public class Counselor extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
     @Column(nullable = false)
-    private String shortIntroduction;
+    private String shortIntroduction = "한줄 자기소개를 작성해 주세요";
     @Lob // JPA에서 알아서 clob이나 blob으로 바꿔줌
     @Column(nullable = false)
-    private String introduction;
+    private String introduction = "나를 소개하는 글을 써 주세요.";
     @Column(nullable = false)
-    private String contact;
+    private String contact = "연락처를 '-' 없이 적어 주세요.";
+    @Column(nullable = false)
+    private String location = "근무지를 입력해 주세요.";
 
+    // image url 은 빌더에 없음
     @Column(nullable = false)
-    private String location;
+    private String profileImageUrl = "https://storage.googleapis.com/mintalk-image-storage/counselors/Untitled%20(1).png";
+
     @ElementCollection
     private List<String> careers;
     // 여러가지 field(전문분야) 를 가질 수 있음
