@@ -5,12 +5,14 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 import xyz.hugme.hugmebackend.domain.common.FindBy;
 import xyz.hugme.hugmebackend.global.exception.BusinessException;
 import xyz.hugme.hugmebackend.global.exception.ErrorCode;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -30,6 +32,13 @@ public class CounselorService {
 
     public List<Counselor> findAll(){
         return counselorRepository.findAll();
+    }
+
+
+    //성별과 분야로 상담사 조회하기
+    public List<Counselor> findByGenderAndFields(Gender gender,Set<Field> fields){
+        return counselorRepository.findByGenderAndFields(gender,fields);
+
     }
 
     public Counselor findByIdFetchReviews(Long id) {
@@ -57,6 +66,7 @@ public class CounselorService {
         return validateOptionalCounselor(counselorRepository.findById(id), FindBy.ID);
     }
 
+
     private Counselor validateOptionalCounselor(Optional<Counselor> counselor, FindBy findBy){
         switch (findBy){
             case ID: return counselor.orElseThrow(() -> new BusinessException(ErrorCode.COUNSELOR_ID_NOT_FOUND));
@@ -64,6 +74,8 @@ public class CounselorService {
             default: throw new RuntimeException("Enum FindBy를 올바르게 명시하지 않음");
         }
     }
+
+
 }
 
 

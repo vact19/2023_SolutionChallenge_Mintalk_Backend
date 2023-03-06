@@ -13,9 +13,12 @@ import xyz.hugme.hugmebackend.api.counselor.dto.CounselorMyPageEditDto;
 import xyz.hugme.hugmebackend.api.counselor.dto.CounselorSignUpDto;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 import xyz.hugme.hugmebackend.domain.user.counselor.CounselorService;
+import xyz.hugme.hugmebackend.domain.user.counselor.Field;
+import xyz.hugme.hugmebackend.domain.user.counselor.Gender;
 import xyz.hugme.hugmebackend.domain.user.counselor.review.CounselorReview;
 
 import java.util.List;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -29,6 +32,12 @@ public class ApiCounselorService {
         // Entity의 리스트를 Dto의 리스트로 변환
         List<CounselorListDto> counselorListDtoList = CounselorListDto.ofList(counselorList);
 
+        return new RspsTemplate<>(HttpStatus.OK.value(), counselorListDtoList);
+    }
+    //상담사를 성별과 분야로 조회
+    public RspsTemplate<CounselorListDto> findByGenderAndFields(Gender gender, Set<Field> fields){
+        List<Counselor> counselorList = counselorService.findByGenderAndFields(gender, fields);
+        List<CounselorListDto> counselorListDtoList = CounselorListDto.ofList(counselorList);
         return new RspsTemplate<>(HttpStatus.OK.value(), counselorListDtoList);
     }
 
@@ -55,6 +64,7 @@ public class ApiCounselorService {
         counselorMyPageEditDto.editCounselor(counselor);
         counselorService.save(counselor); // counselor는 detached 되어있다. 다시 persist
     }
+
 }
 
 

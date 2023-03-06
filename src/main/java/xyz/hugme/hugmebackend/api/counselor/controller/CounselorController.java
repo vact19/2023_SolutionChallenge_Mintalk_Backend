@@ -8,11 +8,11 @@ import xyz.hugme.hugmebackend.api.common.RspsTemplate;
 import xyz.hugme.hugmebackend.api.common.SingleRspsTemplate;
 import xyz.hugme.hugmebackend.api.counselor.dto.*;
 import xyz.hugme.hugmebackend.api.counselor.service.ApiCounselorService;
-import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
-import xyz.hugme.hugmebackend.domain.user.counselor.CounselorService;
+import xyz.hugme.hugmebackend.domain.user.counselor.*;
 import xyz.hugme.hugmebackend.global.auth.SessionCounselor;
 
 import java.net.URI;
+import java.util.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,12 +21,29 @@ public class CounselorController {
     private final ApiCounselorService apiCounselorService;
     private final CounselorService counselorService;
 
+    private final CounselorRepository counselorRepository;
+
+
     // 테스트용 메소드. 나중에 조회기능 만들때 이거 바꾸면 될 듯
     @GetMapping
     public RspsTemplate<CounselorListDto> getList(){
         RspsTemplate<CounselorListDto> rspsTemplate = apiCounselorService.findAll();
         return rspsTemplate;
     }
+
+    // 상담사 전체 목록 조회
+    @GetMapping ("/counselor/list")
+    public RspsTemplate<CounselorListDto> getCounselorList(){
+        RspsTemplate<CounselorListDto> listDtoRspsTemplate = apiCounselorService.findAll();
+        return listDtoRspsTemplate;
+    }
+    //성별과 분야로 상담사 검색
+    @GetMapping("/counselors/{gender}/{fields}")
+    public RspsTemplate<CounselorListDto> getCounselor(@PathVariable Gender gender, @PathVariable Set<Field> fields){
+        RspsTemplate<CounselorListDto> rspsTemplate = apiCounselorService.findByGenderAndFields(gender, fields);
+        return rspsTemplate;
+    }
+
 
     // 외부 공개용 상담사 마이페이지 조회
     @GetMapping("/counselors/{id}")
@@ -66,12 +83,6 @@ public class CounselorController {
         System.out.println("=======================================");
         counselorService.findById(2L);
     }
-
-
-
-
-
-
 
 
 }

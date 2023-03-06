@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 import xyz.hugme.hugmebackend.domain.user.counselor.Field;
+import xyz.hugme.hugmebackend.domain.user.counselor.Gender;
 
 import java.util.List;
 import java.util.Set;
@@ -20,6 +21,8 @@ public class CounselorListDto {
     private String shortIntroduction;
     private String location;
     private Set<Field> fields;
+
+    private Gender gender;;
 
     public static CounselorListDto of(Counselor counselor){
         return CounselorListDto.builder()
@@ -38,11 +41,12 @@ public class CounselorListDto {
     }
 
     @Builder
-    public CounselorListDto(Long id, String name, String shortIntroduction, String location, Set<Field> fields) {
+    public CounselorListDto(Long id, String name, String shortIntroduction, String location, Set<Field> fields, Gender gender) {
         this.id = id;
         this.name = name;
         this.shortIntroduction = shortIntroduction;
         this.location = location;
         this.fields = fields;
+        this.gender = gender;
     }
 }
