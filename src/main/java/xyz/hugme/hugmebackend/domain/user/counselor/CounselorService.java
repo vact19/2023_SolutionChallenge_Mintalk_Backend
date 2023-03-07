@@ -35,6 +35,12 @@ public class CounselorService {
         return counselorRepository.findAll();
     }
 
+
+//    //성별과 분야로 상담사 조회하기
+//    public List<Counselor> findByGenderAndFields(@RequestParam Gender gender,@RequestParam  Set<Field> fields){
+//        return counselorRepository.findByGenderAndFields(gender,fields);
+//    }
+
     public Counselor findByIdFetchReviews(Long id) {
         return validateOptionalCounselor(counselorRepository.findByIdFetchReviews(id), FindBy.ID);
     }
@@ -61,6 +67,7 @@ public class CounselorService {
 
     }
 
+
     private Counselor validateOptionalCounselor(Optional<Counselor> counselor, FindBy findBy){
         switch (findBy){
             case ID: return counselor.orElseThrow(() -> new BusinessException(ErrorCode.COUNSELOR_ID_NOT_FOUND));
@@ -68,6 +75,8 @@ public class CounselorService {
             default: throw new RuntimeException("Enum FindBy를 올바르게 명시하지 않음");
         }
     }
+
+
 }
 
 

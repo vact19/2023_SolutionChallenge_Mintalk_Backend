@@ -11,6 +11,12 @@ public interface CounselorRepository extends JpaRepository<Counselor, Long> {
     // Review 가 Null 일 경우를 대비해, LEFT JOIN 한다. 모든 교집합과 A 차집합 (A - B)을 조회
     @Query("SELECT distinct c FROM Counselor c LEFT JOIN FETCH c.counselorReviews cr where c.id = :id")
     Optional<Counselor> findByIdFetchReviews(@Param("id") Long id);
+
+//    //다중 검색 메소드
+//   @Query("SELECT c.gender, c.fields FROM Counselor c WHERE c.gender = :gender AND c.fields = :fields")
+//   List<Counselor> findByGenderAndFields(@Param("gender")Gender gender, @Param("fields")Set<Field> fields);
+
+
 //    @Query("SELECT c.password FROM Counselor c WHERE c.email = :email")
 //    String findPasswordByEmail(@Param("email") String email);
 
