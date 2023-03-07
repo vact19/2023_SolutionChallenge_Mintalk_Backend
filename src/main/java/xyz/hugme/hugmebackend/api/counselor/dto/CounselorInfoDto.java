@@ -25,6 +25,7 @@ public class CounselorInfoDto {
     private String contact;
     private String email;
     private String location;
+    private String profileImageUrl;
     private double averageRate;
     private List<String> careers;
     private Set<Field> fields;
@@ -40,7 +41,6 @@ public class CounselorInfoDto {
                 .average().orElse(0);
         averageRate = Double.parseDouble(String.format("%.1f", averageRate));
 
-
         return CounselorInfoDto.builder()
                 .id(counselor.getId())
                 .name(counselor.getName())
@@ -50,6 +50,7 @@ public class CounselorInfoDto {
                 .contact(counselor.getContact())
                 .email(counselor.getEmail())
                 .location(counselor.getLocation())
+                .profileImageUrl(counselor.getProfileImageUrl())
                 .averageRate(averageRate)
                 .careers(counselor.getCareers())
                 .fields(counselor.getFields())
@@ -58,7 +59,7 @@ public class CounselorInfoDto {
     }
 
     @Builder
-    public CounselorInfoDto(Long id, String name, Gender gender, String shortIntroduction, String introduction, String contact, String email, String location, double averageRate, List<String> careers, Set<Field> fields, List<CounselorReviewListDto> reviews) {
+    public CounselorInfoDto(Long id, String name, Gender gender, String shortIntroduction, String introduction, String contact, String email, String location, String profileImageUrl, double averageRate, List<String> careers, Set<Field> fields, List<CounselorReviewListDto> reviews) {
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -67,6 +68,7 @@ public class CounselorInfoDto {
         this.contact = contact;
         this.email = email;
         this.location = location;
+        this.profileImageUrl = profileImageUrl;
         this.averageRate = averageRate;
         this.careers = careers;
         this.fields = fields;

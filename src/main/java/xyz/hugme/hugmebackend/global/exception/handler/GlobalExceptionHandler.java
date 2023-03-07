@@ -32,9 +32,9 @@ public class GlobalExceptionHandler {
         BindingResult bindingResult = e.getBindingResult();
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
         for (FieldError fieldError : fieldErrors) {
-            sb.append(fieldError.getDefaultMessage()).append("\n");
+            sb.append(fieldError.getDefaultMessage()).append(", ");
         }
-        return createErrorResponse(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, e.getMessage());
+        return createErrorResponse(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, sb.toString());
     }
 
     /**
@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
         StringBuilder sb = new StringBuilder();
         List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
         for (FieldError fieldError : fieldErrors) {
-            sb.append(fieldError.getDefaultMessage()).append("\n");
+            sb.append(fieldError.getDefaultMessage()).append(" ");
         }
 
         return createErrorResponse(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, sb.toString());

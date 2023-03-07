@@ -13,6 +13,7 @@ import xyz.hugme.hugmebackend.domain.user.counselor.CounselorService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 // 로그인 인증 컨트롤러
 @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public class AuthController {
     private final CounselorService counselorService;
     // 상담사 로그인
     @PostMapping("/sign-in/counselors")
-    public ResponseEntity<Void> signInCounselor(@RequestBody LoginDto loginDto, HttpServletRequest request){
+    public ResponseEntity<Void> signInCounselor(@RequestBody @Valid LoginDto loginDto, HttpServletRequest request){
         // username, password 검사
         Counselor validatedCounselor = counselorService.validateSignIn(loginDto.getEmail(), loginDto.getPassword());
 
@@ -36,13 +37,22 @@ public class AuthController {
 
     // 내담자 로그인
     @PostMapping("/sign-in/clients")
-    public ResponseEntity<Void> signInClient(@RequestBody LoginDto loginDto, HttpServletRequest request){
+    public ResponseEntity<Void> signInClient(@RequestBody @Valid LoginDto loginDto, HttpServletRequest request){
         // username, password 검사.
         Client validatedClient = clientService.validateSignIn(loginDto.getEmail(), loginDto.getPassword());
         HttpSession session = request.getSession();
         session.setAttribute("name", validatedClient.getName());
         session.setAttribute("id", validatedClient.getId());
 
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/sign-out")
+    public ResponseEntity<Void> signOut(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if (session != null){
+            session.invalidate();
+        }
         return ResponseEntity.noContent().build();
     }
 
@@ -75,7 +85,6 @@ public class AuthController {
 //        System.out.println("name = " + name);
 //        return header+ "그리고 세션name은" + name;
 //    }
-
 
 }
 

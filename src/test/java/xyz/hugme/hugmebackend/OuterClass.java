@@ -1,7 +1,17 @@
 package xyz.hugme.hugmebackend;
 
 
+import org.junit.jupiter.api.Test;
+
 public class OuterClass {
+
+    @Test
+    public void bool() throws Exception{
+        System.out.println(Boolean.parseBoolean("trUe"));
+        System.out.println(Boolean.parseBoolean("true"));
+
+     }
+
     public String getHello() {
         return "helloOuterClass";
     }
