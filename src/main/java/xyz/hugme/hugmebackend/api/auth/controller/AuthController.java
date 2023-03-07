@@ -47,6 +47,15 @@ public class AuthController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/sign-out")
+    public ResponseEntity<Void> signOut(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if (session != null){
+            session.invalidate();
+        }
+        return ResponseEntity.noContent().build();
+    }
+
 
 
     /** 아래 주석은 실 배포환경에서 CORS 문제가 발생할 시 활용해보자.*/
@@ -76,7 +85,6 @@ public class AuthController {
 //        System.out.println("name = " + name);
 //        return header+ "그리고 세션name은" + name;
 //    }
-
 
 }
 
