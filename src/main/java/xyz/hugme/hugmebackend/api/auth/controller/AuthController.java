@@ -2,6 +2,7 @@ package xyz.hugme.hugmebackend.api.auth.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,9 +10,14 @@ import xyz.hugme.hugmebackend.api.auth.dto.LoginDto;
 import xyz.hugme.hugmebackend.domain.user.client.Client;
 import xyz.hugme.hugmebackend.domain.user.client.ClientService;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
+import xyz.hugme.hugmebackend.domain.user.counselor.CounselorRepository;
 import xyz.hugme.hugmebackend.domain.user.counselor.CounselorService;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -21,6 +27,7 @@ import javax.validation.Valid;
 public class AuthController {
     private final ClientService clientService;
     private final CounselorService counselorService;
+    private final CounselorRepository counselorRepository;
     // 상담사 로그인
     @PostMapping("/sign-in/counselors")
     public ResponseEntity<Void> signInCounselor(@RequestBody @Valid LoginDto loginDto, HttpServletRequest request){
@@ -54,6 +61,56 @@ public class AuthController {
             session.invalidate();
         }
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/all-cookies")
+    public String getAllcookies(HttpServletRequest request){
+        StringBuilder sb = new StringBuilder();
+        System.out.println(request.getClass().getName());
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null){
+            for (Cookie cookie : cookies) {
+                sb.append(cookie.getName() + " : " + cookie.getValue() + " || ");
+            }
+        }
+
+        return sb.toString();
+    }
+
+    @GetMapping("/new-cookie")
+    public String newCookie(HttpServletResponse response){
+        Cookie cookie = new Cookie("name", "value");
+
+        cookie.setMaxAge(10);
+
+        response.addCookie(cookie);
+
+        return cookie.getName();
+    }
+
+    @GetMapping("/delete-cookie")
+    public String deleteCookie(HttpServletResponse response){
+
+        Cookie cookie = new Cookie("name", "value");
+
+        cookie.setMaxAge(0); // A zero value causes the cookie to be deleted.
+        response.addCookie(cookie);
+
+        return cookie.getName();
+    }
+
+
+    private final EntityManagerFactory emf;
+
+    @GetMapping("jpql")
+    public String jpql(){
+        EntityManager em = emf.createEntityManager();
+        Counselor counselor = em.find(Counselor.class, 2L);
+        em.remove(counselor);
+        System.out.println("==========");
+
+        return "OK";
     }
 
 

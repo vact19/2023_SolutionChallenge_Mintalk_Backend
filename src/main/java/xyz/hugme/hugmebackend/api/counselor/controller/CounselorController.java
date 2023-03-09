@@ -24,6 +24,13 @@ public class CounselorController {
     @GetMapping
     public RspsTemplate<CounselorListDto> getList(){
         RspsTemplate<CounselorListDto> rspsTemplate = apiCounselorService.findAll();
+
+        return rspsTemplate;
+    }
+
+    @GetMapping("/counselors")
+    public RspsTemplate<CounselorListDto> getLists(){
+        RspsTemplate<CounselorListDto> rspsTemplate = apiCounselorService.findAll();
         return rspsTemplate;
     }
     // 상담사 회원가입
