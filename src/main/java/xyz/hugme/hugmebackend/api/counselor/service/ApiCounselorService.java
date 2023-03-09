@@ -15,14 +15,12 @@ import xyz.hugme.hugmebackend.domain.user.counselor.*;
 import xyz.hugme.hugmebackend.domain.user.counselor.review.CounselorReview;
 
 import java.util.List;
-import java.util.Set;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
 public class ApiCounselorService {
     private final CounselorService counselorService;
-    private final CounselorRepository counselorRepository;
     private final PasswordEncoder passwordEncoder;
     private final FileService fileService;
 
@@ -33,9 +31,10 @@ public class ApiCounselorService {
 
         return new RspsTemplate<>(HttpStatus.OK.value(), counselorListDtoList);
     }
+
     //상담사를 성별과 분야로 조회
     public RspsTemplate<CounselorListDto> findByGenderAndFields(Gender gender, Field field){
-        List<Counselor> counselorList = counselorRepository.findByGenderAndFields(gender, field);
+        List<Counselor> counselorList = counselorService.findByGenderAndField(gender, field);
         List<CounselorListDto> counselorListDtoList = CounselorListDto.ofList(counselorList);
         return new RspsTemplate<>(HttpStatus.OK.value(), counselorListDtoList);
     }
