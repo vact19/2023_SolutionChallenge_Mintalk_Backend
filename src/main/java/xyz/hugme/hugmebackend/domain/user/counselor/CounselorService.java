@@ -6,6 +6,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
+import xyz.hugme.hugmebackend.api.common.RspsTemplate;
+import xyz.hugme.hugmebackend.api.counselor.dto.CounselorListDto;
 import xyz.hugme.hugmebackend.domain.common.FindBy;
 import xyz.hugme.hugmebackend.global.exception.BusinessException;
 import xyz.hugme.hugmebackend.global.exception.ErrorCode;
@@ -35,8 +37,8 @@ public class CounselorService {
     }
 
     //성별과 분야로 상담사 조회하기
-    public List<Counselor> findByGenderAndFields(@RequestParam Gender gender,@RequestParam Set<Field> fields){
-        return counselorRepository.findByGenderAndFields(gender,fields);
+    public List<Counselor> findCounselorByGenderAndField(Gender gender, Field field){
+        return counselorRepository.findByGenderAndFields(gender,field);
     }
 
     public Counselor findByIdFetchReviews(Long id) {

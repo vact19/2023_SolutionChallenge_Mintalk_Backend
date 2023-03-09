@@ -11,10 +11,7 @@ import xyz.hugme.hugmebackend.api.common.RspsTemplate;
 import xyz.hugme.hugmebackend.api.common.SingleRspsTemplate;
 import xyz.hugme.hugmebackend.api.counselor.dto.*;
 import xyz.hugme.hugmebackend.domain.file.FileService;
-import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
-import xyz.hugme.hugmebackend.domain.user.counselor.CounselorService;
-import xyz.hugme.hugmebackend.domain.user.counselor.Field;
-import xyz.hugme.hugmebackend.domain.user.counselor.Gender;
+import xyz.hugme.hugmebackend.domain.user.counselor.*;
 import xyz.hugme.hugmebackend.domain.user.counselor.review.CounselorReview;
 
 import java.util.List;
@@ -25,6 +22,7 @@ import java.util.Set;
 @Service
 public class ApiCounselorService {
     private final CounselorService counselorService;
+    private final CounselorRepository counselorRepository;
     private final PasswordEncoder passwordEncoder;
     private final FileService fileService;
 
@@ -36,8 +34,8 @@ public class ApiCounselorService {
         return new RspsTemplate<>(HttpStatus.OK.value(), counselorListDtoList);
     }
     //상담사를 성별과 분야로 조회
-    public RspsTemplate<CounselorListDto> findByGenderAndFields(Gender gender, Set<Field> fields){
-        List<Counselor> counselorList = counselorService.findByGenderAndFields(gender, fields);
+    public RspsTemplate<CounselorListDto> findByGenderAndFields(Gender gender, Field field){
+        List<Counselor> counselorList = counselorRepository.findByGenderAndFields(gender, field);
         List<CounselorListDto> counselorListDtoList = CounselorListDto.ofList(counselorList);
         return new RspsTemplate<>(HttpStatus.OK.value(), counselorListDtoList);
     }
@@ -89,6 +87,8 @@ public class ApiCounselorService {
         Hibernate.initialize(mergedCounselor.getCareers()); // 프록시 강제 초기화
         return CounselorMyPageViewDto.of(mergedCounselor);
     }
+
+
 }
 
 

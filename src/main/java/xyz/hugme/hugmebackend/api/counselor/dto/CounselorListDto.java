@@ -35,6 +35,7 @@ public class CounselorListDto {
                 .profileImageUrl(counselor.getProfileImageUrl())
                 .location(counselor.getLocation())
                 .fields(counselor.getFields())
+                .gender(counselor.getGender())
                 .build();
     }
 
