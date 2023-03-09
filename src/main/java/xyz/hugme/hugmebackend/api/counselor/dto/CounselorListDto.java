@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.Hibernate;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 import xyz.hugme.hugmebackend.domain.user.counselor.Field;
+import xyz.hugme.hugmebackend.domain.user.counselor.Gender;
 
 import java.util.List;
 import java.util.Set;
@@ -23,6 +24,8 @@ public class CounselorListDto {
     private String profileImageUrl;
     private Set<Field> fields;
 
+    private Gender gender;;
+
     public static CounselorListDto of(Counselor counselor){
         Hibernate.initialize(counselor.getFields());
         return CounselorListDto.builder()
@@ -32,6 +35,7 @@ public class CounselorListDto {
                 .profileImageUrl(counselor.getProfileImageUrl())
                 .location(counselor.getLocation())
                 .fields(counselor.getFields())
+                .gender(counselor.getGender())
                 .build();
     }
 
@@ -42,12 +46,13 @@ public class CounselorListDto {
     }
 
     @Builder
-    public CounselorListDto(Long id, String name, String shortIntroduction, String location, String profileImageUrl, Set<Field> fields) {
+    public CounselorListDto(Long id, String name, String shortIntroduction, String location, String profileImageUrl,Gender gender,  Set<Field> fields) {
         this.id = id;
         this.name = name;
         this.shortIntroduction = shortIntroduction;
         this.location = location;
         this.fields = fields;
+        this.gender = gender;
         this.profileImageUrl = profileImageUrl;
     }
 }

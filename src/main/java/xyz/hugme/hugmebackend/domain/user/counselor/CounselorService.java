@@ -1,17 +1,20 @@
 package xyz.hugme.hugmebackend.domain.user.counselor;
 
-import com.google.cloud.storage.Storage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
+import xyz.hugme.hugmebackend.api.common.RspsTemplate;
+import xyz.hugme.hugmebackend.api.counselor.dto.CounselorListDto;
 import xyz.hugme.hugmebackend.domain.common.FindBy;
 import xyz.hugme.hugmebackend.global.exception.BusinessException;
 import xyz.hugme.hugmebackend.global.exception.ErrorCode;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -19,8 +22,6 @@ import java.util.Optional;
 public class CounselorService {
     private final CounselorRepository counselorRepository;
     private final PasswordEncoder passwordEncoder;
-    private final Storage storage;
-    private final String COUNSELOR_IMAGE_PREFIX = "counselors/";
 
     @Transactional
     public Counselor save(Counselor counselor) {
@@ -35,11 +36,10 @@ public class CounselorService {
         return counselorRepository.findAll();
     }
 
-
-//    //성별과 분야로 상담사 조회하기
-//    public List<Counselor> findByGenderAndFields(@RequestParam Gender gender,@RequestParam  Set<Field> fields){
-//        return counselorRepository.findByGenderAndFields(gender,fields);
-//    }
+    //성별과 분야로 상담사 조회하기
+    public List<Counselor> findCounselorByGenderAndField(Gender gender, Field field){
+        return counselorRepository.findByGenderAndFields(gender,field);
+    }
 
     public Counselor findByIdFetchReviews(Long id) {
         return validateOptionalCounselor(counselorRepository.findByIdFetchReviews(id), FindBy.ID);
@@ -64,9 +64,7 @@ public class CounselorService {
         if (id == null)
             throw new BusinessException(ErrorCode.COUNSELOR_NOT_AUTHENTICATED);
         return validateOptionalCounselor(counselorRepository.findById(id), FindBy.ID);
-
     }
-
 
     private Counselor validateOptionalCounselor(Optional<Counselor> counselor, FindBy findBy){
         switch (findBy){
@@ -75,8 +73,6 @@ public class CounselorService {
             default: throw new RuntimeException("Enum FindBy를 올바르게 명시하지 않음");
         }
     }
-
-
 }
 
 
