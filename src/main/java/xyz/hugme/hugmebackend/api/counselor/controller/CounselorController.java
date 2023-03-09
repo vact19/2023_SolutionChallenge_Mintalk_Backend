@@ -9,10 +9,12 @@ import xyz.hugme.hugmebackend.api.common.SingleRspsTemplate;
 import xyz.hugme.hugmebackend.api.counselor.dto.*;
 import xyz.hugme.hugmebackend.api.counselor.service.ApiCounselorService;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
+import xyz.hugme.hugmebackend.domain.user.counselor.*;
 import xyz.hugme.hugmebackend.global.auth.SessionCounselor;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -20,12 +22,30 @@ public class CounselorController {
 
     private final ApiCounselorService apiCounselorService;
 
+    private final CounselorRepository counselorRepository;
+
+
     // 테스트용 메소드. 나중에 조회기능 만들때 이거 바꾸면 될 듯
     @GetMapping
     public RspsTemplate<CounselorListDto> getList(){
         RspsTemplate<CounselorListDto> rspsTemplate = apiCounselorService.findAll();
         return rspsTemplate;
     }
+
+    // 상담사 전체 목록 조회
+    @GetMapping ("/counselors/list")
+    public RspsTemplate<CounselorListDto> getCounselorList(){
+        RspsTemplate<CounselorListDto> listDtoRspsTemplate = apiCounselorService.findAll();
+        return listDtoRspsTemplate;
+    }
+    //성별과 분야로 상담사 검색
+    @GetMapping("/counselors")
+    public RspsTemplate<CounselorListDto> getCounselor(@RequestParam(value = "gender") Gender  gender,@RequestParam(value="field") Field field){
+        RspsTemplate<CounselorListDto> rspsTemplate = apiCounselorService.findByGenderAndFields(gender, field);
+        return rspsTemplate;
+    }
+
+
     // 상담사 회원가입
     @PostMapping("/counselors")
     public ResponseEntity<Void> signIn(@RequestBody @Valid CounselorSignUpDto counselorSignUpDto){
@@ -94,12 +114,6 @@ public class CounselorController {
 //
 //        return blob.toString();
 //    }
-
-
-
-
-
-
 
 
 
