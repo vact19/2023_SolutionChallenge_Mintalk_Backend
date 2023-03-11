@@ -3,6 +3,7 @@ package xyz.hugme.hugmebackend.domain.user.counselor;
 import lombok.*;
 import xyz.hugme.hugmebackend.domain.common.BaseTimeEntity;
 import xyz.hugme.hugmebackend.domain.user.counselor.review.CounselorReview;
+import xyz.hugme.hugmebackend.domain.user.usersession.UserSession;
 
 import javax.persistence.*;
 import java.util.List;
@@ -57,6 +58,11 @@ public class Counselor extends BaseTimeEntity {
     // 리뷰 fetch join 용
     @OneToMany(mappedBy = "counselor", fetch = FetchType.LAZY)
     private List<CounselorReview> counselorReviews;
+
+    @Setter
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_session_id")
+    private UserSession userSession;
 
     // 더미데이터 삽입용 생성자
     @Builder

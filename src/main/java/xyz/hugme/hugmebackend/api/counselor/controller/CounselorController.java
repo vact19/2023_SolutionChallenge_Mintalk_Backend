@@ -44,13 +44,13 @@ public class CounselorController {
         return rspsTemplate;
     }
 
-
     // 상담사 회원가입
     @PostMapping("/counselors")
     public ResponseEntity<Void> signIn(@RequestBody @Valid CounselorSignUpDto counselorSignUpDto){
         Counselor savedCounselor = apiCounselorService.signUp(counselorSignUpDto);
         return ResponseEntity.created(URI.create("/counselors/" + savedCounselor.getId())).build();
     }
+
     // 외부 공개용 상담사 마이페이지 조회
     @GetMapping("/counselors/{id}")
     public SingleRspsTemplate<CounselorInfoDto> getPublicCounselorInfo(@PathVariable Long id){
@@ -59,6 +59,7 @@ public class CounselorController {
         SingleRspsTemplate<CounselorInfoDto> rspsTemplate = apiCounselorService.getPublicCounselorInfo(id);
         return rspsTemplate;
     }
+
     //상담사 계정으로 본인 마이페이지 진입
     @GetMapping("/counselors/my-page")
     public SingleRspsTemplate<CounselorMyPageViewDto> viewMyPage(@SessionCounselor Counselor counselor){

@@ -7,19 +7,27 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import xyz.hugme.hugmebackend.api.auth.dto.LoginDto;
 import xyz.hugme.hugmebackend.api.common.RspsTemplate;
 import xyz.hugme.hugmebackend.api.common.SingleRspsTemplate;
 import xyz.hugme.hugmebackend.api.counselor.dto.*;
 import xyz.hugme.hugmebackend.domain.file.FileService;
+import xyz.hugme.hugmebackend.domain.user.Role;
 import xyz.hugme.hugmebackend.domain.user.counselor.*;
 import xyz.hugme.hugmebackend.domain.user.counselor.review.CounselorReview;
+import xyz.hugme.hugmebackend.domain.user.usersession.UserSession;
+import xyz.hugme.hugmebackend.domain.user.usersession.UserSessionService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
 public class ApiCounselorService {
+    private final UserSessionService userSessionService;
     private final CounselorService counselorService;
     private final PasswordEncoder passwordEncoder;
     private final FileService fileService;
@@ -87,7 +95,30 @@ public class ApiCounselorService {
         return CounselorMyPageViewDto.of(mergedCounselor);
     }
 
+    @Transactional
+    public void signIn(LoginDto loginDto, HttpServletRequest request) {
+        // username, password 검사
+        Counselor validatedCounselor = counselorService.validateSignIn(loginDto.getEmail(), loginDto.getPassword());
 
+        // JsessionId 반환
+        HttpSession session = request.getSession();
+        session.setAttribute("id", validatedCounselor.getId());
+        session.setAttribute("name", validatedCounselor.getName());
+        session.setAttribute("role", Role.COUNSELOR);
+
+        // UserSession 객체 생성
+        UserSession userSession = UserSession.builder()
+                .jSessionId(session.getId())
+                .role(Role.COUNSELOR)
+                .expirationDate(LocalDateTime.now().plusDays(14))
+                .build();
+
+        // Counselor 에 UserSession 등록
+        validatedCounselor.setUserSession(userSession);
+
+        // 생성한 세션 저장
+        userSessionService.save(userSession);
+    }
 }
 
 

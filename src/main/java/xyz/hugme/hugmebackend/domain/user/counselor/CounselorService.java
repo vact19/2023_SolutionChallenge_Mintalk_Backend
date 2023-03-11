@@ -48,10 +48,6 @@ public class CounselorService {
         return counselor;
     }
 
-    public Counselor findByEmail(String email) {
-        return validateOptionalCounselor(counselorRepository.findByEmail(email), FindBy.EMAIL);
-    }
-
     public Counselor findById(Long id) {
         return validateOptionalCounselor(counselorRepository.findById(id), FindBy.ID);
     }

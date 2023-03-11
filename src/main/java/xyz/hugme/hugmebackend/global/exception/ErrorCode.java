@@ -21,7 +21,7 @@ public enum ErrorCode {
     , PASSWORD_NOT_MATCHING(400, "비밀번호가 일치하지 않습니다.")
     , COUNSELOR_NOT_AUTHENTICATED(401, "상담사 인증이 필요합니다.")
     , CLIENT_NOT_AUTHENTICATED(401, "내담자 인증이 필요합니다.")
-
+    , SESSION_ID_ALREADY_EXISTS(409, "세션 ID가 중복됩니다. 다시 시도해 주세요.")
     ;
 
 

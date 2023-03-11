@@ -1,20 +1,19 @@
 package xyz.hugme.hugmebackend.api.auth.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.hugme.hugmebackend.api.auth.dto.LoginDto;
+import xyz.hugme.hugmebackend.api.counselor.service.ApiCounselorService;
+import xyz.hugme.hugmebackend.domain.user.Role;
 import xyz.hugme.hugmebackend.domain.user.client.Client;
 import xyz.hugme.hugmebackend.domain.user.client.ClientService;
-import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
-import xyz.hugme.hugmebackend.domain.user.counselor.CounselorRepository;
-import xyz.hugme.hugmebackend.domain.user.counselor.CounselorService;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,19 +25,11 @@ import javax.validation.Valid;
 @RestController
 public class AuthController {
     private final ClientService clientService;
-    private final CounselorService counselorService;
-    private final CounselorRepository counselorRepository;
+    private final ApiCounselorService apiCounselorService;
     // 상담사 로그인
     @PostMapping("/sign-in/counselors")
     public ResponseEntity<Void> signInCounselor(@RequestBody @Valid LoginDto loginDto, HttpServletRequest request){
-        // username, password 검사
-        Counselor validatedCounselor = counselorService.validateSignIn(loginDto.getEmail(), loginDto.getPassword());
-
-        // JsessionId 반환
-        HttpSession session = request.getSession();
-        session.setAttribute("name", validatedCounselor.getName());
-        session.setAttribute("id", validatedCounselor.getId());
-
+        apiCounselorService.signIn(loginDto, request);
         return ResponseEntity.noContent().build();
     }
 
@@ -48,8 +39,9 @@ public class AuthController {
         // username, password 검사.
         Client validatedClient = clientService.validateSignIn(loginDto.getEmail(), loginDto.getPassword());
         HttpSession session = request.getSession();
-        session.setAttribute("name", validatedClient.getName());
         session.setAttribute("id", validatedClient.getId());
+        session.setAttribute("name", validatedClient.getName());
+        session.setAttribute("role", Role.CLIENT);
 
         return ResponseEntity.noContent().build();
     }
@@ -60,6 +52,7 @@ public class AuthController {
         if (session != null){
             session.invalidate();
         }
+
         return ResponseEntity.noContent().build();
     }
 
@@ -79,39 +72,40 @@ public class AuthController {
     }
 
     @GetMapping("/new-cookie")
-    public String newCookie(HttpServletResponse response){
-        Cookie cookie = new Cookie("name", "value");
+    public ResponseEntity<String> newCookie(HttpServletResponse response){
+        ResponseCookie cookie = ResponseCookie.from("name", "value")
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
+                .maxAge(86400) // seconds
+                .build();
 
-        cookie.setMaxAge(10);
-
-        response.addCookie(cookie);
-
-        return cookie.getName();
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body("path : " + cookie.getPath() + " domain : " + cookie.getDomain());
     }
 
     @GetMapping("/delete-cookie")
-    public String deleteCookie(HttpServletResponse response){
+    public ResponseEntity<String> deleteCookie(HttpServletResponse response){
+        ResponseCookie cookie = ResponseCookie.from("name", "value")
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
+                .maxAge(0) // seconds
+                .build();
 
-        Cookie cookie = new Cookie("name", "value");
-
-        cookie.setMaxAge(0); // A zero value causes the cookie to be deleted.
-        response.addCookie(cookie);
-
-        return cookie.getName();
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body("path : " + cookie.getPath() + " domain : " + cookie.getDomain() + " maxage : " + cookie.getMaxAge());
     }
 
-
-    private final EntityManagerFactory emf;
-
-    @GetMapping("jpql")
-    public String jpql(){
-        EntityManager em = emf.createEntityManager();
-        Counselor counselor = em.find(Counselor.class, 2L);
-        em.remove(counselor);
-        System.out.println("==========");
-
-        return "OK";
-    }
+//    @GetMapping("/delete-cookie")
+//    public ResponseEntity<String> deleteCookie(HttpServletResponse response){
+//        ResponseCookie cookie = ResponseCookie.from("name", "value")
+//                .httpOnly(true)
+//                .secure(true)
+//                .sameSite("None")
+//                .maxAge(0) // seconds
+//                .build();
+//
+//        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body("path : " + cookie.getPath() + " domain : " + cookie.getDomain() + " maxage : " + cookie.getMaxAge());
+//    }
 
 
 

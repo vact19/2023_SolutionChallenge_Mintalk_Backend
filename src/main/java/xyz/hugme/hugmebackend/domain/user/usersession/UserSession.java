@@ -20,6 +20,7 @@ public class UserSession extends BaseTimeEntity {
     @Column(nullable = false, unique = true)
     private String jSessionId;
     @Column(length = 10, nullable = false)
+    @Enumerated(EnumType.STRING)
     private Role role;
     @Column(nullable = false)
     private LocalDateTime expirationDate;
