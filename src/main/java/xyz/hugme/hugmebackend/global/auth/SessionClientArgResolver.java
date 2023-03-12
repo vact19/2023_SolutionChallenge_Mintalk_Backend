@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @Component
-public class SessionClientArgumentResolver implements HandlerMethodArgumentResolver {
+public class SessionClientArgResolver implements HandlerMethodArgumentResolver {
     private final HttpSession session;
     private final ClientService clientService;
     @Override

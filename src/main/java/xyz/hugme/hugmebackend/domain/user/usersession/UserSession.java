@@ -31,9 +31,8 @@ public class UserSession extends BaseTimeEntity {
         this.expirationDate = expirationDate;
     }
 
-    // 로그아웃 시 세션ID를 지우고, 기한을 만료시킴
-    public void signOut(LocalDateTime now) {
-        sessionId = "";
-        expirationDate = now;
+    // 로그아웃 시  기한을 만료시킴
+    public void signOut() {
+        expirationDate = LocalDateTime.now();
     }
 }

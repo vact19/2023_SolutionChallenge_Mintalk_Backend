@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.hugme.hugmebackend.domain.common.FindBy;
+import xyz.hugme.hugmebackend.domain.user.usersession.UserSession;
 import xyz.hugme.hugmebackend.global.exception.BusinessException;
 import xyz.hugme.hugmebackend.global.exception.ErrorCode;
 
@@ -64,6 +65,10 @@ public class CounselorService {
             case EMAIL: return counselor.orElseThrow(() -> new BusinessException(ErrorCode.COUNSELOR_EMAIL_NOT_FOUND));
             default: throw new RuntimeException("Enum FindBy를 올바르게 명시하지 않음");
         }
+    }
+
+    public Counselor findByUserSession(UserSession userSession) {
+        return counselorRepository.findByUserSession(userSession);
     }
 }
 

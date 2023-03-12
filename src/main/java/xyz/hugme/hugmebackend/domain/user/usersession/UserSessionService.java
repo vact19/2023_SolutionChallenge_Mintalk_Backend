@@ -10,7 +10,6 @@ import xyz.hugme.hugmebackend.global.exception.ErrorCode;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -28,8 +27,7 @@ public class UserSessionService {
     }
 
     public UserSession findBySessionId(String sessionId){
-        return userSessionRepository.findBySessionId(sessionId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.SESSION_NOT_FOUND));
+        return userSessionRepository.findBySessionId(sessionId);
     }
 
     @Transactional
@@ -41,8 +39,9 @@ public class UserSessionService {
         if (session != null)
             session.invalidate(); // Invalidates this session then unbinds any objects bound to it.
 
+        // 사용자가 의도적으로 sessionId값을 변경시키지 않는 이상. null이 나오지 않는다.
         UserSession userSession = findBySessionId(sessionId);
-        userSession.signOut(LocalDateTime.now());
+        userSession.signOut();
     }
 
     private String getSessionIdFromCookie(HttpServletRequest request){

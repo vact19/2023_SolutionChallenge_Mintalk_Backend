@@ -22,7 +22,6 @@ public class CounselorController {
 
     private final ApiCounselorService apiCounselorService;
 
-
     // 테스트용 메소드. 나중에 조회기능 만들때 이거 바꾸면 될 듯
     @GetMapping
     public RspsTemplate<CounselorListDto> getList(){
@@ -39,7 +38,7 @@ public class CounselorController {
 
     //성별과 분야로 상담사 검색
     @GetMapping("/counselors")
-    public RspsTemplate<CounselorListDto> getCounselor(@RequestParam(value = "gender") Gender  gender,@RequestParam(value="field") Field field){
+    public RspsTemplate<CounselorListDto> getCounselor(@RequestParam(value = "gender") Gender  gender, @RequestParam(value="field") Field field){
         RspsTemplate<CounselorListDto> rspsTemplate = apiCounselorService.findByGenderAndFields(gender, field);
         return rspsTemplate;
     }

@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.hugme.hugmebackend.api.auth.dto.LoginDto;
 import xyz.hugme.hugmebackend.api.client.service.ApiClientService;
+import xyz.hugme.hugmebackend.api.common.UserStatus;
 import xyz.hugme.hugmebackend.api.counselor.service.ApiCounselorService;
 import xyz.hugme.hugmebackend.domain.user.usersession.UserSessionService;
+import xyz.hugme.hugmebackend.global.auth.LogInStatus;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +49,7 @@ public class AuthController {
     }
 
     @GetMapping("/all-cookies")
-    public String getAllcookies(HttpServletRequest request){
+    public String getAllcookies(@LogInStatus UserStatus userStatus, HttpServletRequest request){
         StringBuilder sb = new StringBuilder();
         System.out.println(request.getClass().getName());
         Cookie[] cookies = request.getCookies();

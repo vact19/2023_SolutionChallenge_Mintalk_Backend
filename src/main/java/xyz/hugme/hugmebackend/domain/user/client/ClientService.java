@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.hugme.hugmebackend.domain.common.FindBy;
+import xyz.hugme.hugmebackend.domain.user.usersession.UserSession;
 import xyz.hugme.hugmebackend.global.exception.BusinessException;
 import xyz.hugme.hugmebackend.global.exception.ErrorCode;
 
@@ -60,6 +61,9 @@ public class ClientService {
     }
 
 
+    public Client findByUserSession(UserSession userSession) {
+        return clientRepository.findByUserSession(userSession);
+    }
 }
 
 

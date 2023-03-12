@@ -7,8 +7,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import xyz.hugme.hugmebackend.global.auth.SessionClientArgumentResolver;
-import xyz.hugme.hugmebackend.global.auth.SessionCounselorArgumentResolver;
+import xyz.hugme.hugmebackend.global.auth.LogInStatusArgResolver;
+import xyz.hugme.hugmebackend.global.auth.SessionClientArgResolver;
+import xyz.hugme.hugmebackend.global.auth.SessionCounselorArgResolver;
 import xyz.hugme.hugmebackend.global.converter.FieldConverter;
 import xyz.hugme.hugmebackend.global.converter.GenderConverter;
 
@@ -18,8 +19,9 @@ import java.util.List;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    private final SessionCounselorArgumentResolver sessionCounselorArgumentResolver;
-    private final SessionClientArgumentResolver sessionClientArgumentResolver;
+    private final SessionCounselorArgResolver sessionCounselorArgResolver;
+    private final SessionClientArgResolver sessionClientArgResolver;
+    private final LogInStatusArgResolver logInStatusArgResolver;
 
     // Cors 모두에게 활성화
     @Override
@@ -46,7 +48,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(sessionCounselorArgumentResolver);
-        resolvers.add(sessionClientArgumentResolver);
+        resolvers.add(sessionCounselorArgResolver);
+        resolvers.add(sessionClientArgResolver);
+        resolvers.add(logInStatusArgResolver);
     }
 }
