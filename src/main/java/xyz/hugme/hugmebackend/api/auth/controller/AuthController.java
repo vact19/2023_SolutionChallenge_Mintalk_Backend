@@ -43,7 +43,7 @@ public class AuthController {
     @PostMapping("/sign-out")
     public ResponseEntity<Void> signOut(HttpServletRequest request){
         userSessionService.signOut(request);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().header("Set-Cookie", "session_id=; expires=Thu, 01 Jan 1970 00:00:00 GMT;").build();
     }
 
     @GetMapping("/all-cookies")
