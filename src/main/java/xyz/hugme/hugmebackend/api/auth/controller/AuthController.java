@@ -9,23 +9,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.hugme.hugmebackend.api.auth.dto.LoginDto;
+import xyz.hugme.hugmebackend.api.client.service.ApiClientService;
 import xyz.hugme.hugmebackend.api.counselor.service.ApiCounselorService;
-import xyz.hugme.hugmebackend.domain.user.Role;
-import xyz.hugme.hugmebackend.domain.user.client.Client;
-import xyz.hugme.hugmebackend.domain.user.client.ClientService;
+import xyz.hugme.hugmebackend.domain.user.usersession.UserSessionService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 // 로그인 인증 컨트롤러
 @RequiredArgsConstructor
 @RestController
 public class AuthController {
-    private final ClientService clientService;
     private final ApiCounselorService apiCounselorService;
+    private final ApiClientService apiClientService;
+    private final UserSessionService userSessionService;
+
     // 상담사 로그인
     @PostMapping("/sign-in/counselors")
     public ResponseEntity<Void> signInCounselor(@RequestBody @Valid LoginDto loginDto, HttpServletRequest request){
@@ -36,23 +36,13 @@ public class AuthController {
     // 내담자 로그인
     @PostMapping("/sign-in/clients")
     public ResponseEntity<Void> signInClient(@RequestBody @Valid LoginDto loginDto, HttpServletRequest request){
-        // username, password 검사.
-        Client validatedClient = clientService.validateSignIn(loginDto.getEmail(), loginDto.getPassword());
-        HttpSession session = request.getSession();
-        session.setAttribute("id", validatedClient.getId());
-        session.setAttribute("name", validatedClient.getName());
-        session.setAttribute("role", Role.CLIENT);
-
+        apiClientService.singIn(loginDto, request);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/sign-out")
     public ResponseEntity<Void> signOut(HttpServletRequest request){
-        HttpSession session = request.getSession(false);
-        if (session != null){
-            session.invalidate();
-        }
-
+        userSessionService.signOut(request);
         return ResponseEntity.noContent().build();
     }
 

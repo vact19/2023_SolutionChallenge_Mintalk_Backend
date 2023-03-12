@@ -13,7 +13,10 @@ import xyz.hugme.hugmebackend.api.common.SingleRspsTemplate;
 import xyz.hugme.hugmebackend.api.counselor.dto.*;
 import xyz.hugme.hugmebackend.domain.file.FileService;
 import xyz.hugme.hugmebackend.domain.user.Role;
-import xyz.hugme.hugmebackend.domain.user.counselor.*;
+import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
+import xyz.hugme.hugmebackend.domain.user.counselor.CounselorService;
+import xyz.hugme.hugmebackend.domain.user.counselor.Field;
+import xyz.hugme.hugmebackend.domain.user.counselor.Gender;
 import xyz.hugme.hugmebackend.domain.user.counselor.review.CounselorReview;
 import xyz.hugme.hugmebackend.domain.user.usersession.UserSession;
 import xyz.hugme.hugmebackend.domain.user.usersession.UserSessionService;
@@ -65,6 +68,15 @@ public class ApiCounselorService {
         // password encode 후 save()
         String encodedPassword = passwordEncoder.encode(counselorSignUpDto.getPassword());
         Counselor counselor = counselorSignUpDto.toEntity(encodedPassword);
+
+        // 세션객체 생성 후 counselor 에 저장
+        UserSession userSession = UserSession.builder()
+                .sessionId("")
+                .expirationDate(LocalDateTime.now())
+                .role(Role.COUNSELOR)
+                .build();
+        counselor.setUserSession(userSessionService.save(userSession));
+
         return counselorService.save(counselor);
     }
 
@@ -100,24 +112,15 @@ public class ApiCounselorService {
         // username, password 검사
         Counselor validatedCounselor = counselorService.validateSignIn(loginDto.getEmail(), loginDto.getPassword());
 
-        // JsessionId 반환
+        // session 생성
         HttpSession session = request.getSession();
         session.setAttribute("id", validatedCounselor.getId());
         session.setAttribute("name", validatedCounselor.getName());
         session.setAttribute("role", Role.COUNSELOR);
 
-        // UserSession 객체 생성
-        UserSession userSession = UserSession.builder()
-                .jSessionId(session.getId())
-                .role(Role.COUNSELOR)
-                .expirationDate(LocalDateTime.now().plusDays(14))
-                .build();
-
-        // Counselor 에 UserSession 등록
-        validatedCounselor.setUserSession(userSession);
-
-        // 생성한 세션 저장
-        userSessionService.save(userSession);
+        // UserSession 의 만료기간 +14일
+        validatedCounselor.getUserSession().
+                setExpirationDate(LocalDateTime.now().plusDays(14));
     }
 }
 

@@ -1,9 +1,6 @@
 package xyz.hugme.hugmebackend.domain.user.client;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import xyz.hugme.hugmebackend.domain.common.BaseTimeEntity;
 import xyz.hugme.hugmebackend.domain.user.counselor.Gender;
 import xyz.hugme.hugmebackend.domain.user.usersession.UserSession;
@@ -27,6 +24,7 @@ public class Client extends BaseTimeEntity {
     @Column(nullable = false)
     private String password;
 
+    @Setter
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_session_id")
     private UserSession userSession;

@@ -1,9 +1,6 @@
 package xyz.hugme.hugmebackend.domain.user.usersession;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import xyz.hugme.hugmebackend.domain.common.BaseTimeEntity;
 import xyz.hugme.hugmebackend.domain.user.Role;
 
@@ -18,16 +15,18 @@ public class UserSession extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false, unique = true)
-    private String jSessionId;
+    private String sessionId;
     @Column(length = 10, nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Setter
     @Column(nullable = false)
     private LocalDateTime expirationDate;
 
     @Builder
-    public UserSession(String jSessionId, Role role, LocalDateTime expirationDate) {
-        this.jSessionId = jSessionId;
+    public UserSession(String sessionId, Role role, LocalDateTime expirationDate) {
+        this.sessionId = sessionId;
         this.role = role;
         this.expirationDate = expirationDate;
     }
