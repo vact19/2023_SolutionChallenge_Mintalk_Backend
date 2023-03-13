@@ -2,6 +2,7 @@ package xyz.hugme.hugmebackend.api.auth.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,9 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.hugme.hugmebackend.api.auth.dto.LoginDto;
-import xyz.hugme.hugmebackend.api.client.service.ApiClientService;
+import xyz.hugme.hugmebackend.api.auth.service.AuthService;
+import xyz.hugme.hugmebackend.api.common.SingleRspsTemplate;
 import xyz.hugme.hugmebackend.api.common.UserStatus;
-import xyz.hugme.hugmebackend.api.counselor.service.ApiCounselorService;
+import xyz.hugme.hugmebackend.domain.user.Role;
 import xyz.hugme.hugmebackend.domain.user.usersession.UserSessionService;
 import xyz.hugme.hugmebackend.global.auth.LogInStatus;
 
@@ -24,28 +26,31 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RestController
 public class AuthController {
-    private final ApiCounselorService apiCounselorService;
-    private final ApiClientService apiClientService;
+    private final AuthService authService;
     private final UserSessionService userSessionService;
 
     // 상담사 로그인
     @PostMapping("/sign-in/counselors")
-    public ResponseEntity<Void> signInCounselor(@RequestBody @Valid LoginDto loginDto, HttpServletRequest request){
-        apiCounselorService.signIn(loginDto, request);
-        return ResponseEntity.noContent().build();
+    public SingleRspsTemplate<UserStatus> signInCounselor(@RequestBody @Valid LoginDto loginDto,HttpServletRequest request){
+        String username = authService.signInCounselor(loginDto, request);
+
+        UserStatus userStatus = new UserStatus(true, Role.CLIENT, username);// 로그인이 성공했으므로, 그것에 맞는 UserStatus 객체 반환
+        return new SingleRspsTemplate<>(HttpStatus.OK.value(), userStatus);
     }
 
     // 내담자 로그인
     @PostMapping("/sign-in/clients")
-    public ResponseEntity<Void> signInClient(@RequestBody @Valid LoginDto loginDto, HttpServletRequest request){
-        apiClientService.singIn(loginDto, request);
-        return ResponseEntity.noContent().build();
+    public SingleRspsTemplate<UserStatus> signInClient(@RequestBody @Valid LoginDto loginDto, HttpServletRequest request){
+        String username = authService.singInClient(loginDto, request);
+
+        UserStatus userStatus = new UserStatus(true, Role.CLIENT, username);
+        return new SingleRspsTemplate<>(HttpStatus.OK.value(), userStatus);
     }
 
     @PostMapping("/sign-out")
     public ResponseEntity<Void> signOut(HttpServletRequest request){
         userSessionService.signOut(request);
-        return ResponseEntity.noContent().header("Set-Cookie", "session_id=; expires=Thu, 01 Jan 1970 00:00:00 GMT;").build();
+        return ResponseEntity.noContent().header("Set-Cookie", "session_id=; expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; SameSite=None").build();
     }
 
     @GetMapping("/all-cookies")

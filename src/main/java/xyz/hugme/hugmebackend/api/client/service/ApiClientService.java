@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import xyz.hugme.hugmebackend.api.auth.dto.LoginDto;
 import xyz.hugme.hugmebackend.api.client.dto.SaveClientDto;
 import xyz.hugme.hugmebackend.domain.user.Role;
 import xyz.hugme.hugmebackend.domain.user.client.Client;
@@ -12,8 +11,6 @@ import xyz.hugme.hugmebackend.domain.user.client.ClientService;
 import xyz.hugme.hugmebackend.domain.user.usersession.UserSession;
 import xyz.hugme.hugmebackend.domain.user.usersession.UserSessionService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
@@ -41,18 +38,7 @@ public class ApiClientService {
         return clientService.save(client);
     }
 
-    public void singIn(LoginDto loginDto, HttpServletRequest request) {
-        //  username, password 검사
-        Client validatedClient = clientService.validateSignIn(loginDto.getEmail(), loginDto.getPassword());
-        HttpSession session = request.getSession();
-        session.setAttribute("id", validatedClient.getId());
-        session.setAttribute("name", validatedClient.getName());
-        session.setAttribute("role", Role.CLIENT);
 
-        // UserSession 의 만료기간 +14일
-        validatedClient.getUserSession().
-                setExpirationDate(LocalDateTime.now().plusDays(14));
-    }
 }
 
 

@@ -7,7 +7,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import xyz.hugme.hugmebackend.api.auth.dto.LoginDto;
 import xyz.hugme.hugmebackend.api.common.RspsTemplate;
 import xyz.hugme.hugmebackend.api.common.SingleRspsTemplate;
 import xyz.hugme.hugmebackend.api.counselor.dto.*;
@@ -21,8 +20,6 @@ import xyz.hugme.hugmebackend.domain.user.counselor.review.CounselorReview;
 import xyz.hugme.hugmebackend.domain.user.usersession.UserSession;
 import xyz.hugme.hugmebackend.domain.user.usersession.UserSessionService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -105,22 +102,6 @@ public class ApiCounselorService {
         Hibernate.initialize(mergedCounselor.getFields()); // 프록시 강제 초기화
         Hibernate.initialize(mergedCounselor.getCareers()); // 프록시 강제 초기화
         return CounselorMyPageViewDto.of(mergedCounselor);
-    }
-
-    @Transactional
-    public void signIn(LoginDto loginDto, HttpServletRequest request) {
-        // username, password 검사
-        Counselor validatedCounselor = counselorService.validateSignIn(loginDto.getEmail(), loginDto.getPassword());
-
-        // session 생성
-        HttpSession session = request.getSession();
-        session.setAttribute("id", validatedCounselor.getId());
-        session.setAttribute("name", validatedCounselor.getName());
-        session.setAttribute("role", Role.COUNSELOR);
-
-        // UserSession 의 만료기간 +14일
-        validatedCounselor.getUserSession().
-                setExpirationDate(LocalDateTime.now().plusDays(14));
     }
 }
 
