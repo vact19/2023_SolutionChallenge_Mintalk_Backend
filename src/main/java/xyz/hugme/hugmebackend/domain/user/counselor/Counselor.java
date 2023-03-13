@@ -39,7 +39,7 @@ public class Counselor extends BaseTimeEntity {
     // image url 은 빌더에 없음. 아래의 속성값은 기본 프로필사진
     @Column(nullable = false)
     private String profileImageUrl = "https://storage.googleapis.com/mintalk-image-storage/counselors/show-me-pocky.jpg";
-    // blobName 은 빌더에 없음. 아래의 속성값은 기본 프로필사진
+    // blobName 은 빌더에 없음. 아래의 속성값은 기본 프로필사진의 식별경로인 blobName
     // blobName 이란, GCS 버킷에 저장된 Object 가 가진 이름이다. 이 이름은 하나의 버킷 안에서는 유일하다.
     @Column(nullable = false)
     private String blobName = "counselors/show-me-pocky.jpg";
@@ -66,7 +66,7 @@ public class Counselor extends BaseTimeEntity {
 
     // 더미데이터 삽입용 생성자
     @Builder
-    public Counselor(String name, String email, String password, Gender gender, String shortIntroduction, String introduction, String contact, String location, List<String> careers, Set<Field> fields) {
+    public Counselor(String name, String email, String password, Gender gender, String shortIntroduction, String introduction, String contact, String location, String profileImageUrl, List<String> careers, Set<Field> fields) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -75,6 +75,7 @@ public class Counselor extends BaseTimeEntity {
         this.introduction = introduction;
         this.contact = contact;
         this.location = location;
+        this.profileImageUrl = profileImageUrl;
         this.careers = careers;
         this.fields = fields;
     }

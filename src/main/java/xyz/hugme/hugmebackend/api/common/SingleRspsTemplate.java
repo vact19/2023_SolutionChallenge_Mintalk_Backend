@@ -10,14 +10,21 @@ public class SingleRspsTemplate<T> {
     private T data;
     private UserStatus userStatus;
 
-    public SingleRspsTemplate(int statusCode, T data) {
+
+    // 응답할 data가 없을 때, 로그인 정보만 받기
+    public SingleRspsTemplate(int statusCode, UserStatus userStatus) {
         this.statusCode = statusCode;
-        this.data = data;
+        this.userStatus = userStatus;
     }
 
     public SingleRspsTemplate(int statusCode, T data, UserStatus userStatus) {
         this.statusCode = statusCode;
         this.data = data;
         this.userStatus = userStatus;
+    }
+
+    public SingleRspsTemplate(int statusCode, T data) {
+        this.statusCode = statusCode;
+        this.data = data;
     }
 }

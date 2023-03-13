@@ -7,7 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import xyz.hugme.hugmebackend.global.auth.LogInStatusArgResolver;
+import xyz.hugme.hugmebackend.global.auth.SessionStatusArgResolver;
 import xyz.hugme.hugmebackend.global.auth.SessionClientArgResolver;
 import xyz.hugme.hugmebackend.global.auth.SessionCounselorArgResolver;
 import xyz.hugme.hugmebackend.global.converter.FieldConverter;
@@ -21,7 +21,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     private final SessionCounselorArgResolver sessionCounselorArgResolver;
     private final SessionClientArgResolver sessionClientArgResolver;
-    private final LogInStatusArgResolver logInStatusArgResolver;
+    private final SessionStatusArgResolver sessionStatusArgResolver;
 
     // Cors 모두에게 활성화
     @Override
@@ -33,6 +33,7 @@ public class WebConfig implements WebMvcConfigurer {
                         ,HttpMethod.PATCH.name()
                         ,HttpMethod.PUT.name()
                         ,HttpMethod.DELETE.name()
+                        ,HttpMethod.OPTIONS.name()
                 )
                 .allowCredentials(true)
                 .maxAge(1800)
@@ -48,8 +49,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(sessionStatusArgResolver); //SessionStatusResolver 와 Session...Resolver를 함께 사용할 때는 Session...Resolver를 먼저 사용한다.
         resolvers.add(sessionCounselorArgResolver);
         resolvers.add(sessionClientArgResolver);
-        resolvers.add(logInStatusArgResolver);
     }
 }

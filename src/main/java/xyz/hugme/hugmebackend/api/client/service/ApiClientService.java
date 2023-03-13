@@ -29,7 +29,6 @@ public class ApiClientService {
 
         // 세션객체 생성 후 client 에 저장
         UserSession userSession = UserSession.builder()
-                .sessionId("")
                 .expirationDate(LocalDateTime.now())
                 .role(Role.CLIENT)
                 .build();

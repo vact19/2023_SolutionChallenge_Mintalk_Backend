@@ -14,7 +14,8 @@ public class UserSession extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true)
+    @Setter
+    @Column(unique = true)
     private String sessionId;
     @Column(length = 10, nullable = false)
     @Enumerated(EnumType.STRING)
@@ -34,5 +35,11 @@ public class UserSession extends BaseTimeEntity {
     // 로그아웃 시  기한을 만료시킴
     public void signOut() {
         expirationDate = LocalDateTime.now();
+        sessionId = null;
+    }
+
+    public void signIn(String sessionId) {
+        expirationDate = LocalDateTime.now().plusDays(14);
+        this.sessionId = sessionId;
     }
 }

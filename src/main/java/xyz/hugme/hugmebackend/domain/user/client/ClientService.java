@@ -43,8 +43,8 @@ public class ClientService {
     public Client findBySessionClientId(Long id){
         if (id == null)
             throw new BusinessException(ErrorCode.CLIENT_NOT_AUTHENTICATED);
-        return clientRepository.findById(id).
-                orElseThrow(() -> new BusinessException(ErrorCode.CLIENT_ID_NOT_FOUND));
+        return clientRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(ErrorCode.CLIENT_NOT_AUTHENTICATED));
     }
 
     public Client findById(Long id) {
@@ -59,7 +59,6 @@ public class ClientService {
             default: throw new RuntimeException("Enum FindBy를 올바르게 명시하지 않음");
         }
     }
-
 
     public Client findByUserSession(UserSession userSession) {
         return clientRepository.findByUserSession(userSession);

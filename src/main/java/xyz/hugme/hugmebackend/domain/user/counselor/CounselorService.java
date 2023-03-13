@@ -56,7 +56,8 @@ public class CounselorService {
     public Counselor findBySessionCounselorId(Long id) {
         if (id == null)
             throw new BusinessException(ErrorCode.COUNSELOR_NOT_AUTHENTICATED);
-        return validateOptionalCounselor(counselorRepository.findById(id), FindBy.ID);
+        return counselorRepository.findById(id).
+                orElseThrow(() -> new BusinessException(ErrorCode.COUNSELOR_NOT_AUTHENTICATED));
     }
 
     private Counselor validateOptionalCounselor(Optional<Counselor> counselor, FindBy findBy){

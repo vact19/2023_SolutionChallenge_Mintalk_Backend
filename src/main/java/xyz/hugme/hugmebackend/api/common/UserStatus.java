@@ -14,4 +14,9 @@ public class UserStatus {
         this.role = role;
         this.username = username;
     }
+
+    // 로그인 여부만이 필요할 때 (즉, 로그인되어있지 않은 경우)
+    public UserStatus(boolean isLoggedIn) {
+        this.isLoggedIn = isLoggedIn;
+    }
 }
