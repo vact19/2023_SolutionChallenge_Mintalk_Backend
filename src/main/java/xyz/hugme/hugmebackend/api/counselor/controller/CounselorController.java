@@ -10,8 +10,10 @@ import xyz.hugme.hugmebackend.api.common.UserStatus;
 import xyz.hugme.hugmebackend.api.counselor.dto.*;
 import xyz.hugme.hugmebackend.api.counselor.service.ApiCounselorService;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
-import xyz.hugme.hugmebackend.global.auth.SessionStatus;
+import xyz.hugme.hugmebackend.domain.user.counselor.Field;
+import xyz.hugme.hugmebackend.domain.user.counselor.Gender;
 import xyz.hugme.hugmebackend.global.auth.SessionCounselor;
+import xyz.hugme.hugmebackend.global.auth.SessionStatus;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -23,21 +25,14 @@ public class CounselorController {
 
     private final ApiCounselorService apiCounselorService;
 
-    // 상담사 전체 목록 조회
-    @GetMapping ("/counselors")
-    public RspsTemplate<CounselorListDto> getCounselorList(@SessionStatus UserStatus userStatus){
-        List<CounselorListDto> listDtos = apiCounselorService.findAll();
-
-        return new RspsTemplate<>(HttpStatus.OK.value(), listDtos, userStatus);
+    //성별과 분야로 상담사 검색
+    @GetMapping("/counselors")
+    public RspsTemplate<CounselorListDto> getCounselor(@RequestParam(required = false, value = "gender") Gender gender,
+                                                       @RequestParam(required = false, value="field") Field field,
+                                                       @SessionStatus UserStatus userStatus){
+        List<CounselorListDto> counselorListDtos = apiCounselorService.findByGenderAndFields(gender, field);
+        return new RspsTemplate<>(HttpStatus.OK.value(), counselorListDtos, userStatus);
     }
-
-//    //성별과 분야로 상담사 검색
-//    @GetMapping("/counselors")
-//    public RspsTemplate<CounselorListDto> getCounselor(@RequestParam(value = "gender") Gender  gender, @RequestParam(value="field") Field field,
-//                                                       @SessionStatus UserStatus userStatus){
-//        List<CounselorListDto> counselorListDtos = apiCounselorService.findByGenderAndFields(gender, field);
-//        return new RspsTemplate<>(HttpStatus.OK.value(), counselorListDtos, userStatus);
-//    }
 
     // 상담사 회원가입
     @PostMapping("/counselors")

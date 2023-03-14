@@ -35,7 +35,22 @@ public class CounselorService {
 
     //성별과 분야로 상담사 조회하기
     public List<Counselor> findByGenderAndField(Gender gender, Field field){
-        return counselorRepository.findByGenderAndFields(gender,field);
+        if (gender == null && field == null)
+            return findAll();
+        if (gender != null && field != null)
+            return counselorRepository.findByGenderAndFields(gender, field);
+        if (gender != null)
+            return findByGender(gender);
+        else // field != null
+            return findByField(field);
+    }
+
+    public List<Counselor> findByGender(Gender gender){
+        return counselorRepository.findByGender(gender);
+    }
+
+    public List<Counselor> findByField(Field field){
+        return counselorRepository.findByFields(field);
     }
 
     public Counselor findByIdFetchReviews(Long id) {

@@ -40,6 +40,7 @@ public class ApiCounselorService {
     //상담사를 성별과 분야로 조회
     public List<CounselorListDto> findByGenderAndFields(Gender gender, Field field){
         List<Counselor> counselorList = counselorService.findByGenderAndField(gender, field);
+
         return CounselorListDto.ofList(counselorList);
     }
 

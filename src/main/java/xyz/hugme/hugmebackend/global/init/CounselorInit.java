@@ -143,7 +143,7 @@ public class CounselorInit {
 
         Counselor counselor7 = Counselor.builder()
                 .name("침착맨")
-                .shortIntroduction("이병건이올시다")
+                .shortIntroduction("이병건")
                 .introduction("저는 나와의 싸움에서 자꾸 져요. 그런데 다르게 생각해보면 이긴 쪽도 나잖아?")
                 .gender(Gender.MALE)
                 .fields(fieldsSet2)
