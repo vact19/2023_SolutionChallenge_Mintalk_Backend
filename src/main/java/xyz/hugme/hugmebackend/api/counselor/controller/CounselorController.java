@@ -6,15 +6,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.hugme.hugmebackend.api.common.RspsTemplate;
 import xyz.hugme.hugmebackend.api.common.SingleRspsTemplate;
+import xyz.hugme.hugmebackend.api.common.UserStatus;
 import xyz.hugme.hugmebackend.api.counselor.dto.*;
 import xyz.hugme.hugmebackend.api.counselor.service.ApiCounselorService;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
-import xyz.hugme.hugmebackend.domain.user.counselor.*;
+import xyz.hugme.hugmebackend.domain.user.counselor.Field;
+import xyz.hugme.hugmebackend.domain.user.counselor.Gender;
 import xyz.hugme.hugmebackend.global.auth.SessionCounselor;
+import xyz.hugme.hugmebackend.global.auth.SessionStatus;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.*;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -22,56 +25,48 @@ public class CounselorController {
 
     private final ApiCounselorService apiCounselorService;
 
-    private final CounselorRepository counselorRepository;
-
-
-    // 테스트용 메소드. 나중에 조회기능 만들때 이거 바꾸면 될 듯
-    @GetMapping
-    public RspsTemplate<CounselorListDto> getList(){
-        RspsTemplate<CounselorListDto> rspsTemplate = apiCounselorService.findAll();
-        return rspsTemplate;
-    }
-
-    // 상담사 전체 목록 조회
-    @GetMapping ("/counselors/list")
-    public RspsTemplate<CounselorListDto> getCounselorList(){
-        RspsTemplate<CounselorListDto> listDtoRspsTemplate = apiCounselorService.findAll();
-        return listDtoRspsTemplate;
-    }
     //성별과 분야로 상담사 검색
     @GetMapping("/counselors")
-    public RspsTemplate<CounselorListDto> getCounselor(@RequestParam(value = "gender") Gender  gender,@RequestParam(value="field") Field field){
-        RspsTemplate<CounselorListDto> rspsTemplate = apiCounselorService.findByGenderAndFields(gender, field);
-        return rspsTemplate;
+    public RspsTemplate<CounselorListDto> getCounselor(@RequestParam(required = false, value = "gender") Gender gender,
+                                                       @RequestParam(required = false, value="field") Field field,
+                                                       @SessionStatus UserStatus userStatus){
+        List<CounselorListDto> counselorListDtos = apiCounselorService.findByGenderAndFields(gender, field);
+        return new RspsTemplate<>(HttpStatus.OK.value(), counselorListDtos, userStatus);
     }
-
 
     // 상담사 회원가입
     @PostMapping("/counselors")
-    public ResponseEntity<Void> signIn(@RequestBody @Valid CounselorSignUpDto counselorSignUpDto){
+    public ResponseEntity<SingleRspsTemplate<?>> signIn(@RequestBody @Valid CounselorSignUpDto counselorSignUpDto,
+                                                        @SessionStatus UserStatus userStatus){
         Counselor savedCounselor = apiCounselorService.signUp(counselorSignUpDto);
-        return ResponseEntity.created(URI.create("/counselors/" + savedCounselor.getId())).build();
+        SingleRspsTemplate<?> rspsTemplate = new SingleRspsTemplate<>(HttpStatus.CREATED.value(), userStatus);
+        return ResponseEntity.created(URI.create("/counselors/" + savedCounselor.getId())).body(rspsTemplate);
     }
+
     // 외부 공개용 상담사 마이페이지 조회
     @GetMapping("/counselors/{id}")
-    public SingleRspsTemplate<CounselorInfoDto> getPublicCounselorInfo(@PathVariable Long id){
+    public SingleRspsTemplate<CounselorInfoDto> getPublicCounselorInfo(@PathVariable Long id, @SessionStatus UserStatus userStatus){
         // id로 리뷰, 상담사 찾고
         // 해당 정보들을 Dto에 넣어준다
-        SingleRspsTemplate<CounselorInfoDto> rspsTemplate = apiCounselorService.getPublicCounselorInfo(id);
-        return rspsTemplate;
+        CounselorInfoDto counselorInfoDto = apiCounselorService.getPublicCounselorInfo(id);
+        return new SingleRspsTemplate<>(HttpStatus.OK.value(), counselorInfoDto, userStatus);
     }
+
     //상담사 계정으로 본인 마이페이지 진입
     @GetMapping("/counselors/my-page")
-    public SingleRspsTemplate<CounselorMyPageViewDto> viewMyPage(@SessionCounselor Counselor counselor){
+    public SingleRspsTemplate<CounselorMyPageViewDto> viewMyPage(@SessionStatus UserStatus userStatus,
+                                                                 @SessionCounselor Counselor counselor){
         CounselorMyPageViewDto resultDto = apiCounselorService.viewMyPage(counselor);
-        return new SingleRspsTemplate<>(HttpStatus.OK.value(), resultDto);
+        return new SingleRspsTemplate<>(HttpStatus.OK.value(), resultDto, userStatus);
     }
+
     // 상담사 마이페이지 수정
     // 자기가 자기 페이지를 수정하는 것이므로, PathVariable 사용할 필요 없다.
     @PatchMapping("/counselors/my-page")
-    public ResponseEntity<Void> editMyPage(@SessionCounselor Counselor counselor, CounselorMyPageEditDto counselorMyPageEditDto){
+    public SingleRspsTemplate<?> editMyPage(@SessionStatus UserStatus userStatus,
+                                            @SessionCounselor Counselor counselor, CounselorMyPageEditDto counselorMyPageEditDto){
         apiCounselorService.editCounselor(counselor, counselorMyPageEditDto);
-        return ResponseEntity.noContent().build();
+        return new SingleRspsTemplate<>(HttpStatus.OK.value(), userStatus);
     }
 
 //    @PostMapping("/upload")

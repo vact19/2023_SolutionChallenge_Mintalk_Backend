@@ -5,16 +5,13 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
-import xyz.hugme.hugmebackend.api.common.RspsTemplate;
-import xyz.hugme.hugmebackend.api.counselor.dto.CounselorListDto;
 import xyz.hugme.hugmebackend.domain.common.FindBy;
+import xyz.hugme.hugmebackend.domain.user.usersession.UserSession;
 import xyz.hugme.hugmebackend.global.exception.BusinessException;
 import xyz.hugme.hugmebackend.global.exception.ErrorCode;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -37,8 +34,23 @@ public class CounselorService {
     }
 
     //성별과 분야로 상담사 조회하기
-    public List<Counselor> findCounselorByGenderAndField(Gender gender, Field field){
-        return counselorRepository.findByGenderAndFields(gender,field);
+    public List<Counselor> findByGenderAndField(Gender gender, Field field){
+        if (gender == null && field == null)
+            return findAll();
+        if (gender != null && field != null)
+            return counselorRepository.findByGenderAndFields(gender, field);
+        if (gender != null)
+            return findByGender(gender);
+        else // field != null
+            return findByField(field);
+    }
+
+    public List<Counselor> findByGender(Gender gender){
+        return counselorRepository.findByGender(gender);
+    }
+
+    public List<Counselor> findByField(Field field){
+        return counselorRepository.findByFields(field);
     }
 
     public Counselor findByIdFetchReviews(Long id) {
@@ -52,10 +64,6 @@ public class CounselorService {
         return counselor;
     }
 
-    public Counselor findByEmail(String email) {
-        return validateOptionalCounselor(counselorRepository.findByEmail(email), FindBy.EMAIL);
-    }
-
     public Counselor findById(Long id) {
         return validateOptionalCounselor(counselorRepository.findById(id), FindBy.ID);
     }
@@ -63,7 +71,8 @@ public class CounselorService {
     public Counselor findBySessionCounselorId(Long id) {
         if (id == null)
             throw new BusinessException(ErrorCode.COUNSELOR_NOT_AUTHENTICATED);
-        return validateOptionalCounselor(counselorRepository.findById(id), FindBy.ID);
+        return counselorRepository.findById(id).
+                orElseThrow(() -> new BusinessException(ErrorCode.COUNSELOR_NOT_AUTHENTICATED));
     }
 
     private Counselor validateOptionalCounselor(Optional<Counselor> counselor, FindBy findBy){
@@ -72,6 +81,10 @@ public class CounselorService {
             case EMAIL: return counselor.orElseThrow(() -> new BusinessException(ErrorCode.COUNSELOR_EMAIL_NOT_FOUND));
             default: throw new RuntimeException("Enum FindBy를 올바르게 명시하지 않음");
         }
+    }
+
+    public Counselor findByUserSession(UserSession userSession) {
+        return counselorRepository.findByUserSession(userSession);
     }
 }
 

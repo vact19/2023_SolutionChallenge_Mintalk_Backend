@@ -10,11 +10,12 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import xyz.hugme.hugmebackend.domain.user.client.Client;
 import xyz.hugme.hugmebackend.domain.user.client.ClientService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @Component
-public class SessionClientArgumentResolver implements HandlerMethodArgumentResolver {
+public class SessionClientArgResolver implements HandlerMethodArgumentResolver {
     private final HttpSession session;
     private final ClientService clientService;
     @Override
@@ -26,7 +27,12 @@ public class SessionClientArgumentResolver implements HandlerMethodArgumentResol
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        Long sessionClientId = (Long) session.getAttribute("id");
+        HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
+        HttpSession session = request.getSession(false);
+
+        Long sessionClientId = session == null ?
+                null : (Long) session.getAttribute("id");
+
         return clientService.findBySessionClientId(sessionClientId);
     }
 }

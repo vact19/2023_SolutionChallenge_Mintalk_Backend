@@ -1,60 +1,127 @@
 package xyz.hugme.hugmebackend.api.auth.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.hugme.hugmebackend.api.auth.dto.LoginDto;
-import xyz.hugme.hugmebackend.domain.user.client.Client;
-import xyz.hugme.hugmebackend.domain.user.client.ClientService;
+import xyz.hugme.hugmebackend.api.auth.service.AuthService;
+import xyz.hugme.hugmebackend.api.common.SingleRspsTemplate;
+import xyz.hugme.hugmebackend.api.common.UserStatus;
+import xyz.hugme.hugmebackend.domain.user.Role;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
-import xyz.hugme.hugmebackend.domain.user.counselor.CounselorService;
+import xyz.hugme.hugmebackend.global.auth.SessionStatus;
+import xyz.hugme.hugmebackend.global.auth.SessionCounselor;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 // 로그인 인증 컨트롤러
 @RequiredArgsConstructor
 @RestController
 public class AuthController {
-    private final ClientService clientService;
-    private final CounselorService counselorService;
+    private final AuthService authService;
+
     // 상담사 로그인
     @PostMapping("/sign-in/counselors")
-    public ResponseEntity<Void> signInCounselor(@RequestBody @Valid LoginDto loginDto, HttpServletRequest request){
-        // username, password 검사
-        Counselor validatedCounselor = counselorService.validateSignIn(loginDto.getEmail(), loginDto.getPassword());
+    public SingleRspsTemplate<Void> signInCounselor(@RequestBody @Valid LoginDto loginDto,HttpServletRequest request){
+        String username = authService.signInCounselor(loginDto, request);
 
-        // JsessionId 반환
-        HttpSession session = request.getSession();
-        session.setAttribute("name", validatedCounselor.getName());
-        session.setAttribute("id", validatedCounselor.getId());
-
-        return ResponseEntity.noContent().build();
+        UserStatus userStatus = new UserStatus(true, Role.COUNSELOR, username);// 로그인이 성공했으므로, 그것에 맞는 UserStatus 객체 반환
+        return new SingleRspsTemplate<>(HttpStatus.OK.value(), userStatus);
     }
 
     // 내담자 로그인
     @PostMapping("/sign-in/clients")
-    public ResponseEntity<Void> signInClient(@RequestBody @Valid LoginDto loginDto, HttpServletRequest request){
-        // username, password 검사.
-        Client validatedClient = clientService.validateSignIn(loginDto.getEmail(), loginDto.getPassword());
-        HttpSession session = request.getSession();
-        session.setAttribute("name", validatedClient.getName());
-        session.setAttribute("id", validatedClient.getId());
+    public SingleRspsTemplate<Void> signInClient(@RequestBody @Valid LoginDto loginDto, HttpServletRequest request){
+        String username = authService.singInClient(loginDto, request);
 
-        return ResponseEntity.noContent().build();
+        UserStatus userStatus = new UserStatus(true, Role.CLIENT, username);
+        return new SingleRspsTemplate<>(HttpStatus.OK.value(), userStatus);
     }
 
     @PostMapping("/sign-out")
-    public ResponseEntity<Void> signOut(HttpServletRequest request){
-        HttpSession session = request.getSession(false);
-        if (session != null){
-            session.invalidate();
-        }
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<SingleRspsTemplate<Void>> signOut(HttpServletRequest request){
+        authService.signOut(request);
+
+        UserStatus userStatus = new UserStatus(false);
+        SingleRspsTemplate<Void> rspsTemplate = new SingleRspsTemplate<>(HttpStatus.OK.value(), userStatus);
+
+        return ResponseEntity.ok().header("Set-Cookie", "session_id=; expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; SameSite=None").
+                body(rspsTemplate);
     }
+
+    @PostMapping("/invalidatesession")
+    public String invalidatesession(HttpServletRequest request){
+        request.getSession().invalidate();
+        return "inval";
+    }
+
+    // 아래 메소드 4개는 테스트용.
+    @GetMapping("/all-cookies")
+    public String getAllcookies(HttpServletRequest request){
+        StringBuilder sb = new StringBuilder();
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null){
+            for (Cookie cookie : cookies) {
+                sb.append(cookie.getName() + " : " + cookie.getValue() + " || ");
+            }
+        }
+        return sb.toString();
+    }
+
+    @GetMapping()
+    public String get(@SessionStatus UserStatus userStatus, @SessionCounselor Counselor counselor){
+        StringBuilder sb = new StringBuilder();
+        sb.append("좋아해요");
+        return sb.toString();
+    }
+
+    @GetMapping("/new-cookie")
+    public ResponseEntity<String> newCookie(@SessionStatus UserStatus userStatus, HttpServletResponse response){
+        ResponseCookie cookie = ResponseCookie.from("name", "value")
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
+                .maxAge(86400) // seconds
+                .build();
+
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body("path : " + cookie.getPath() + " domain : " + cookie.getDomain());
+    }
+
+    @GetMapping("/delete-cookie")
+    public ResponseEntity<String> deleteCookie(HttpServletResponse response){
+        ResponseCookie cookie = ResponseCookie.from("name", "value")
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
+                .maxAge(0) // seconds
+                .build();
+
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body("path : " + cookie.getPath() + " domain : " + cookie.getDomain() + " maxage : " + cookie.getMaxAge());
+    }
+
+
+
+//    @GetMapping("/delete-cookie")
+//    public ResponseEntity<String> deleteCookie(HttpServletResponse response){
+//        ResponseCookie cookie = ResponseCookie.from("name", "value")
+//                .httpOnly(true)
+//                .secure(true)
+//                .sameSite("None")
+//                .maxAge(0) // seconds
+//                .build();
+//
+//        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body("path : " + cookie.getPath() + " domain : " + cookie.getDomain() + " maxage : " + cookie.getMaxAge());
+//    }
 
 
 
