@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import xyz.hugme.hugmebackend.domain.user.client.Client;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
+import xyz.hugme.hugmebackend.global.exception.BusinessException;
+import xyz.hugme.hugmebackend.global.exception.ErrorCode;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -38,7 +40,7 @@ public class CounselorReview {
 
     public void validateUpdateReview(Long clientId){
         if (!Objects.equals(client.getId(), clientId))
-            throw new RuntimeException("리뷰변경권한안아줘요");
+            throw new BusinessException(ErrorCode.CLIENT_NOT_AUTHORIZED);
     }
 
     @Builder

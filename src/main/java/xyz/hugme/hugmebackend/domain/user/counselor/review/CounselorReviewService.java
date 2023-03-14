@@ -3,6 +3,8 @@ package xyz.hugme.hugmebackend.domain.user.counselor.review;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import xyz.hugme.hugmebackend.global.exception.BusinessException;
+import xyz.hugme.hugmebackend.global.exception.ErrorCode;
 
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class CounselorReviewService {
 
     public CounselorReview findById(Long reviewId) {
         return counselorReviewRepository.findById(reviewId)
-                .orElseThrow(() -> new RuntimeException("리뷰안아줘요"));
+                .orElseThrow(() -> new BusinessException(ErrorCode.REVIEW_NOT_FOUND));
     }
 
     @Transactional
