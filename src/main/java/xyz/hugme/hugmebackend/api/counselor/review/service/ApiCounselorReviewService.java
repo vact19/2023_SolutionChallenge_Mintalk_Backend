@@ -31,7 +31,8 @@ public class ApiCounselorReviewService {
         CounselorReview counselorReview = reviewRequestDto.toEntity(counselor, persistedClient);
         counselorReviewService.save(counselorReview);
 
-        return new CounselorReviewDto.Response(counselorReview.getId(), counselorReview.getRate(), counselorReview.getContent());
+        return new CounselorReviewDto.Response(counselorReview.getId(), counselorReview.getRate(),
+                counselorReview.getContent(), counselorReview.getCreateTime());
     }
 
     @Transactional
@@ -40,7 +41,8 @@ public class ApiCounselorReviewService {
         counselorReview.validateUpdateReview(client.getId());
         counselorReview.updateReview(reviewRequestDto.getRate(), reviewRequestDto.getContent());
 
-        return new CounselorReviewDto.Response(counselorReview.getId(), counselorReview.getRate(), counselorReview.getContent());
+        return new CounselorReviewDto.Response(counselorReview.getId(), counselorReview.getRate(),
+                counselorReview.getContent(), counselorReview.getCreateTime());
     }
 
     @Transactional
