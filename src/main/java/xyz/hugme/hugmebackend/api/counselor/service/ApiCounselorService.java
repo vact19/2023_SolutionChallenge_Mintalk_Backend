@@ -29,19 +29,11 @@ public class ApiCounselorService {
     private final PasswordEncoder passwordEncoder;
     private final FileService fileService;
 
-    public List<CounselorListDto> findAll(){
-        List<Counselor> counselorList = counselorService.findAll();
-        // Entity의 리스트를 Dto의 리스트로 변환
-        List<CounselorListDto> counselorListDtoList = CounselorListDto.ofList(counselorList);
-
-        return counselorListDtoList;
-    }
-
     //상담사를 성별과 분야로 조회
     public List<CounselorListDto> findByGenderAndFields(Gender gender, Field field){
         List<Counselor> counselorList = counselorService.findByGenderAndField(gender, field);
 
-        return CounselorListDto.ofList(counselorList);
+        return CounselorListDto.of(counselorList);
     }
 
     public CounselorInfoDto getPublicCounselorInfo(Long id){

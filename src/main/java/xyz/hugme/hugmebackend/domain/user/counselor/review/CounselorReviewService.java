@@ -3,6 +3,7 @@ package xyz.hugme.hugmebackend.domain.user.counselor.review;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import xyz.hugme.hugmebackend.domain.user.client.Client;
 import xyz.hugme.hugmebackend.global.exception.BusinessException;
 import xyz.hugme.hugmebackend.global.exception.ErrorCode;
 
@@ -31,5 +32,9 @@ public class CounselorReviewService {
     @Transactional
     public void deleteById(Long reviewId) {
         counselorReviewRepository.deleteById(reviewId);
+    }
+
+    public List<CounselorReview> findByClientAndCounselorId(Client client, Long id) {
+        return counselorReviewRepository.findByClientAndCounselorId(client, id);
     }
 }

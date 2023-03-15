@@ -33,7 +33,15 @@ spring:
     show-sql: true
     open-in-view: false
 
+user:
+  timezone: Asia/Seoul
 logging:
   level:
     org.hibernate.type: debug
+  logback:
+    rollingpolicy:
+      max-file-size: 20MB
+      max-history: 5
+  file:
+    name:
 
