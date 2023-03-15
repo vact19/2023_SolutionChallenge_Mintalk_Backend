@@ -43,7 +43,7 @@ public class CounselorController {
         return ResponseEntity.created(URI.create("/counselors/" + savedCounselor.getId())).body(rspsTemplate);
     }
 
-    // 외부 공개용 상담사 마이페이지 조회
+    // 외부 공개용 상담사 소개페이지 조회
     @GetMapping("/counselors/{id}")
     public SingleRspsTemplate<CounselorInfoDto> getPublicCounselorInfo(@PathVariable Long id, @SessionStatus UserStatus userStatus){
         // id로 리뷰, 상담사 찾고

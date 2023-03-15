@@ -54,7 +54,7 @@ public class CounselorInfoDto {
                 .averageRate(averageRate)
                 .careers(counselor.getCareers())
                 .fields(counselor.getFields())
-                .reviews(CounselorReviewListDto.ofList(counselorReviews))
+                .reviews(CounselorReviewListDto.of(counselorReviews))
                 .build();
     }
 
@@ -88,7 +88,7 @@ public class CounselorInfoDto {
                     .build();
         }
 
-        public static List<CounselorReviewListDto> ofList(List<CounselorReview> counselorReviews){
+        public static List<CounselorReviewListDto> of(List<CounselorReview> counselorReviews){
             return counselorReviews.stream()
                     .map(CounselorReviewListDto::of)
                     .collect(Collectors.toList());

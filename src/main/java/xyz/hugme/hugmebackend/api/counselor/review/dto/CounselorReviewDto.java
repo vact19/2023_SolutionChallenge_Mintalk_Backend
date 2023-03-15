@@ -7,9 +7,12 @@ import xyz.hugme.hugmebackend.domain.user.client.Client;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 import xyz.hugme.hugmebackend.domain.user.counselor.review.CounselorReview;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 // 리뷰 저장 Dto
 
-public class ReviewDto {
+public class CounselorReviewDto {
 
     @Getter
     @NoArgsConstructor
@@ -33,7 +36,19 @@ public class ReviewDto {
         private Long id;
         private int rate;
         private String content;
+
+        public static List<Response> of(List<CounselorReview> counselorReviewList) {
+            return counselorReviewList.stream()
+                    .map(Response::of)
+                    .collect(Collectors.toList());
+        }
+
+        public static Response of(CounselorReview counselorReview){
+            return new Response(counselorReview.getId(), counselorReview.getRate(), counselorReview.getContent());
+        }
     }
+
+
 
 }
 

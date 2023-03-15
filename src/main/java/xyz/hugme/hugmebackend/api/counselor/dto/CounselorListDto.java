@@ -39,7 +39,7 @@ public class CounselorListDto {
                 .build();
     }
 
-    public static List<CounselorListDto> ofList(List<Counselor> counselorList){
+    public static List<CounselorListDto> of(List<Counselor> counselorList){
         return counselorList.stream()
                 .map(CounselorListDto::of)
                 .collect(Collectors.toList());

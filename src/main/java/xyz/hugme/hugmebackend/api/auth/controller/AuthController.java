@@ -14,9 +14,7 @@ import xyz.hugme.hugmebackend.api.auth.service.AuthService;
 import xyz.hugme.hugmebackend.api.common.SingleRspsTemplate;
 import xyz.hugme.hugmebackend.api.common.UserStatus;
 import xyz.hugme.hugmebackend.domain.user.Role;
-import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 import xyz.hugme.hugmebackend.global.auth.SessionStatus;
-import xyz.hugme.hugmebackend.global.auth.SessionCounselor;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -79,9 +77,9 @@ public class AuthController {
     }
 
     @GetMapping()
-    public String get(@SessionStatus UserStatus userStatus, @SessionCounselor Counselor counselor){
+    public String get(){
         StringBuilder sb = new StringBuilder();
-        sb.append("좋아해요");
+        sb.append("여기로 요청보내면 안돼영");
         return sb.toString();
     }
 
