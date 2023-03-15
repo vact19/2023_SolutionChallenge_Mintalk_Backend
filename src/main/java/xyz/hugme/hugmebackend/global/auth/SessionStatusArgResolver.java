@@ -48,6 +48,9 @@ public class SessionStatusArgResolver implements HandlerMethodArgumentResolver {
                     if(session == null){ // 세션이 만료되었을 경우
                         // todo 아래 코드는 session_id를 찾은 경우의 로직이므로 사용자가 session_id를 고의로 수정하지 않았을 경우 null이 나오지 않는다. 하지만 null 체크 등 그에 대한 방어로직도 작성해야 한다.
                         UserSession userSession = userSessionService.findBySessionId(sessionId);
+                        if (userSession == null){
+                            return new UserStatus(false);
+                        }
                         if (userSession.getExpirationDate().isBefore(LocalDateTime.now())){ // 쿠키 만료시간도 지났으면 다시 로그인
                             return new UserStatus(false);
                         }
