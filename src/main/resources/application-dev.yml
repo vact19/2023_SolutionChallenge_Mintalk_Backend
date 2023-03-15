@@ -36,4 +36,10 @@ spring:
 logging:
   level:
     org.hibernate.type: debug
+  logback:
+    rollingpolicy:
+      max-file-size: 20MB
+      max-history: 5
+  file:
+    name:
 
