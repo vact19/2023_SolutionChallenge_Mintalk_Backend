@@ -1,5 +1,6 @@
 package xyz.hugme.hugmebackend.api.counselor.review.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,7 @@ import xyz.hugme.hugmebackend.domain.user.client.Client;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 import xyz.hugme.hugmebackend.domain.user.counselor.review.CounselorReview;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +38,8 @@ public class CounselorReviewDto {
         private Long id;
         private int rate;
         private String content;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+        private LocalDateTime createTime;
 
         public static List<Response> of(List<CounselorReview> counselorReviewList) {
             return counselorReviewList.stream()
@@ -44,7 +48,8 @@ public class CounselorReviewDto {
         }
 
         public static Response of(CounselorReview counselorReview){
-            return new Response(counselorReview.getId(), counselorReview.getRate(), counselorReview.getContent());
+            return new Response(counselorReview.getId(), counselorReview.getRate(),
+                    counselorReview.getContent(), counselorReview.getCreateTime());
         }
     }
 

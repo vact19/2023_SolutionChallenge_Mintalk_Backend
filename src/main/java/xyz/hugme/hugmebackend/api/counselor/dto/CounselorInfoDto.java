@@ -1,5 +1,7 @@
 package xyz.hugme.hugmebackend.api.counselor.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +10,7 @@ import xyz.hugme.hugmebackend.domain.user.counselor.Field;
 import xyz.hugme.hugmebackend.domain.user.counselor.Gender;
 import xyz.hugme.hugmebackend.domain.user.counselor.review.CounselorReview;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -77,27 +80,22 @@ public class CounselorInfoDto {
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
     static class CounselorReviewListDto {
         private Integer rate;
         private String content;
 
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+        private LocalDateTime createTime;
+
         public static CounselorReviewListDto of(CounselorReview counselorReview){
-            return CounselorReviewListDto.builder()
-                    .rate(counselorReview.getRate())
-                    .content(counselorReview.getContent())
-                    .build();
+            return new CounselorReviewListDto(counselorReview.getRate(), counselorReview.getContent(), counselorReview.getCreateTime());
         }
 
         public static List<CounselorReviewListDto> of(List<CounselorReview> counselorReviews){
             return counselorReviews.stream()
                     .map(CounselorReviewListDto::of)
                     .collect(Collectors.toList());
-        }
-
-        @Builder
-        public CounselorReviewListDto(Integer rate, String content) {
-            this.rate = rate;
-            this.content = content;
         }
     }
 }
