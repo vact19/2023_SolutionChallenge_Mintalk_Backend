@@ -33,6 +33,8 @@ spring:
     show-sql: true
     open-in-view: false
 
+user:
+  timezone: Asia/Seoul
 logging:
   level:
     org.hibernate.type: debug
