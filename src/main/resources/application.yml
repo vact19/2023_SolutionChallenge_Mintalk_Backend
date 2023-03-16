@@ -8,4 +8,5 @@ server:
         same-site: none # 세션ID가 담긴 쿠키의 same-site 설정을 none 으로 한다.
         name: session_id
         max-age: P14D
+      timeout: 600
 
