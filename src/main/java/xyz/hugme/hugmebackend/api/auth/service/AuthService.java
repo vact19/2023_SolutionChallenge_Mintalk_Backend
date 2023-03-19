@@ -11,6 +11,8 @@ import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 import xyz.hugme.hugmebackend.domain.user.counselor.CounselorService;
 import xyz.hugme.hugmebackend.domain.user.usersession.UserSession;
 import xyz.hugme.hugmebackend.domain.user.usersession.UserSessionService;
+import xyz.hugme.hugmebackend.global.exception.BusinessException;
+import xyz.hugme.hugmebackend.global.exception.ErrorCode;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -72,6 +74,8 @@ public class AuthService {
 
         // 사용자가 의도적으로 sessionId값을 변경시키지 않는 이상. null이 나오지 않는다.
         UserSession userSession = userSessionService.findBySessionId(sessionId);
+        if (userSession == null)
+            throw new BusinessException(ErrorCode.SESSION_NOT_FOUND);
         userSession.signOut();
     }
 

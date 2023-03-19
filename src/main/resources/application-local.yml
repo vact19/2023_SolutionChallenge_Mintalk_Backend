@@ -1,11 +1,11 @@
 server:
   port: 8443
-#  ssl:
-#    key-store-type: pkcs12
-#    key-alias: local
-#    enabled: true
-#    key-store:
-#    key-store-password:
+  ssl:
+    key-store-type: pkcs12
+    key-alias: local
+    enabled: true
+    key-store:
+    key-store-password:
 
 spring:
   servlet:
