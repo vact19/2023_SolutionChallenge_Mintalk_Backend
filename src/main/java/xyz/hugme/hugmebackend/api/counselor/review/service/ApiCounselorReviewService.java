@@ -56,4 +56,5 @@ public class ApiCounselorReviewService {
         List<CounselorReview> counselorReviewList = counselorReviewService.findByClientAndCounselorId(client, id);
         return CounselorReviewDto.Response.of(counselorReviewList);
     }
+
 }
