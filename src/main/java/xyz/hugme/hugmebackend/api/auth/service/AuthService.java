@@ -17,7 +17,6 @@ import xyz.hugme.hugmebackend.global.exception.ErrorCode;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Transactional
@@ -58,7 +57,7 @@ public class AuthService {
 
         // UserSession 의 만료기간 +14일
         validatedClient.getUserSession().
-                setExpirationDate(LocalDateTime.now().plusDays(14));
+                signIn(session.getId());
 
         return validatedClient.getName();
     }
