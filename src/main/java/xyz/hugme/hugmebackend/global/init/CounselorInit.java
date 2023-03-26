@@ -258,9 +258,12 @@ public class CounselorInit {
         em.persist(review10);
 
         // 세션 생성
-        UserSession userSession1 = createUserSession();UserSession userSession2 = createUserSession();UserSession userSession3 = createUserSession();
-        UserSession userSession4 = createUserSession();UserSession userSession5 = createUserSession();UserSession userSession6 = createUserSession();
-        UserSession userSession7 = createUserSession();UserSession userSession8 = createUserSession();UserSession userSession9 = createUserSession();
+        UserSession userSession1 = createUserSessionCounselor();UserSession userSession2 = createUserSessionCounselor();UserSession userSession3 = createUserSessionCounselor();
+        UserSession userSession4 = createUserSessionCounselor();UserSession userSession5 = createUserSessionCounselor();UserSession userSession6 = createUserSessionCounselor();
+        UserSession userSession7 = createUserSessionCounselor();
+
+        UserSession userSession8 = createUserSessionClient();
+        UserSession userSession9 = createUserSessionClient();
 
         em.persist(userSession1);em.persist(userSession2);em.persist(userSession3);em.persist(userSession4);
         em.persist(userSession5);em.persist(userSession6);em.persist(userSession7);em.persist(userSession8);em.persist(userSession9);
@@ -277,10 +280,17 @@ public class CounselorInit {
         em.close();
     }
 
-    private UserSession createUserSession() {
+    private UserSession createUserSessionCounselor() {
         return UserSession.builder()
                 .expirationDate(LocalDateTime.now())
                 .role(Role.COUNSELOR)
+                .build();
+    }
+
+    private UserSession createUserSessionClient() {
+        return UserSession.builder()
+                .expirationDate(LocalDateTime.now())
+                .role(Role.CLIENT)
                 .build();
     }
 }
