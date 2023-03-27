@@ -44,47 +44,49 @@ public class CounselorInit {
         fieldsSet2.add(Field.ANXIETY);
         fieldsSet2.add(Field.YOUTH);
         List<String> careers1 = new ArrayList<>();
-        careers1.add("서울대 자퇴");
-        careers1.add("뭐시기 자격증 2급");
-        careers1.add("성공회대 졸업");
+        careers1.add("남서울대학교 심리학과 학사 졸업");
+        careers1.add("상담심리사 1급");
+        careers1.add("前) 동작구 가정지원센터 심리상담사");
+        careers1.add("現) 마인드심리상담소 소장");
         List<String> careers2 = new ArrayList<>();
-        careers2.add("침착맨 유튜브 누적 4372시간 시청");
-        careers2.add("뭐시기 자격증 2급");
-        careers2.add("골든리트리버 조련사 2급");
+        careers2.add("상담심리대학원 석사 졸업");
+        careers2.add("심리상담 경력 13년");
+        careers1.add("前) 다도움심리연구소 부부상담");
+        careers2.add("現) 한국아들러협회장");
 
         // 상담사 생성
         Counselor counselor1 = Counselor.builder()
                 .name("한현수")
-                .shortIntroduction("알고보면따뜻한남자")
-                .introduction("마에스트로 한현수")
+                .shortIntroduction("공감의 힘을 믿습니다")
+                .introduction("저는 개인이 대화를 통해 삶을 개선할 수 있음을 믿습니다. 자유롭게 자신을 표현할 수 있는 공간을 여러분과 만들고 싶습니다.")
                 .gender(Gender.FEMALE)
                 .fields(fieldsSet1)
-                .contact("010-현수현수-0100")
+                .contact("010-5313-0100")
                 .email("csrf1@gmail.com")
                 .password(passwordEncoder.encode("1234"))
-                .location("어디시 어디구 어디동")
+                .location("경기도 수원시 장안구 영화동 678-90")
                 .profileImageUrl("https://storage.googleapis.com/mintalk-image-storage/counselors/anajouryo.png")
                 .careers(careers1)
                 .build();
 
         Counselor counselor2 = Counselor.builder()
-                .name("이한길")
-                .shortIntroduction("정열맨이한길")
-                .introduction("매력적인 저음을 가진 남자 이한길. 도서관에 가면 볼 수 있습니다")
+                .name("이길한")
+                .shortIntroduction("소외받는 사람들 옆에 서겠습니다.")
+                .introduction("안녕하세요. 저는 이길한입니다. 대학 시절부터 쌓아온 다년간의 상담 경력으로 내담자 한 분 한 분에게 맞는 상담을 진행합니다.")
                 .gender(Gender.MALE)
                 .fields(fieldsSet2)
-                .contact("010-한길한길-0100")
+                .contact("010-0413-0100")
                 .email("csrf2@gmail.com")
                 .password(passwordEncoder.encode("1234"))
-                .location("멋짐")
+                .location("서울특별시 강남구 역삼동 123-45")
                 .profileImageUrl("https://storage.googleapis.com/mintalk-image-storage/counselors/show-me-pocky.jpg")
                 .careers(careers2)
                 .build();
 
         Counselor counselor3 = Counselor.builder()
-                .name("쿼카")
-                .shortIntroduction("쿼카 == 족제비 == 다람쥐 == 물개")
-                .introduction("쿼카는 어떻게 울게요 닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝닝")
+                .name("김광석")
+                .shortIntroduction("경청의 아이콘 김광석입니다.")
+                .introduction("스트레스, 자존감, 인간관계에 대한 다양한 경험을 통해 여러분의 고민을 덜어드리겠습니다. ")
                 .gender(Gender.FEMALE)
                 .fields(fieldsSet2)
                 .contact("010-3434-4343")
@@ -98,8 +100,8 @@ public class CounselorInit {
 
         Counselor counselor4 = Counselor.builder()
                 .name("주호민")
-                .shortIntroduction("상남자")
-                .introduction("나 주호민 53세 나처럼 살지 마시오")
+                .shortIntroduction("안녕하세요, 저는 따뜻한 마음을 가진 상담사 주호민입니다.")
+                .introduction("안녕하세요, 저는 주호민이라고 합니다. 고객들과 함께 더 나은 삶을 찾아가기 위해 항상 따뜻한 마음으로 상담에 임하고 있습니다.")
                 .gender(Gender.FEMALE)
                 .fields(fieldsSet2)
                 .contact("010-3434-4343")
@@ -113,8 +115,8 @@ public class CounselorInit {
 
         Counselor counselor5 = Counselor.builder()
                 .name("김경민")
-                .shortIntroduction("수염이 매력적인 남자")
-                .introduction("김경민.equals(이찬균) => TRUE 김경민.equals(이찬균) => TRUE 김경민.equals(이찬균) => TRUE 김경민.equals(이찬균) => TRUE 김경민.equals(이찬균) => TRUE 김경민.equals(이찬균) => TRUE 김경민.equals(이찬균) => TRUE")
+                .shortIntroduction("김경민입니다.")
+                .introduction("외상, 슬픔, 중독 등의 문제가 저의 전문 분야입니다, 언제든지 상담을 통해 도움을 드릴게요.")
                 .gender(Gender.MALE)
                 .fields(fieldsSet2)
                 .contact("010-3434-4343")
@@ -142,9 +144,9 @@ public class CounselorInit {
         em.persist(counselor6);
 
         Counselor counselor7 = Counselor.builder()
-                .name("침착맨")
-                .shortIntroduction("이병건")
-                .introduction("저는 나와의 싸움에서 자꾸 져요. 그런데 다르게 생각해보면 이긴 쪽도 나잖아?")
+                .name("이병건")
+                .shortIntroduction("이병건입니다.")
+                .introduction("안녕하세요 이병건입니다. 여러분이 자기 자신과의 싸움에서 승리할 수 있도록 돕겠습니다.")
                 .gender(Gender.MALE)
                 .fields(fieldsSet2)
                 .contact("010-3434-4343")
@@ -186,7 +188,7 @@ public class CounselorInit {
 
         CounselorReview review2 = CounselorReview.builder()
                 .rate(3)
-                .content("한길선생님 너무 감사합니다")
+                .content("현수선생님 너무 감사합니다")
                 .counselor(counselor1)
                 .client(client2)
                 .build();
@@ -195,7 +197,7 @@ public class CounselorInit {
 
         CounselorReview review3 = CounselorReview.builder()
                 .rate(2)
-                .content("한길선생님 저는 기어다닐거에요")
+                .content("길한 선생님의 통찰력에 감동했습니다. 제가 전혀 생각해보지 못했던 접근법이었어요.")
                 .counselor(counselor2)
                 .client(client2)
                 .build();
@@ -203,7 +205,7 @@ public class CounselorInit {
 
         CounselorReview review4 = CounselorReview.builder()
                 .rate(1)
-                .content("한길선생님 저는 누울거에요")
+                .content("처음에는 긴장됐지만 상담사분의 노력 덕에 편안하게 대화할 수 있었어요.")
                 .counselor(counselor2)
                 .client(client2)
                 .build();
@@ -211,7 +213,7 @@ public class CounselorInit {
 
         CounselorReview review5 = CounselorReview.builder()
                 .rate(3)
-                .content("한길선생님 저 취했ㅆㅓ여")
+                .content("제가 오랜 기간 고민했던 결정을 내리는 데 도움을 받을 수 있었습니다. 감사합니다.")
                 .counselor(counselor2)
                 .client(client2)
                 .build();
@@ -219,7 +221,7 @@ public class CounselorInit {
 
         CounselorReview review6 = CounselorReview.builder()
                 .rate(5)
-                .content("이한길에게 상담받고 나를 찾는 회사 많아졌다")
+                .content("이길한 선생님에게 상담받고 저의 성공시대가 시작되었습니다.")
                 .counselor(counselor2)
                 .client(client2)
                 .build();
@@ -227,7 +229,7 @@ public class CounselorInit {
 
         CounselorReview review7 = CounselorReview.builder()
                 .rate(3)
-                .content("이한길에게 상담받고 암이 나았습니다")
+                .content("제 이야기를 들어주셔서 감사합니다")
                 .counselor(counselor2)
                 .client(client2)
                 .build();
@@ -235,7 +237,7 @@ public class CounselorInit {
 
         CounselorReview review8 = CounselorReview.builder()
                 .rate(4)
-                .content("이한길에게 상담받고 암이 나았습니다")
+                .content("제 삶에 대해서 다시 생각해볼 수 있었어요")
                 .counselor(counselor2)
                 .client(client2)
                 .build();
@@ -243,7 +245,7 @@ public class CounselorInit {
 
         CounselorReview review9 = CounselorReview.builder()
                 .rate(1)
-                .content("이 상담사 말고 침착맨 상담사님이 더 잘해주세요")
+                .content("제 말을 듣지 않는군요")
                 .counselor(counselor2)
                 .client(client2)
                 .build();
@@ -251,7 +253,7 @@ public class CounselorInit {
 
         CounselorReview review10 = CounselorReview.builder()
                 .rate(1)
-                .content("한길님 저랑 미즈컨테이너 가주세요")
+                .content("경청해 주셔서 감사합니다")
                 .counselor(counselor2)
                 .client(client2)
                 .build();
