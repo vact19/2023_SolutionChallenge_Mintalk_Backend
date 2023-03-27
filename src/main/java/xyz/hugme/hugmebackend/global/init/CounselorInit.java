@@ -65,7 +65,7 @@ public class CounselorInit {
                 .email("csrf1@gmail.com")
                 .password(passwordEncoder.encode("1234"))
                 .location("경기도 수원시 장안구 영화동 678-90")
-                .profileImageUrl("https://storage.googleapis.com/mintalk-image-storage/counselors/anajouryo.png")
+                .profileImageUrl("https://storage.googleapis.com/mintalk-image-storage/counselors/8e5aa698-1957-4997-8c14-dc4711eff564.jpg")
                 .careers(careers1)
                 .build();
 
@@ -79,7 +79,7 @@ public class CounselorInit {
                 .email("csrf2@gmail.com")
                 .password(passwordEncoder.encode("1234"))
                 .location("서울특별시 강남구 역삼동 123-45")
-                .profileImageUrl("https://storage.googleapis.com/mintalk-image-storage/counselors/show-me-pocky.jpg")
+                .profileImageUrl("https://storage.googleapis.com/mintalk-image-storage/counselors/8e5aa698-2113-4997-8c14-dc4711eff564.jpg")
                 .careers(careers2)
                 .build();
 
@@ -93,7 +93,7 @@ public class CounselorInit {
                 .email("csrf3@gmail.com")
                 .password(passwordEncoder.encode("1234"))
                 .location("깊은산속 옹달샘")
-                .profileImageUrl("https://storage.googleapis.com/mintalk-image-storage/counselors/Quokka.jfif")
+                .profileImageUrl("https://storage.googleapis.com/mintalk-image-storage/counselors/8e5aa698-6532-4997-8c14-dc4711eff564.jpg")
                 .careers(careers2)
                 .build();
         em.persist(counselor3);
@@ -108,7 +108,7 @@ public class CounselorInit {
                 .email("csrf4@gmail.com")
                 .password(passwordEncoder.encode("1234"))
                 .location("고기동 호민촌")
-                .profileImageUrl("https://storage.googleapis.com/mintalk-image-storage/counselors/homin.jfif")
+                .profileImageUrl("https://storage.googleapis.com/mintalk-image-storage/counselors/8e5aa698-2333-4997-8c14-dc4711eff564.jpg")
                 .careers(careers2)
                 .build();
         em.persist(counselor4);
@@ -123,7 +123,7 @@ public class CounselorInit {
                 .email("csrf5@gmail.com")
                 .password(passwordEncoder.encode("1234"))
                 .location("경기 김포시 고촌읍")
-                .profileImageUrl("https://storage.googleapis.com/mintalk-image-storage/counselors/loveYou.png")
+                .profileImageUrl("https://storage.googleapis.com/mintalk-image-storage/counselors/8e5aa698-2941-4997-8c14-dc4711eff564.jpg")
                 .careers(careers2)
                 .build();
         em.persist(counselor5);
@@ -138,7 +138,7 @@ public class CounselorInit {
                 .email("csrf6@gmail.com")
                 .password(passwordEncoder.encode("1234"))
                 .location("설악산")
-                .profileImageUrl("https://storage.googleapis.com/mintalk-image-storage/counselors/dotory.jpg")
+                .profileImageUrl("https://storage.googleapis.com/mintalk-image-storage/counselors/8e5aa698-5313-4997-8c14-dc4711eff564.jpg")
                 .careers(careers2)
                 .build();
         em.persist(counselor6);
@@ -153,7 +153,7 @@ public class CounselorInit {
                 .email("csrf7@gmail.com")
                 .password(passwordEncoder.encode("1234"))
                 .location("왕십리")
-                .profileImageUrl("https://storage.googleapis.com/mintalk-image-storage/counselors/sorry.jpg")
+                .profileImageUrl("https://storage.googleapis.com/mintalk-image-storage/counselors/8e5aa698-6281-4997-8c14-dc4711eff564.jpg")
                 .careers(careers2)
                 .build();
         em.persist(counselor7);
