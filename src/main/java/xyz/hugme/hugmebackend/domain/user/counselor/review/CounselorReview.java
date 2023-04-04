@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import xyz.hugme.hugmebackend.api.counselor.review.dto.CounselorReviewDto;
 import xyz.hugme.hugmebackend.domain.common.BaseTimeEntity;
 import xyz.hugme.hugmebackend.domain.user.client.Client;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
@@ -50,5 +51,14 @@ public class CounselorReview extends BaseTimeEntity {
         this.content = content;
         this.counselor = counselor;
         this.client = client;
+    }
+
+    public CounselorReviewDto toDto(){
+        return CounselorReviewDto.builder()
+                //.counselor(counselor)
+                .rate(rate)
+                .content(content)
+                .build();
+
     }
 }
