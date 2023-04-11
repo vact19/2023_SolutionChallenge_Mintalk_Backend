@@ -1,6 +1,8 @@
 package xyz.hugme.hugmebackend.api.counselor.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,10 +47,12 @@ public class CounselorController {
 
     // 외부 공개용 상담사 소개페이지 조회
     @GetMapping("/counselors/{id}")
-    public SingleRspsTemplate<CounselorInfoDto> getPublicCounselorInfo(@PathVariable Long id, @SessionStatus UserStatus userStatus){
+    public SingleRspsTemplate<CounselorInfoDto> getPublicCounselorInfo(@PathVariable Long id, @SessionStatus UserStatus userStatus
+                                                                                        , @RequestParam(required = false, defaultValue = "0") int page){
+        Pageable pageable = PageRequest.of(page, 7);
         // id로 리뷰, 상담사 찾고
         // 해당 정보들을 Dto에 넣어준다
-        CounselorInfoDto counselorInfoDto = apiCounselorService.getPublicCounselorInfo(id);
+        CounselorInfoDto counselorInfoDto = apiCounselorService.getPublicCounselorInfo(id, pageable);
         return new SingleRspsTemplate<>(HttpStatus.OK.value(), counselorInfoDto, userStatus);
     }
 
