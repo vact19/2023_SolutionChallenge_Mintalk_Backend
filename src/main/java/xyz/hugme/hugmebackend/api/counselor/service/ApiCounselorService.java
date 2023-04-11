@@ -2,6 +2,9 @@ package xyz.hugme.hugmebackend.api.counselor.service;
 
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,15 +39,21 @@ public class ApiCounselorService {
         return CounselorListDto.of(counselorList);
     }
 
-    public CounselorInfoDto getPublicCounselorInfo(Long id){
+    public CounselorInfoDto getPublicCounselorInfo(Long id, Pageable pageable){
         // 상담사와 해당 리뷰를 한꺼번에 조회하기 위해 fetch join 사용
         Counselor counselor = counselorService.findByIdFetchReviews(id);
         List<CounselorReview> counselorReviews = counselor.getCounselorReviews();
 
+        boolean hasNext = false;
+        if (counselorReviews.size() > 7)
+            hasNext = true;
+
+        Slice<CounselorReview> counselorReviewSlice = new SliceImpl<>(counselorReviews, pageable, hasNext);
+
         Hibernate.initialize(counselor.getCareers()); // 프록시 강제 초기화
         Hibernate.initialize(counselor.getFields()); // 프록시 강제 초기화
 
-        return CounselorInfoDto.of(counselor, counselorReviews);
+        return CounselorInfoDto.of(counselor, counselorReviews, counselorReviewSlice);
     }
 
     @Transactional

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Slice;
 import xyz.hugme.hugmebackend.domain.user.counselor.Counselor;
 import xyz.hugme.hugmebackend.domain.user.counselor.Field;
 import xyz.hugme.hugmebackend.domain.user.counselor.Gender;
@@ -34,11 +35,12 @@ public class CounselorInfoDto {
     private Set<Field> fields;
 
     // 리뷰 관련정보
-    private List<CounselorReviewListDto> reviews;
+    private Slice<CounselorReviewListDto> reviews;
 
     // Counselor 객체와 CounselorReview 리스트의 객체를 받아서 생성자를 실행한다.
     // 평균 평점을 구한다.
-    public static CounselorInfoDto of(Counselor counselor, List<CounselorReview> counselorReviews){
+    public static CounselorInfoDto of(Counselor counselor, List<CounselorReview> counselorReviews,
+                                      Slice<CounselorReview> counselorReviewSlice){
         double averageRate = counselorReviews.stream().
                 mapToInt(CounselorReview::getRate)
                 .average().orElse(0);
@@ -57,12 +59,12 @@ public class CounselorInfoDto {
                 .averageRate(averageRate)
                 .careers(counselor.getCareers())
                 .fields(counselor.getFields())
-                .reviews(CounselorReviewListDto.of(counselorReviews))
+                .reviews(CounselorReviewListDto.of(counselorReviewSlice))
                 .build();
     }
 
     @Builder
-    public CounselorInfoDto(Long id, String name, Gender gender, String shortIntroduction, String introduction, String contact, String email, String location, String profileImageUrl, double averageRate, List<String> careers, Set<Field> fields, List<CounselorReviewListDto> reviews) {
+    public CounselorInfoDto(Long id, String name, Gender gender, String shortIntroduction, String introduction, String contact, String email, String location, String profileImageUrl, double averageRate, List<String> careers, Set<Field> fields, Slice<CounselorReviewListDto> reviews) {
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -78,10 +80,11 @@ public class CounselorInfoDto {
         this.reviews = reviews;
     }
 
+    // id가 포함되지 않은 리뷰 DTO
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    static class CounselorReviewListDto {
+    public static class CounselorReviewListDto {
         private Integer rate;
         private String content;
 
@@ -96,6 +99,10 @@ public class CounselorInfoDto {
             return counselorReviews.stream()
                     .map(CounselorReviewListDto::of)
                     .collect(Collectors.toList());
+        }
+
+        public static Slice<CounselorReviewListDto> of(Slice<CounselorReview> counselorReviewSlice){
+            return counselorReviewSlice.map(CounselorReviewListDto::of);
         }
     }
 }

@@ -1,9 +1,13 @@
 package xyz.hugme.hugmebackend.domain.user.counselor.review;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import xyz.hugme.hugmebackend.api.counselor.dto.CounselorInfoDto;
 import xyz.hugme.hugmebackend.domain.user.client.Client;
+import xyz.hugme.hugmebackend.domain.user.counselor.CounselorService;
 import xyz.hugme.hugmebackend.global.exception.BusinessException;
 import xyz.hugme.hugmebackend.global.exception.ErrorCode;
 
@@ -14,7 +18,7 @@ import java.util.List;
 @Service
 public class CounselorReviewService {
     private final CounselorReviewRepository counselorReviewRepository;
-
+    private final CounselorService counselorService;
     @Transactional
     public CounselorReview save(CounselorReview review){
         return counselorReviewRepository.save(review);
@@ -36,5 +40,10 @@ public class CounselorReviewService {
 
     public List<CounselorReview> findByClientAndCounselorId(Client client, Long id) {
         return counselorReviewRepository.findByClientAndCounselorId(client, id);
+    }
+
+    public Slice<CounselorInfoDto.CounselorReviewListDto> findAll(Pageable pageable, Long id){
+        Slice<CounselorReview> slice = counselorReviewRepository.findByCounselorId(pageable, id);
+        return slice.map(CounselorInfoDto.CounselorReviewListDto::of);
     }
 }

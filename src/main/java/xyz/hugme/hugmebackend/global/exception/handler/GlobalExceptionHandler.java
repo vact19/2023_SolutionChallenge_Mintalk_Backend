@@ -13,6 +13,8 @@ import xyz.hugme.hugmebackend.global.exception.BusinessException;
 import xyz.hugme.hugmebackend.global.exception.dto.ErrorResponseDto;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.List;
 
 @Slf4j
@@ -64,8 +66,13 @@ public class GlobalExceptionHandler {
         HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         log.error("예외처리 범위 외의 오류 발생. " + httpStatus.toString()); // enum.name() enum.toString() 차이 기억하자
         printLog(e, request);
-        e.printStackTrace();
-        return createErrorResponse(httpStatus.value(), httpStatus, e.getMessage());
+        e.printStackTrace(); // 서버에 로그 남기기
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw); // 반환값용 로그 남기기
+        String stackTrace = sw.toString();
+
+        return createErrorResponse(httpStatus.value(), httpStatus, e.getMessage() +", " + stackTrace);
     }
 
     private ResponseEntity<ErrorResponseDto> createErrorResponse(int statusCode, HttpStatus httpStatus, String errorMessage) {
