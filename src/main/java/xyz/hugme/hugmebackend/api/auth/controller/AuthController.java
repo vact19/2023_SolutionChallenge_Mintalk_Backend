@@ -78,13 +78,6 @@ public class AuthController {
         return "inval";
     }
 
-    @GetMapping()
-    public String get(){
-        StringBuilder sb = new StringBuilder();
-        sb.append("여기로 요청보내면 안돼영");
-        return sb.toString();
-    }
-
     @GetMapping("/new-cookie")
     public ResponseEntity<String> newCookie(@SessionStatus UserStatus userStatus, HttpServletResponse response){
         ResponseCookie cookie = ResponseCookie.from("name", "value")
