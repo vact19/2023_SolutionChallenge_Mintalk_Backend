@@ -19,7 +19,7 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry
-                .addEndpoint("/chat-example")
+                .addEndpoint("/chat-example") // 초기 Websocket 연결 Endpoint
                 .setAllowedOriginPatterns("*")
                 .withSockJS() // browser fallback
                 ;

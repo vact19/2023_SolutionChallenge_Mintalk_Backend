@@ -11,6 +11,11 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import xyz.hugme.hugmebackend.model.ChatMessage;
 import xyz.hugme.hugmebackend.model.MessageType;
 
+/**
+ *  connect / disconnect 이벤트 발생 시 처리 로직.
+ *  컨트롤러에서는 메시지 전송 시의 핸들러 메서드를,
+ *  해당 EventListener 클래스에서는 conn / disconn 이벤트 발생 시의 로직을 담는다.
+ */
 @Slf4j
 @Component
 public class WebSocketEventListener {
@@ -30,7 +35,7 @@ public class WebSocketEventListener {
                 .type(MessageType.DISCONNECT)
                 .sender(username)
                 .build();
-
+        // broker 는 특정 subscription 경로로 메시지를 보낸다.
         sendingOperations.convertAndSend("/topic/public", chatMessage);
     }
 

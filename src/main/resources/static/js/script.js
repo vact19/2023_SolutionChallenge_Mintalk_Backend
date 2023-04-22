@@ -13,7 +13,7 @@ const connect = (event) => {
         const chatPage = document.querySelector('#chat-page')
         chatPage.classList.remove('hide')
 
-        const socket = new SockJS('/chat-example')
+        const socket = new SockJS('/chat-example') // 초기 Websocket 연결 Endpoint
         stompClient = Stomp.over(socket)
         stompClient.connect({}, onConnected, onError)
     }
