@@ -8,7 +8,7 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
-import xyz.hugme.hugmebackend.model.ChatMessage;
+import xyz.hugme.hugmebackend.model.ChatMessageDto;
 import xyz.hugme.hugmebackend.model.MessageType;
 
 /**
@@ -31,12 +31,12 @@ public class WebSocketEventListener {
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event){
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
         String username = (String) headerAccessor.getSessionAttributes().get("username");
-        ChatMessage chatMessage = ChatMessage.builder()
+        ChatMessageDto chatMessageDto = ChatMessageDto.builder()
                 .type(MessageType.DISCONNECT)
                 .sender(username)
                 .build();
         // broker 는 특정 subscription 경로로 메시지를 보낸다.
-        sendingOperations.convertAndSend("/topic/public", chatMessage);
+        sendingOperations.convertAndSend("/queue/user/1/chat/1", chatMessageDto);
     }
 
 

@@ -20,15 +20,27 @@ const connect = (event) => {
     event.preventDefault()
 }
 
+
 const onConnected = () => {
-    stompClient.subscribe('/topic/public', onMessageReceived)
+    const uniqueChannel = "/queue" + "/user/" + 1 + "/chat/" + 1; // generate unique channel name
+    stompClient.subscribe(uniqueChannel, onMessageReceived); // subscribe to unique channel
     stompClient.send("/app/chat.newUser",
         {},
-        JSON.stringify({sender: username, type: 'CONNECT'})
-    )
-    const status = document.querySelector('#status')
-    status.className = 'hide'
+        JSON.stringify({sender: username, type: 'CONNECT'}) // send unique channel name to server
+    );
+    const status = document.querySelector('#status');
+    status.className = 'hide';
 }
+
+// const onConnected = () => {
+//     stompClient.subscribe('/topic/public', onMessageReceived)
+//     stompClient.send("/app/chat.newUser",
+//         {},
+//         JSON.stringify({sender: username, type: 'CONNECT'})
+//     )
+//     const status = document.querySelector('#status')
+//     status.className = 'hide'
+// }
 
 const onError = (error) => {
     const status = document.querySelector('#status')

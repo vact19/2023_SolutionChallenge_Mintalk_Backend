@@ -28,6 +28,7 @@ public class Client extends BaseTimeEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_session_id")
     private UserSession userSession;
+
     @Builder
     public Client(Gender gender, String name, String email, String password) {
         this.gender = gender;
