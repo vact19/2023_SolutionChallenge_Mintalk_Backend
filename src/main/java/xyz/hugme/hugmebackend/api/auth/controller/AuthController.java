@@ -56,13 +56,9 @@ public class AuthController {
                 body(rspsTemplate);
     }
 
-    @PostMapping("/invalidatesession")
-    public String invalidatesession(HttpServletRequest request){
-        request.getSession().invalidate();
-        return "inval";
-    }
 
-    // 아래 메소드 4개는 테스트용.
+
+    // 아래 메소드들은 테스트용.
     @GetMapping("/all-cookies")
     public String getAllcookies(HttpServletRequest request){
         StringBuilder sb = new StringBuilder();
@@ -76,11 +72,10 @@ public class AuthController {
         return sb.toString();
     }
 
-    @GetMapping()
-    public String get(){
-        StringBuilder sb = new StringBuilder();
-        sb.append("여기로 요청보내면 안돼영");
-        return sb.toString();
+    @PostMapping("/invalidatesession")
+    public String invalidatesession(HttpServletRequest request){
+        request.getSession().invalidate();
+        return "inval";
     }
 
     @GetMapping("/new-cookie")
